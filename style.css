@@ -988,3 +988,50 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 0.75rem;
   }
 }
+
+/* Bracket Tree Board Styles */
+.bracket-board-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+}
+
+.bracket-board {
+  display: flex;
+  gap: 32px;
+  min-width: 1250px;
+  height: 960px;
+}
+
+.bracket-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 220px;
+  height: 100%;
+}
+
+.bracket-column-header {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--glass-border);
+  letter-spacing: 1px;
+}
+
+.bracket-column-matches {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+  height: 880px;
+  position: relative;
+}

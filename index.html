@@ -96,15 +96,15 @@
           <!-- Slide Stage Title -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--glass-border);">
             <h3 id="current-slide-title" style="border: none; margin: 0; font-size: 1.15rem; color: var(--accent-gold);">Overall Probability Dashboard</h3>
-            <span id="current-slide-number" style="font-size: 0.8rem; color: var(--text-secondary); font-family: monospace;">Page 1/6</span>
+            <span id="current-slide-number" style="font-size: 0.8rem; color: var(--text-secondary); font-family: monospace;">Page 1/2</span>
           </div>
 
           <!-- Sliding Pages Wrapper -->
           <div class="results-pages-wrapper" style="overflow: hidden; width: 100%; position: relative; flex-grow: 1;">
-            <div class="results-pages-container" id="results-pages-container" style="display: flex; align-items: flex-start; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 600%;">
+            <div class="results-pages-container" id="results-pages-container" style="display: flex; align-items: flex-start; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 200%;">
               
               <!-- Slide 0: General Dashboard -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+              <div class="results-page-slide" style="width: 50%; flex-shrink: 0; padding: 0 4px;">
                 <!-- Key Probability Cards -->
                 <div class="stats-grid">
                   <div class="stat-card glass">
@@ -142,46 +142,43 @@
                 </div>
               </div>
 
-              <!-- Slide 1: R32 Matchups -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
-                <div class="bracket-matches-grid" id="bracket-grid-r32" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; padding: 4px;">
-                  <!-- Dynamic Match Cards -->
-                </div>
-              </div>
-
-              <!-- Slide 2: R16 Matchups -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
-                <div class="bracket-matches-grid" id="bracket-grid-r16" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; padding: 4px;">
-                  <!-- Dynamic Match Cards -->
-                </div>
-              </div>
-
-              <!-- Slide 3: Quarterfinals -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
-                <div class="bracket-matches-grid" id="bracket-grid-qf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; padding: 4px;">
-                  <!-- Dynamic Match Cards -->
-                </div>
-              </div>
-
-              <!-- Slide 4: Semifinals -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
-                <div class="bracket-matches-grid" id="bracket-grid-sf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 4px;">
-                  <!-- Dynamic Match Cards -->
-                </div>
-              </div>
-
-              <!-- Slide 5: Final & Champion -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 16px; height: 0; overflow: hidden; opacity: 0;">
-                <div id="bracket-grid-final" style="max-width: 400px; margin: 0 auto; width: 100%;">
-                  <!-- Dynamic Match Card -->
-                </div>
-                
-                <div id="champion-highlight-card" class="glass highlight" style="text-align: center; max-width: 400px; margin: 0 auto; width: 100%; padding: 20px; border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(205, 162, 80, 0.15); display: none;">
-                  <span style="font-size: 2.5rem; display: block; margin-bottom: 4px;">🏆</span>
-                  <h3 style="border: none; margin: 4px 0 12px; color: var(--accent-gold); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">World Cup Champions</h3>
-                  <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                    <img id="champion-flag-img" src="" style="width: 36px; height: 24px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;">
-                    <strong id="champion-name" style="font-size: 1.4rem; color: var(--text-primary);">Turkey</strong>
+              <!-- Slide 1: Knockout Bracket Board -->
+              <div class="results-page-slide" style="width: 50%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
+                <div class="bracket-board-wrapper">
+                  <div class="bracket-board" id="bracket-board">
+                    <!-- Column 1: Round of 32 -->
+                    <div class="bracket-column">
+                      <div class="bracket-column-header">Round of 32</div>
+                      <div class="bracket-column-matches" id="bracket-grid-r32"></div>
+                    </div>
+                    <!-- Column 2: Round of 16 -->
+                    <div class="bracket-column">
+                      <div class="bracket-column-header">Round of 16</div>
+                      <div class="bracket-column-matches" id="bracket-grid-r16"></div>
+                    </div>
+                    <!-- Column 3: Quarterfinals -->
+                    <div class="bracket-column">
+                      <div class="bracket-column-header">Quarterfinals</div>
+                      <div class="bracket-column-matches" id="bracket-grid-qf"></div>
+                    </div>
+                    <!-- Column 4: Semifinals -->
+                    <div class="bracket-column">
+                      <div class="bracket-column-header">Semifinals</div>
+                      <div class="bracket-column-matches" id="bracket-grid-sf"></div>
+                    </div>
+                    <!-- Column 5: Final & Champion -->
+                    <div class="bracket-column" style="justify-content: flex-start; gap: 24px;">
+                      <div class="bracket-column-header">Final & Champion</div>
+                      <div class="bracket-column-matches" id="bracket-grid-final" style="height: 120px; flex-grow: 0;"></div>
+                      <div id="champion-highlight-card" class="glass highlight" style="text-align: center; width: 100%; padding: 20px; border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(205, 162, 80, 0.15); display: none;">
+                        <span style="font-size: 2.5rem; display: block; margin-bottom: 4px;">🏆</span>
+                        <h3 style="border: none; margin: 4px 0 12px; color: var(--accent-gold); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">World Cup Champions</h3>
+                        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                          <img id="champion-flag-img" src="" style="width: 36px; height: 24px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;">
+                          <strong id="champion-name" style="font-size: 1.4rem; color: var(--text-primary);">Turkey</strong>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -191,18 +188,14 @@
 
           <!-- Bottom Slide Navigation -->
           <div class="carousel-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; border-top: 1px solid var(--glass-border); padding-top: 12px;">
-            <button id="btn-prev-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">◀ Previous</button>
+            <button id="btn-prev-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">◀ Dashboard</button>
             
             <div class="carousel-dots" id="carousel-dots-container" style="display: flex; gap: 8px; align-items: center;">
               <span class="carousel-dot active" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-gold); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
               <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
-              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
-              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
-              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
-              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
             </div>
 
-            <button id="btn-next-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">Next Stage ▶</button>
+            <button id="btn-next-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">Knockout Bracket ▶</button>
           </div>
 
         </div>
@@ -670,18 +663,14 @@
 
       const slideTitles = [
         'Overall Probability Dashboard',
-        'Round of 32 Matchups',
-        'Round of 16 Matchups',
-        'Quarterfinals Matchups',
-        'Semifinals Matchups',
-        'Final & Champions'
+        'Knockout Bracket Board'
       ];
       function updateCarouselView() {
         if (!resultsPagesContainer) return;
-        resultsPagesContainer.style.transform = `translateX(-${activeSlideIndex * 16.666}%)`;
+        resultsPagesContainer.style.transform = `translateX(-${activeSlideIndex * 50}%)`;
         
         if (currentSlideTitle) currentSlideTitle.innerText = slideTitles[activeSlideIndex];
-        if (currentSlideNumber) currentSlideNumber.innerText = `Page ${activeSlideIndex + 1}/6`;
+        if (currentSlideNumber) currentSlideNumber.innerText = `Page ${activeSlideIndex + 1}/2`;
 
         if (dotsContainer) {
           const dots = dotsContainer.querySelectorAll('.carousel-dot');
@@ -697,7 +686,7 @@
         }
 
         if (btnPrevSlide) btnPrevSlide.disabled = activeSlideIndex === 0;
-        if (btnNextSlide) btnNextSlide.disabled = activeSlideIndex === 5;
+        if (btnNextSlide) btnNextSlide.disabled = activeSlideIndex === 1;
 
         // Dynamic height adjustment to avoid massive padding/spacing below shorter slides
         const wrapper = document.querySelector('.results-pages-wrapper');
@@ -739,7 +728,7 @@
 
       if (btnNextSlide) {
         btnNextSlide.addEventListener('click', () => {
-          if (activeSlideIndex < 5) {
+          if (activeSlideIndex < 1) {
             activeSlideIndex++;
             updateCarouselView();
           }
