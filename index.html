@@ -143,35 +143,35 @@
               </div>
 
               <!-- Slide 1: R32 Matchups -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
                 <div class="bracket-matches-grid" id="bracket-grid-r32" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; padding: 4px;">
                   <!-- Dynamic Match Cards -->
                 </div>
               </div>
 
               <!-- Slide 2: R16 Matchups -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
                 <div class="bracket-matches-grid" id="bracket-grid-r16" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; padding: 4px;">
                   <!-- Dynamic Match Cards -->
                 </div>
               </div>
 
               <!-- Slide 3: Quarterfinals -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
                 <div class="bracket-matches-grid" id="bracket-grid-qf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; padding: 4px;">
                   <!-- Dynamic Match Cards -->
                 </div>
               </div>
 
               <!-- Slide 4: Semifinals -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
                 <div class="bracket-matches-grid" id="bracket-grid-sf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 4px;">
                   <!-- Dynamic Match Cards -->
                 </div>
               </div>
 
               <!-- Slide 5: Final & Champion -->
-              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 16px;">
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 16px; height: 0; overflow: hidden; opacity: 0;">
                 <div id="bracket-grid-final" style="max-width: 400px; margin: 0 auto; width: 100%;">
                   <!-- Dynamic Match Card -->
                 </div>
@@ -649,7 +649,9 @@
             // Populate all bracket slide pages and reset view to the general dashboard page
             populateAllBracketSlides(lastBracket);
             if (!isSilent) {
-              resetCarouselToDashboard();
+              setTimeout(() => {
+                resetCarouselToDashboard();
+              }, 100);
             }
           }
         );
