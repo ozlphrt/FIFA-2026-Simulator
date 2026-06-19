@@ -421,43 +421,69 @@
           });
 
           // Tooltip details on hover or touch
+          const positionTooltip = (e) => {
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
+            let left = e.pageX + 15;
+            let top = e.pageY + 15;
+            
+            if (left + tooltipWidth > window.innerWidth) {
+              left = e.pageX - tooltipWidth - 15;
+            }
+            if (top + tooltipHeight > window.innerHeight + window.scrollY) {
+              top = e.pageY - tooltipHeight - 15;
+            }
+            
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+          };
+
           tr.addEventListener('mouseenter', (e) => {
             if (tooltip) {
               tooltip.innerHTML = getTeamMatchesDetails(t.id, groupName);
-              tooltip.style.display = 'block';
+              tooltip.style.visibility = 'visible';
               tooltip.style.opacity = '1';
+              positionTooltip(e);
             }
           });
 
           tr.addEventListener('mousemove', (e) => {
             if (tooltip) {
-              const tooltipWidth = tooltip.offsetWidth;
-              const tooltipHeight = tooltip.offsetHeight;
-              let left = e.pageX + 15;
-              let top = e.pageY + 15;
-              
-              if (left + tooltipWidth > window.innerWidth) {
-                left = e.pageX - tooltipWidth - 15;
-              }
-              if (top + tooltipHeight > window.innerHeight + window.scrollY) {
-                top = e.pageY - tooltipHeight - 15;
-              }
-              
-              tooltip.style.left = `${left}px`;
-              tooltip.style.top = `${top}px`;
+              positionTooltip(e);
             }
           });
 
           tr.addEventListener('mouseleave', () => {
             if (tooltip) {
               tooltip.style.opacity = '0';
-              setTimeout(() => {
-                if (tooltip.style.opacity === '0') {
-                  tooltip.style.display = 'none';
-                }
-              }, 150);
+              tooltip.style.visibility = 'hidden';
             }
           });
+
+          // Touch support for mobile devices
+          tr.addEventListener('touchstart', (e) => {
+            if (tooltip) {
+              tooltip.innerHTML = getTeamMatchesDetails(t.id, groupName);
+              tooltip.style.visibility = 'visible';
+              tooltip.style.opacity = '1';
+              
+              const touch = e.touches[0];
+              const tooltipWidth = tooltip.offsetWidth;
+              const tooltipHeight = tooltip.offsetHeight;
+              let left = touch.pageX + 15;
+              let top = touch.pageY - tooltipHeight - 20; // Show slightly above finger
+              
+              if (left + tooltipWidth > window.innerWidth) {
+                left = touch.pageX - tooltipWidth - 15;
+              }
+              if (top < window.scrollY) {
+                top = touch.pageY + 20; // Show below if no space above
+              }
+              
+              tooltip.style.left = `${left}px`;
+              tooltip.style.top = `${top}px`;
+            }
+          }, { passive: true });
 
           const sign = t.goalDiff > 0 ? '+' : '';
           tr.innerHTML = `
@@ -1345,6 +1371,14 @@
       if (!lastRefresh || (now - parseInt(lastRefresh)) >= 60 * 60 * 1000) {
         triggerLiveFeedUpdate();
       }
+      // Dismiss standings tooltip when tapping outside on mobile
+      document.addEventListener('touchstart', (e) => {
+        const tooltip = document.getElementById('standings-tooltip');
+        if (tooltip && !e.target.closest('#standings-table-body tr')) {
+          tooltip.style.opacity = '0';
+          tooltip.style.visibility = 'hidden';
+        }
+      }, { passive: true });
     });
   </script>
   <!-- Tuning Modal -->
