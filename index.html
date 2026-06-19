@@ -1010,6 +1010,13 @@
 
       setupGroup('D', 'TUR');
 
+      // Refresh standings, odds and rerun simulation if last refresh was 60 minutes or longer ago
+      const lastRefresh = localStorage.getItem('fifa_sim_last_refresh');
+      const now = Date.now();
+      if (!lastRefresh || (now - parseInt(lastRefresh)) >= 60 * 60 * 1000) {
+        triggerLiveFeedUpdate();
+      }
+
       btnSimulate.addEventListener('click', () => {
         tuningModal.classList.add('hidden');
         runSimulationCall(false);
@@ -1070,6 +1077,7 @@
         }
 
         triggerAutoSimulation();
+        localStorage.setItem('fifa_sim_last_refresh', Date.now().toString());
       }
 
       if (btnRefreshFeed) {
