@@ -703,11 +703,25 @@
           const slides = resultsPagesContainer.querySelectorAll('.results-page-slide');
           const activeSlide = slides[activeSlideIndex];
           if (activeSlide) {
+            // First, make active slide auto-height to measure its natural content height
+            activeSlide.style.height = 'auto';
+            activeSlide.style.overflow = 'visible';
+            activeSlide.style.opacity = '1';
+            
             setTimeout(() => {
               const height = activeSlide.offsetHeight || activeSlide.scrollHeight;
               if (height > 0) {
                 wrapper.style.height = `${height}px`;
               }
+              
+              // Set non-active slides to 0 height and overflow:hidden so they don't stretch the flex container
+              slides.forEach((slide, idx) => {
+                if (idx !== activeSlideIndex) {
+                  slide.style.height = '0';
+                  slide.style.overflow = 'hidden';
+                  slide.style.opacity = '0';
+                }
+              });
             }, 50);
           }
         }
