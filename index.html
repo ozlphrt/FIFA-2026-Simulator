@@ -315,6 +315,53 @@
 
       renderDropdownOptions();
 
+      function getTeamMatchesDetails(teamId, groupName) {
+        const seeded = window.SeededMatches[groupName] || [];
+        const team = window.SimulationEngine.teams.find(t => t.id === teamId);
+        if (!team) return '';
+
+        const teamMatches = seeded.filter(m => m.teamAId === teamId || m.teamBId === teamId);
+        
+        if (teamMatches.length === 0) {
+          return `<div style="padding: 4px; font-size: 0.8rem; color: var(--text-secondary);">No match results recorded yet.</div>`;
+        }
+
+        let html = `<div style="font-weight: 700; color: var(--accent-gold); margin-bottom: 8px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+          <img src="https://flagcdn.com/w40/${team.flag}.png" style="width: 16px; height: 11px; border-radius: 1px; object-fit: cover;"> ${team.name} Match Results
+        </div>`;
+        
+        teamMatches.forEach(m => {
+          const oppId = m.teamAId === teamId ? m.teamBId : m.teamAId;
+          const opp = window.SimulationEngine.teams.find(t => t.id === oppId);
+          const teamGoals = m.teamAId === teamId ? m.goalsA : m.goalsB;
+          const oppGoals = m.teamAId === teamId ? m.goalsB : m.goalsA;
+          
+          let outcome = 'Draw';
+          let outcomeColor = 'var(--text-secondary)';
+          if (teamGoals > oppGoals) {
+            outcome = 'Won';
+            outcomeColor = 'var(--success-green)';
+          } else if (teamGoals < oppGoals) {
+            outcome = 'Lost';
+            outcomeColor = '#ff4d4d';
+          }
+          
+          html += `
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 6px; gap: 12px;">
+              <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary);">
+                vs <img src="https://flagcdn.com/w40/${opp.flag}.png" style="width: 14px; height: 10px; border-radius: 1px; object-fit: cover;"> ${opp.name}
+              </span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <strong style="color: var(--text-primary); font-family: monospace;">${teamGoals} - ${oppGoals}</strong>
+                <span style="color: ${outcomeColor}; font-weight: 600; font-size: 0.75rem;">(${outcome})</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        return html;
+      }
+
       function updateGroupStandingsTable(groupName, selectedTeamId) {
         const teams = JSON.parse(JSON.stringify(window.SimulationEngine.teams));
         const groupTeams = teams.filter(t => t.group === groupName);
@@ -359,6 +406,8 @@
 
         const tableBody = document.getElementById('standings-table-body');
         tableBody.innerHTML = '';
+        const tooltip = document.getElementById('standings-tooltip');
+
         groupTeams.forEach(t => {
           const tr = document.createElement('tr');
           tr.style.cursor = 'pointer';
@@ -370,6 +419,46 @@
               setupTeamWithinGroup(t.id);
             }
           });
+
+          // Tooltip details on hover or touch
+          tr.addEventListener('mouseenter', (e) => {
+            if (tooltip) {
+              tooltip.innerHTML = getTeamMatchesDetails(t.id, groupName);
+              tooltip.style.display = 'block';
+              tooltip.style.opacity = '1';
+            }
+          });
+
+          tr.addEventListener('mousemove', (e) => {
+            if (tooltip) {
+              const tooltipWidth = tooltip.offsetWidth;
+              const tooltipHeight = tooltip.offsetHeight;
+              let left = e.pageX + 15;
+              let top = e.pageY + 15;
+              
+              if (left + tooltipWidth > window.innerWidth) {
+                left = e.pageX - tooltipWidth - 15;
+              }
+              if (top + tooltipHeight > window.innerHeight + window.scrollY) {
+                top = e.pageY - tooltipHeight - 15;
+              }
+              
+              tooltip.style.left = `${left}px`;
+              tooltip.style.top = `${top}px`;
+            }
+          });
+
+          tr.addEventListener('mouseleave', () => {
+            if (tooltip) {
+              tooltip.style.opacity = '0';
+              setTimeout(() => {
+                if (tooltip.style.opacity === '0') {
+                  tooltip.style.display = 'none';
+                }
+              }, 150);
+            }
+          });
+
           const sign = t.goalDiff > 0 ? '+' : '';
           tr.innerHTML = `
             <td><img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img"> ${t.name}</td>
@@ -1358,5 +1447,8 @@
       <button id="btn-close-bracket-alert" class="btn-secondary" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); padding: 10px 20px; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); cursor: pointer; border-radius: 8px; width: 100%; transition: all 0.2s;">Acknowledge</button>
     </div>
   </div>
+  
+  <!-- Standings Cell/Row Details Tooltip -->
+  <div id="standings-tooltip" class="glass" style="display: none; position: absolute; z-index: 1000000; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(15, 15, 18, 0.95); box-shadow: 0 8px 24px rgba(0,0,0,0.5); backdrop-filter: blur(10px); pointer-events: none; width: max-content; min-width: 230px; transition: opacity 0.15s ease; opacity: 0; box-sizing: border-box;"></div>
 </body>
 </html>
