@@ -856,13 +856,7 @@
           let scoreTextA = m.goalsA;
           let scoreTextB = m.goalsB;
 
-          if (m.pens) {
-            if (isWinA) {
-              scoreTextA += ' (p)';
-            } else {
-              scoreTextB += ' (p)';
-            }
-          }
+
 
           const pAdvanceA = calculateProgressionProbability(m.teamA, m.teamB);
           const pctA = Math.round(pAdvanceA * 100) + '%';
