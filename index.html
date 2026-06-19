@@ -91,43 +91,120 @@
         </div>
 
         <!-- Simulation Results Dashboard -->
-        <div id="simulation-results-card" class="glass hidden">
+        <div id="simulation-results-card" class="glass hidden" style="display: flex; flex-direction: column; overflow: hidden; max-width: 100%;">
           
-          <!-- Key Probability Cards -->
-          <div class="stats-grid">
-            <div class="stat-card glass">
-              <span class="stat-title">Chance to Reach R32</span>
-              <span id="stat-r32-pct" class="stat-value">0%</span>
-            </div>
-            <div class="stat-card glass highlight">
-              <span class="stat-title">Chance to Win World Cup 🏆</span>
-              <span id="stat-winner-pct" class="stat-value">0%</span>
+          <!-- Slide Stage Title -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--glass-border);">
+            <h3 id="current-slide-title" style="border: none; margin: 0; font-size: 1.15rem; color: var(--accent-gold);">Overall Probability Dashboard</h3>
+            <span id="current-slide-number" style="font-size: 0.8rem; color: var(--text-secondary); font-family: monospace;">Page 1/6</span>
+          </div>
+
+          <!-- Sliding Pages Wrapper -->
+          <div class="results-pages-wrapper" style="overflow: hidden; width: 100%; position: relative; flex-grow: 1;">
+            <div class="results-pages-container" id="results-pages-container" style="display: flex; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 600%;">
+              
+              <!-- Slide 0: General Dashboard -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+                <!-- Key Probability Cards -->
+                <div class="stats-grid">
+                  <div class="stat-card glass">
+                    <span class="stat-title">Chance to Reach R32</span>
+                    <span id="stat-r32-pct" class="stat-value">0%</span>
+                  </div>
+                  <div class="stat-card glass highlight">
+                    <span class="stat-title">Chance to Win World Cup 🏆</span>
+                    <span id="stat-winner-pct" class="stat-value">0%</span>
+                  </div>
+                </div>
+
+                <!-- Stage Reached Visualization Chart -->
+                <div class="chart-section">
+                  <h3>Tournament Stage Probabilities</h3>
+                  <div id="stages-bar-chart" class="bar-chart">
+                    <!-- Dynamically rendered bar chart -->
+                  </div>
+                </div>
+
+                <!-- Group Progression Probability -->
+                <div class="chart-section">
+                  <h3>Group Progression Probability (R32)</h3>
+                  <div id="group-progression-chart" class="bar-chart">
+                    <!-- Dynamically rendered -->
+                  </div>
+                </div>
+
+                <!-- Group Finish breakdown -->
+                <div class="chart-section">
+                  <h3>Group Stage Finish Breakdown</h3>
+                  <div id="group-finish-chart" class="group-finish-chart">
+                    <!-- Standings position percentages -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 1: R32 Matchups -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+                <div class="bracket-matches-grid" id="bracket-grid-r32" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; padding: 4px;">
+                  <!-- Dynamic Match Cards -->
+                </div>
+              </div>
+
+              <!-- Slide 2: R16 Matchups -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+                <div class="bracket-matches-grid" id="bracket-grid-r16" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; padding: 4px;">
+                  <!-- Dynamic Match Cards -->
+                </div>
+              </div>
+
+              <!-- Slide 3: Quarterfinals -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+                <div class="bracket-matches-grid" id="bracket-grid-qf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; padding: 4px;">
+                  <!-- Dynamic Match Cards -->
+                </div>
+              </div>
+
+              <!-- Slide 4: Semifinals -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px;">
+                <div class="bracket-matches-grid" id="bracket-grid-sf" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 4px;">
+                  <!-- Dynamic Match Cards -->
+                </div>
+              </div>
+
+              <!-- Slide 5: Final & Champion -->
+              <div class="results-page-slide" style="width: 16.666%; flex-shrink: 0; padding: 0 4px; display: flex; flex-direction: column; gap: 16px;">
+                <div id="bracket-grid-final" style="max-width: 400px; margin: 0 auto; width: 100%;">
+                  <!-- Dynamic Match Card -->
+                </div>
+                
+                <div id="champion-highlight-card" class="glass highlight" style="text-align: center; max-width: 400px; margin: 0 auto; width: 100%; padding: 20px; border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(205, 162, 80, 0.15); display: none;">
+                  <span style="font-size: 2.5rem; display: block; margin-bottom: 4px;">🏆</span>
+                  <h3 style="border: none; margin: 4px 0 12px; color: var(--accent-gold); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">World Cup Champions</h3>
+                  <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                    <img id="champion-flag-img" src="" style="width: 36px; height: 24px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;">
+                    <strong id="champion-name" style="font-size: 1.4rem; color: var(--text-primary);">Turkey</strong>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          <!-- Stage Reached Visualization Chart -->
-          <div class="chart-section">
-            <h3>Tournament Stage Probabilities</h3>
-            <div id="stages-bar-chart" class="bar-chart">
-              <!-- Dynamically rendered bar chart -->
+          <!-- Bottom Slide Navigation -->
+          <div class="carousel-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; border-top: 1px solid var(--glass-border); padding-top: 12px;">
+            <button id="btn-prev-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">◀ Previous</button>
+            
+            <div class="carousel-dots" id="carousel-dots-container" style="display: flex; gap: 8px; align-items: center;">
+              <span class="carousel-dot active" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent-gold); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
+              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
+              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
+              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
+              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
+              <span class="carousel-dot" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); display: block; cursor: pointer; transition: all 0.2s ease;"></span>
             </div>
+
+            <button id="btn-next-slide" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; margin: 0; display: flex; align-items: center; gap: 4px;">Next Stage ▶</button>
           </div>
 
-          <!-- Group Progression Probability -->
-          <div class="chart-section">
-            <h3>Group Progression Probability (Round of 32)</h3>
-            <div id="group-progression-chart" class="bar-chart">
-              <!-- Dynamically rendered -->
-            </div>
-          </div>
-
-          <!-- Group Finish breakdown -->
-          <div class="chart-section">
-            <h3>Group Stage Finish Breakdown</h3>
-            <div id="group-finish-chart" class="group-finish-chart">
-              <!-- Standings position percentages -->
-            </div>
-          </div>
         </div>
       </section>
     </main>
@@ -465,7 +542,7 @@
               progressPercentage.innerText = `${pct}%`;
             }
           },
-          (results) => {
+          (results, lastBracket) => {
             promptCard.classList.add('hidden');
             progressCard.classList.add('hidden');
             resultsCard.classList.remove('hidden');
@@ -568,8 +645,174 @@
                 colDiv.querySelector('.finish-bar-fill').style.height = `${pctVal}%`;
               }, 50);
             });
+
+            // Populate all bracket slide pages and reset view to the general dashboard page
+            populateAllBracketSlides(lastBracket);
+            if (!isSilent) {
+              resetCarouselToDashboard();
+            }
           }
         );
+      }
+
+      // Carousel navigation logic
+      let activeSlideIndex = 0;
+      let currentSimulationBracket = null;
+
+      const resultsPagesContainer = document.getElementById('results-pages-container');
+      const btnPrevSlide = document.getElementById('btn-prev-slide');
+      const btnNextSlide = document.getElementById('btn-next-slide');
+      const dotsContainer = document.getElementById('carousel-dots-container');
+      const currentSlideTitle = document.getElementById('current-slide-title');
+      const currentSlideNumber = document.getElementById('current-slide-number');
+
+      const slideTitles = [
+        'Overall Probability Dashboard',
+        'Round of 32 Matchups',
+        'Round of 16 Matchups',
+        'Quarterfinals Matchups',
+        'Semifinals Matchups',
+        'Final & Champions'
+      ];
+
+      function updateCarouselView() {
+        if (!resultsPagesContainer) return;
+        resultsPagesContainer.style.transform = `translateX(-${activeSlideIndex * 16.666}%)`;
+        
+        if (currentSlideTitle) currentSlideTitle.innerText = slideTitles[activeSlideIndex];
+        if (currentSlideNumber) currentSlideNumber.innerText = `Page ${activeSlideIndex + 1}/6`;
+
+        if (dotsContainer) {
+          const dots = dotsContainer.querySelectorAll('.carousel-dot');
+          dots.forEach((dot, idx) => {
+            if (idx === activeSlideIndex) {
+              dot.style.background = 'var(--accent-gold)';
+              dot.classList.add('active');
+            } else {
+              dot.style.background = 'rgba(255,255,255,0.2)';
+              dot.classList.remove('active');
+            }
+          });
+        }
+
+        if (btnPrevSlide) btnPrevSlide.disabled = activeSlideIndex === 0;
+        if (btnNextSlide) btnNextSlide.disabled = activeSlideIndex === 5;
+      }
+
+      if (btnPrevSlide) {
+        btnPrevSlide.addEventListener('click', () => {
+          if (activeSlideIndex > 0) {
+            activeSlideIndex--;
+            updateCarouselView();
+          }
+        });
+      }
+
+      if (btnNextSlide) {
+        btnNextSlide.addEventListener('click', () => {
+          if (activeSlideIndex < 5) {
+            activeSlideIndex++;
+            updateCarouselView();
+          }
+        });
+      }
+
+      if (dotsContainer) {
+        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, idx) => {
+          dot.addEventListener('click', () => {
+            activeSlideIndex = idx;
+            updateCarouselView();
+          });
+        });
+      }
+
+      function resetCarouselToDashboard() {
+        activeSlideIndex = 0;
+        updateCarouselView();
+      }
+
+      function renderBracketMatchGrid(gridId, matches) {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        if (!matches || matches.length === 0) {
+          grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); width: 100%; grid-column: 1/-1; padding: 24px;">No matchups simulated yet.</p>';
+          return;
+        }
+
+        matches.forEach((m, idx) => {
+          const card = document.createElement('div');
+          card.className = 'match-card glass';
+          card.style.padding = '10px';
+          card.style.borderRadius = '8px';
+          card.style.border = '1px solid var(--glass-border)';
+          card.style.background = 'rgba(255, 255, 255, 0.02)';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.gap = '6px';
+          card.style.fontSize = '0.8rem';
+
+          const isWinA = m.winnerId === m.teamA.id;
+          const isWinB = m.winnerId === m.teamB.id;
+
+          const teamAColor = isWinA ? 'color: var(--accent-gold); font-weight: 600;' : 'color: var(--text-secondary);';
+          const teamBColor = isWinB ? 'color: var(--accent-gold); font-weight: 600;' : 'color: var(--text-secondary);';
+
+          let scoreTextA = m.goalsA;
+          let scoreTextB = m.goalsB;
+
+          if (m.pens) {
+            if (isWinA) {
+              scoreTextA += ' (p)';
+            } else {
+              scoreTextB += ' (p)';
+            }
+          }
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px; margin-bottom: 2px;">
+              <span style="color: var(--text-secondary); font-size: 0.75rem;">Match ${idx + 1}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; ${teamAColor}">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 16px; height: 11px; border-radius: 1px; object-fit: cover;">
+                <span>${m.teamA.name}</span>
+              </span>
+              <span style="font-weight: 700; font-family: monospace;">${scoreTextA}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; ${teamBColor}">
+              <span style="display: flex; align-items: center; gap: 6px;">
+                <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 16px; height: 11px; border-radius: 1px; object-fit: cover;">
+                <span>${m.teamB.name}</span>
+              </span>
+              <span style="font-weight: 700; font-family: monospace;">${scoreTextB}</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      function populateAllBracketSlides(bracket) {
+        if (!bracket) return;
+        currentSimulationBracket = bracket;
+
+        renderBracketMatchGrid('bracket-grid-r32', bracket['Round of 32']);
+        renderBracketMatchGrid('bracket-grid-r16', bracket['Round of 16']);
+        renderBracketMatchGrid('bracket-grid-qf', bracket['Quarterfinals']);
+        renderBracketMatchGrid('bracket-grid-sf', bracket['Semifinals']);
+        renderBracketMatchGrid('bracket-grid-final', bracket['Final']);
+        
+        const champCard = document.getElementById('champion-highlight-card');
+        const champFlag = document.getElementById('champion-flag-img');
+        const champName = document.getElementById('champion-name');
+        
+        if (champCard && bracket['Winner']) {
+          champFlag.src = `https://flagcdn.com/w80/${bracket['Winner'].flag}.png`;
+          champName.innerText = bracket['Winner'].name;
+          champCard.style.display = 'block';
+        }
       }
 
       setupGroup('D', 'TUR');

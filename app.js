@@ -217,7 +217,15 @@ function runSingleSimulation(teamsList, selectedTeamId) {
   const bestThirds = thirds.slice(0, 8);
   const qualified3rdIds = new Set(bestThirds.map(t => t.id));
 
-  // Determine selected team's standing
+  const bracket = {
+    'Round of 32': [],
+    'Round of 16': [],
+    'Quarterfinals': [],
+    'Semifinals': [],
+    'Final': [],
+    'Winner': null
+  };
+
   const userTeam = teams.find(t => t.id === selectedTeamId);
   const userTeamGroupStandings = groupStandings[userTeam.group];
   const userTeamIndex = userTeamGroupStandings.findIndex(t => t.id === selectedTeamId);
@@ -238,17 +246,15 @@ function runSingleSimulation(teamsList, selectedTeamId) {
   const isUserTeamInBestThirds = userTeamGroupFinish === 3 && qualified3rdIds.has(selectedTeamId);
   const proceedsToR32 = userTeamGroupFinish <= 2 || isUserTeamInBestThirds;
 
-  if (!proceedsToR32) {
-    return { userTeamStage, userTeamGroupFinish, qualifiedGroupTeamIds };
+  if (proceedsToR32) {
+    userTeamStage = 'Round of 32';
   }
-  
-  userTeamStage = 'Round of 32';
 
   const knockoutPool = [];
   firsts.forEach(t => knockoutPool.push(t));
   seconds.forEach(t => knockoutPool.push(t));
   bestThirds.forEach(t => knockoutPool.push(t));
-
+  
   let currentRound = [...knockoutPool];
   const roundNames = ['Round of 32', 'Round of 16', 'Quarterfinals', 'Semifinals', 'Final'];
   
@@ -266,11 +272,18 @@ function runSingleSimulation(teamsList, selectedTeamId) {
       const teamB = currentRound[i + 1];
       const matchResult = simulateKnockoutMatch(teamA, teamB);
       
-      if (teamA.id === selectedTeamId || teamB.id === selectedTeamId) {
+      bracket[roundName].push({
+        teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
+        teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
+        goalsA: matchResult.goalsA,
+        goalsB: matchResult.goalsB,
+        pens: matchResult.pens,
+        winnerId: matchResult.winner.id
+      });
+      
+      if (proceedsToR32 && (teamA.id === selectedTeamId || teamB.id === selectedTeamId)) {
         if (matchResult.winner.id === selectedTeamId) {
           userTeamStage = r === roundNames.length - 1 ? 'Winner' : roundNames[r + 1];
-        } else {
-          return { userTeamStage, userTeamGroupFinish, qualifiedGroupTeamIds };
         }
       }
       
@@ -279,7 +292,12 @@ function runSingleSimulation(teamsList, selectedTeamId) {
     currentRound = nextRound;
   }
 
-  return { userTeamStage, userTeamGroupFinish, qualifiedGroupTeamIds };
+  if (currentRound.length > 0) {
+    const winTeam = currentRound[0];
+    bracket['Winner'] = { id: winTeam.id, name: winTeam.name, flag: winTeam.flag, rating: winTeam.rating };
+  }
+
+  return { userTeamStage, userTeamGroupFinish, qualifiedGroupTeamIds, bracket };
 }
 
 // Pre-generate/seed matches for all groups on load
@@ -374,6 +392,7 @@ window.SimulationEngine = {
 
     groupTeamIds.forEach(id => stats.groupProgression[id] = 0);
 
+    let lastBracket = null;
     function processChunk() {
       const end = Math.min(currentIteration + chunkSize, iterations);
       for (let i = currentIteration; i < end; i++) {
@@ -385,6 +404,9 @@ window.SimulationEngine = {
             stats.groupProgression[id]++;
           }
         });
+        if (i === iterations - 1) {
+          lastBracket = res.bracket;
+        }
       }
       
       currentIteration = end;
@@ -416,7 +438,7 @@ window.SimulationEngine = {
           probabilities.groupProgression[id] = stats.groupProgression[id] / iterations;
         }
 
-        onComplete(probabilities);
+        onComplete(probabilities, lastBracket);
       }
     }
 
