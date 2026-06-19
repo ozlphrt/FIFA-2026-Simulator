@@ -712,9 +712,18 @@
             activeSlide.style.transform = 'scale(1)';
             
             setTimeout(() => {
+              const maxHeight = 650;
               const height = activeSlide.offsetHeight || activeSlide.scrollHeight;
               if (height > 0) {
-                wrapper.style.height = `${height}px`;
+                if (height > maxHeight) {
+                  wrapper.style.height = `${maxHeight}px`;
+                  activeSlide.style.height = `${maxHeight}px`;
+                  activeSlide.style.overflowY = 'auto';
+                } else {
+                  wrapper.style.height = `${height}px`;
+                  activeSlide.style.height = 'auto';
+                  activeSlide.style.overflowY = 'visible';
+                }
               }
               
               // Set non-active slides to 0 height, scale down, and overflow:hidden so they don't stretch the flex container

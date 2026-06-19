@@ -968,6 +968,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
   opacity: 0;
 }
 
+.results-page-slide::-webkit-scrollbar {
+  width: 6px;
+}
+.results-page-slide::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+.results-page-slide::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+.results-page-slide::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+
 .bracket-matches-grid {
   width: 100% !important;
   max-width: 100% !important;
