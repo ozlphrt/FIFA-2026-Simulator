@@ -228,9 +228,14 @@
         
         allGroups.forEach(g => {
           const groupLabel = `Group ${g}`;
-          if (search && !groupLabel.toLowerCase().includes(search)) return;
-          
           const groupTeams = window.SimulationEngine.teams.filter(t => t.group === g);
+          
+          let matches = groupLabel.toLowerCase().includes(search) || g.toLowerCase() === search;
+          if (!matches && search) {
+            matches = groupTeams.some(t => t.name.toLowerCase().includes(search));
+          }
+          
+          if (search && !matches) return;
           
           const optDiv = document.createElement('div');
           optDiv.className = `dropdown-opt ${g === currentSelectedGroup ? 'active' : ''}`;
