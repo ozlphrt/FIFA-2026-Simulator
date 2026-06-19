@@ -705,6 +705,7 @@
             activeSlide.style.height = 'auto';
             activeSlide.style.overflow = 'visible';
             activeSlide.style.opacity = '1';
+            activeSlide.style.transform = 'scale(1)';
             
             setTimeout(() => {
               const height = activeSlide.offsetHeight || activeSlide.scrollHeight;
@@ -712,12 +713,13 @@
                 wrapper.style.height = `${height}px`;
               }
               
-              // Set non-active slides to 0 height and overflow:hidden so they don't stretch the flex container
+              // Set non-active slides to 0 height, scale down, and overflow:hidden so they don't stretch the flex container
               slides.forEach((slide, idx) => {
                 if (idx !== activeSlideIndex) {
                   slide.style.height = '0';
                   slide.style.overflow = 'hidden';
                   slide.style.opacity = '0';
+                  slide.style.transform = 'scale(0.96)';
                 }
               });
 
