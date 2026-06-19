@@ -145,7 +145,8 @@
               <!-- Slide 1: Knockout Bracket Board -->
               <div class="results-page-slide" style="width: 50%; flex-shrink: 0; padding: 0 4px; height: 0; overflow: hidden; opacity: 0;">
                 <div class="bracket-board-wrapper">
-                  <div class="bracket-board" id="bracket-board">
+                  <div class="bracket-board" id="bracket-board" style="position: relative;">
+                    <svg id="bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
                     <!-- Column 1: Round of 32 -->
                     <div class="bracket-column">
                       <div class="bracket-column-header">Round of 32</div>
@@ -713,6 +714,10 @@
                   slide.style.opacity = '0';
                 }
               });
+
+              if (activeSlideIndex === 1) {
+                drawBracketConnectors();
+              }
             }, 50);
           }
         }
@@ -832,6 +837,74 @@
           champCard.style.display = 'block';
         }
       }
+
+      function drawBracketConnectors() {
+        const svg = document.getElementById('bracket-connectors');
+        const board = document.getElementById('bracket-board');
+        if (!svg || !board) return;
+
+        svg.innerHTML = '';
+        const boardRect = board.getBoundingClientRect();
+
+        const stages = [
+          { gridId: 'bracket-grid-r32', nextGridId: 'bracket-grid-r16' },
+          { gridId: 'bracket-grid-r16', nextGridId: 'bracket-grid-qf' },
+          { gridId: 'bracket-grid-qf', nextGridId: 'bracket-grid-sf' },
+          { gridId: 'bracket-grid-sf', nextGridId: 'bracket-grid-final' }
+        ];
+
+        stages.forEach(stage => {
+          const currentGrid = document.getElementById(stage.gridId);
+          const nextGrid = document.getElementById(stage.nextGridId);
+          if (!currentGrid || !nextGrid) return;
+
+          const currentCards = Array.from(currentGrid.querySelectorAll('.match-card'));
+          const nextCards = Array.from(nextGrid.querySelectorAll('.match-card'));
+          if (currentCards.length === 0 || nextCards.length === 0) return;
+
+          nextCards.forEach((nextCard, nextIdx) => {
+            const cardA = currentCards[nextIdx * 2];
+            const cardB = currentCards[nextIdx * 2 + 1];
+
+            if (!cardA || !cardB) return;
+
+            const rectA = cardA.getBoundingClientRect();
+            const rectB = cardB.getBoundingClientRect();
+            const rectNext = nextCard.getBoundingClientRect();
+
+            const x1_A = rectA.right - boardRect.left;
+            const y1_A = (rectA.top + rectA.bottom) / 2 - boardRect.top;
+
+            const x1_B = rectB.right - boardRect.left;
+            const y1_B = (rectB.top + rectB.bottom) / 2 - boardRect.top;
+
+            const x2 = rectNext.left - boardRect.left;
+            const y2 = (rectNext.top + rectNext.bottom) / 2 - boardRect.top;
+
+            const x_mid = (x1_A + x2) / 2;
+
+            const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathA.setAttribute('stroke-width', '2');
+            pathA.setAttribute('fill', 'none');
+            svg.appendChild(pathA);
+
+            const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathB.setAttribute('stroke-width', '2');
+            pathB.setAttribute('fill', 'none');
+            svg.appendChild(pathB);
+          });
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        if (activeSlideIndex === 1) {
+          drawBracketConnectors();
+        }
+      });
 
       setupGroup('D', 'TUR');
 

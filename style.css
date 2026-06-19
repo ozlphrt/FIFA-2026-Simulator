@@ -937,6 +937,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .match-card {
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
 }
 .match-card:hover {
   transform: translateY(-2px);
