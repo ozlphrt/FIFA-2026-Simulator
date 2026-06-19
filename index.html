@@ -1045,10 +1045,10 @@
         const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
         if (!activeTeam) return;
 
-        const groupTeams = window.SimulationEngine.teams.filter(t => t.group === activeTeam.group);
-        if (groupTeams.length === 0) return;
+        const allTeams = window.SimulationEngine.teams;
+        if (allTeams.length === 0) return;
 
-        const randomTeam = groupTeams[Math.floor(Math.random() * groupTeams.length)];
+        const randomTeam = allTeams[Math.floor(Math.random() * allTeams.length)];
         const change = (Math.random() < 0.5 ? 1 : -1) * (10 + Math.floor(Math.random() * 2) * 10);
         const oldRating = randomTeam.rating;
         const newRating = Math.max(1300, Math.min(2150, oldRating + change));
@@ -1070,7 +1070,7 @@
           }
         }
 
-        updateGroupStandingsTable(activeTeam.group, currentSelectedTeamId);
+        updateGroupStandingsTable(currentSelectedGroup, currentSelectedTeamId);
 
         // Create log item
         const bookmakers = ['Polymarket', 'Pinnacle', 'DraftKings', 'Bet365', 'Bwin', 'Betfair'];
