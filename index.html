@@ -597,6 +597,7 @@
       // Fullscreen Bracket Zoom and Pan controls
       let currentSimulationBracket = null;
       let scale = 0.55;
+      let lastAppliedScale = 0;
       let panX = 0;
       let panY = 0;
       let isPanning = false;
@@ -609,9 +610,28 @@
       const btnOpenBracket = document.getElementById('btn-open-bracket');
       const btnCloseBracket = document.getElementById('btn-close-bracket');
 
-      function updateTransform() {
+      function updateTransform(forceRedraw = false) {
         if (board) {
           board.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+          
+          // Dynamically scale cards slightly in reverse of the board scale to maintain legibility when zoomed out
+          if (forceRedraw || scale !== lastAppliedScale) {
+            const cardScale = Math.pow(1 / scale, 0.45);
+            const cards = board.querySelectorAll('.match-card');
+            cards.forEach(card => {
+              card.style.transform = `scale(${cardScale})`;
+              card.style.transformOrigin = 'center center';
+            });
+
+            const champCard = document.getElementById('champion-highlight-card');
+            if (champCard) {
+              champCard.style.transform = `scale(${cardScale})`;
+              champCard.style.transformOrigin = 'center center';
+            }
+            
+            drawBracketConnectors();
+            lastAppliedScale = scale;
+          }
         }
       }
 
@@ -622,7 +642,7 @@
           scale = 0.55;
           panX = 0;
           panY = 0;
-          updateTransform();
+          updateTransform(true);
           // Draw connectors after display has updated
           setTimeout(() => {
             drawBracketConnectors();
@@ -659,7 +679,7 @@
           } else {
             scale = Math.max(0.2, scale - zoomFactor);
           }
-          updateTransform();
+          updateTransform(true);
         }, { passive: false });
 
         // Mouse Drag Panning
@@ -676,7 +696,7 @@
           if (!isPanning) return;
           panX = e.clientX - startX;
           panY = e.clientY - startY;
-          updateTransform();
+          updateTransform(false);
         });
 
         window.addEventListener('mouseup', () => {
@@ -707,7 +727,7 @@
           panY += touchY - lastTouchY;
           lastTouchX = touchX;
           lastTouchY = touchY;
-          updateTransform();
+          updateTransform(false);
         });
 
         overlay.addEventListener('touchend', () => {
