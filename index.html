@@ -720,11 +720,11 @@
         let winsA = 0;
         const runs = 1000;
         const ratingDiff = teamA.rating - teamB.rating;
-        const lambdaA = 1.35 * Math.pow(10, ratingDiff / 800);
-        const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 800);
+        const lambdaA = 1.35 * Math.pow(10, ratingDiff / 1600);
+        const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 1600);
         const extraDiff = teamA.rating - teamB.rating;
-        const extraLambdaA = 0.35 * Math.pow(10, extraDiff / 800);
-        const extraLambdaB = 0.35 * Math.pow(10, -extraDiff / 800);
+        const extraLambdaA = 0.35 * Math.pow(10, extraDiff / 1600);
+        const extraLambdaB = 0.35 * Math.pow(10, -extraDiff / 1600);
         const penProbA = Math.max(0.35, Math.min(0.65, 0.5 + (teamA.rating - teamB.rating) / 4000));
         
         function poissonRandom(lambda) {

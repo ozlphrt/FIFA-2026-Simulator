@@ -80,8 +80,8 @@ function poissonRandom(lambda) {
 // Returns [goalsA, goalsB]
 function simulateMatch(teamA, teamB) {
   const ratingDiff = teamA.rating - teamB.rating;
-  const lambdaA = 1.35 * Math.pow(10, ratingDiff / 800);
-  const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 800);
+  const lambdaA = 1.35 * Math.pow(10, ratingDiff / 1600);
+  const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 1600);
   
   return [poissonRandom(lambdaA), poissonRandom(lambdaB)];
 }
@@ -95,8 +95,8 @@ function simulateKnockoutMatch(teamA, teamB) {
   
   // Extra Time
   const extraDiff = teamA.rating - teamB.rating;
-  const lambdaA = 0.35 * Math.pow(10, extraDiff / 800);
-  const lambdaB = 0.35 * Math.pow(10, -extraDiff / 800);
+  const lambdaA = 0.35 * Math.pow(10, extraDiff / 1600);
+  const lambdaB = 0.35 * Math.pow(10, -extraDiff / 1600);
   const extraA = poissonRandom(lambdaA);
   const extraB = poissonRandom(lambdaB);
   
