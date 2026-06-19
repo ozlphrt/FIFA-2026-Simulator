@@ -674,7 +674,6 @@
         'Semifinals Matchups',
         'Final & Champions'
       ];
-
       function updateCarouselView() {
         if (!resultsPagesContainer) return;
         resultsPagesContainer.style.transform = `translateX(-${activeSlideIndex * 16.666}%)`;
@@ -697,8 +696,22 @@
 
         if (btnPrevSlide) btnPrevSlide.disabled = activeSlideIndex === 0;
         if (btnNextSlide) btnNextSlide.disabled = activeSlideIndex === 5;
-      }
 
+        // Dynamic height adjustment to avoid massive padding/spacing below shorter slides
+        const wrapper = document.querySelector('.results-pages-wrapper');
+        if (wrapper) {
+          const slides = resultsPagesContainer.querySelectorAll('.results-page-slide');
+          const activeSlide = slides[activeSlideIndex];
+          if (activeSlide) {
+            setTimeout(() => {
+              const height = activeSlide.offsetHeight || activeSlide.scrollHeight;
+              if (height > 0) {
+                wrapper.style.height = `${height}px`;
+              }
+            }, 50);
+          }
+        }
+      }
       if (btnPrevSlide) {
         btnPrevSlide.addEventListener('click', () => {
           if (activeSlideIndex > 0) {

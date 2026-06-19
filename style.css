@@ -949,6 +949,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .results-pages-wrapper {
   max-width: 100% !important;
   overflow: hidden;
+  transition: height 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .results-page-slide {
