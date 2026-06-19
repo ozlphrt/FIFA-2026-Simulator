@@ -635,6 +635,35 @@
         }
       }
 
+      function focusOnSelectedTeam() {
+        if (!board || !currentSelectedTeamId) return;
+
+        // Find the first match-card containing the selected team
+        const cards = Array.from(board.querySelectorAll('.match-card'));
+        const targetCard = cards.find(card => {
+          return card.dataset.teamAId === currentSelectedTeamId || card.dataset.teamBId === currentSelectedTeamId;
+        });
+
+        if (targetCard) {
+          const boardRect = board.getBoundingClientRect();
+          const cardRect = targetCard.getBoundingClientRect();
+          
+          // Center of the target card relative to the board top-left (unscaled)
+          const x = ((cardRect.left + cardRect.right) / 2 - boardRect.left) / scale;
+          const y = ((cardRect.top + cardRect.bottom) / 2 - boardRect.top) / scale;
+          
+          // Get the viewport dimensions
+          const vpWidth = window.innerWidth;
+          const vpHeight = window.innerHeight;
+          
+          // Pan offsets to align card center with viewport center
+          panX = vpWidth / 2 - x * scale;
+          panY = vpHeight / 2 - y * scale;
+          
+          updateTransform(true);
+        }
+      }
+
       if (btnOpenBracket) {
         btnOpenBracket.addEventListener('click', () => {
           overlay.style.display = 'block';
@@ -643,10 +672,12 @@
           panX = 0;
           panY = 0;
           updateTransform(true);
-          // Draw connectors after display has updated
+          
+          // Focus and draw connectors after rendering has stabilized
           setTimeout(() => {
+            focusOnSelectedTeam();
             drawBracketConnectors();
-          }, 150);
+          }, 100);
         });
       }
 
@@ -797,10 +828,22 @@
         matches.forEach((m, idx) => {
           const card = document.createElement('div');
           card.className = 'match-card glass';
+          card.dataset.teamAId = m.teamA.id;
+          card.dataset.teamBId = m.teamB.id;
+          
           card.style.padding = '8px 10px';
           card.style.borderRadius = '8px';
-          card.style.border = '1px solid var(--glass-border)';
-          card.style.background = 'rgba(255, 255, 255, 0.02)';
+          
+          const hasSelectedTeam = m.teamA.id === currentSelectedTeamId || m.teamB.id === currentSelectedTeamId;
+          if (hasSelectedTeam) {
+            card.style.border = '2px solid var(--accent-gold)';
+            card.style.boxShadow = '0 0 15px rgba(205, 162, 80, 0.35)';
+            card.style.background = 'rgba(205, 162, 80, 0.05)';
+          } else {
+            card.style.border = '1px solid var(--glass-border)';
+            card.style.background = 'rgba(255, 255, 255, 0.02)';
+          }
+          
           card.style.display = 'flex';
           card.style.flexDirection = 'column';
           card.style.justifyContent = 'center';
