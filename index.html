@@ -665,6 +665,16 @@
           panY = vpHeight / 2 - y * scale;
           
           updateTransform(true);
+        } else {
+          // Selected team did not make it to Round of 32 (eliminated in group stage)
+          const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
+          const teamName = activeTeam ? activeTeam.name : 'The selected team';
+          const alertText = document.getElementById('bracket-alert-text');
+          const alertModal = document.getElementById('bracket-alert-modal');
+          if (alertText && alertModal) {
+            alertText.innerText = `${teamName} did not qualify for the Round of 32 in the latest simulation run (eliminated in the Group Stage).`;
+            alertModal.style.display = 'block';
+          }
         }
       }
 
@@ -686,10 +696,19 @@
       }
 
       const btnUpdateBracket = document.getElementById('btn-update-bracket');
+      const btnCloseBracketAlert = document.getElementById('btn-close-bracket-alert');
+      const bracketAlertModal = document.getElementById('bracket-alert-modal');
 
       if (btnCloseBracket) {
         btnCloseBracket.addEventListener('click', () => {
           overlay.style.display = 'none';
+          if (bracketAlertModal) bracketAlertModal.style.display = 'none';
+        });
+      }
+
+      if (btnCloseBracketAlert && bracketAlertModal) {
+        btnCloseBracketAlert.addEventListener('click', () => {
+          bracketAlertModal.style.display = 'none';
         });
       }
 
@@ -1185,6 +1204,13 @@
           </div>
         </div>
       </div>
+    
+    <!-- Alert Modal for Group Stage Elimination -->
+    <div id="bracket-alert-modal" class="glass" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100001; padding: 24px; border-radius: 12px; border: 1px solid rgba(255, 77, 77, 0.35); background: rgba(20, 20, 25, 0.96); max-width: 420px; width: 90%; text-align: center; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); transition: all 0.2s ease;">
+      <span style="font-size: 3rem; display: block; margin-bottom: 12px; filter: drop-shadow(0 2px 8px rgba(255, 77, 77, 0.2));">⚠️</span>
+      <h4 style="margin: 0 0 10px; color: #ff4d4d; font-size: 1.25rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Eliminated in Group Stage</h4>
+      <p id="bracket-alert-text" style="margin: 0 0 24px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;"></p>
+      <button id="btn-close-bracket-alert" class="btn-secondary" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); padding: 10px 20px; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); cursor: pointer; border-radius: 8px; width: 100%; transition: all 0.2s;">Acknowledge</button>
     </div>
   </div>
 </body>
