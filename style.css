@@ -12,6 +12,11 @@
   --text-primary: #f5f6f8;
   --text-secondary: #a0a5b5;
   --success-green: #00e676;
+
+  /* Bracket Sizing Variables */
+  --card-height: 96px;
+  --card-gap: 16px;
+  --col-width: 270px;
 }
 
 * {
@@ -939,9 +944,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transition: all 0.2s ease;
   position: relative;
   z-index: 2;
-  height: 76px !important;
-  min-height: 76px !important;
-  max-height: 76px !important;
+  height: var(--card-height) !important;
+  min-height: var(--card-height) !important;
+  max-height: var(--card-height) !important;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -1027,16 +1032,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .bracket-board {
   display: flex;
-  gap: 48px;
-  min-width: 1500px;
-  height: 1380px;
+  gap: 56px;
+  min-width: calc(6 * var(--col-width) + 5 * 56px + 60px);
+  height: calc(16 * var(--card-height) + 15 * var(--card-gap) + 140px);
 }
 
 .bracket-column {
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 220px;
+  min-width: var(--col-width);
   height: 100%;
 }
 
@@ -1057,30 +1062,30 @@ input[type="range"]::-webkit-slider-thumb:hover {
   flex-direction: column;
   justify-content: flex-start;
   flex-grow: 1;
-  height: 1300px;
+  height: calc(16 * var(--card-height) + 15 * var(--card-gap));
   position: relative;
 }
 
 #bracket-grid-r32 {
   margin-top: 0px;
-  gap: 12px;
+  gap: var(--card-gap);
 }
 
 #bracket-grid-r16 {
-  margin-top: 44px;
-  gap: 100px;
+  margin-top: calc(var(--card-height) / 2 + var(--card-gap) / 2);
+  gap: calc(var(--card-height) + var(--card-gap) * 2);
 }
 
 #bracket-grid-qf {
-  margin-top: 132px;
-  gap: 276px;
+  margin-top: calc(var(--card-height) * 1.5 + var(--card-gap) * 1.5);
+  gap: calc(var(--card-height) * 3 + var(--card-gap) * 4);
 }
 
 #bracket-grid-sf {
-  margin-top: 308px;
-  gap: 628px;
+  margin-top: calc(var(--card-height) * 3.5 + var(--card-gap) * 3.5);
+  gap: calc(var(--card-height) * 7 + var(--card-gap) * 8);
 }
 
 #bracket-grid-final {
-  margin-top: 660px;
+  margin-top: calc(var(--card-height) * 7.5 + var(--card-gap) * 7.5);
 }
