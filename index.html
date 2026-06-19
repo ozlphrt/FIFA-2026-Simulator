@@ -792,6 +792,54 @@
         return probA * probB;
       }
 
+      function calculateProgressionProbability(teamA, teamB) {
+        let winsA = 0;
+        const runs = 1000;
+        const ratingDiff = teamA.rating - teamB.rating;
+        const lambdaA = 1.35 * Math.pow(10, ratingDiff / 800);
+        const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 800);
+        const extraDiff = teamA.rating - teamB.rating;
+        const extraLambdaA = 0.35 * Math.pow(10, extraDiff / 800);
+        const extraLambdaB = 0.35 * Math.pow(10, -extraDiff / 800);
+        const penProbA = Math.max(0.35, Math.min(0.65, 0.5 + (teamA.rating - teamB.rating) / 4000));
+        
+        function poissonRandom(lambda) {
+          const L = Math.exp(-lambda);
+          let k = 0;
+          let p = 1.0;
+          do {
+            k++;
+            p *= Math.random();
+          } while (p > L && k < 15);
+          return k - 1;
+        }
+
+        for (let i = 0; i < runs; i++) {
+          let gA = poissonRandom(lambdaA);
+          let gB = poissonRandom(lambdaB);
+          if (gA > gB) {
+            winsA++;
+          } else if (gB > gA) {
+            // Team B wins
+          } else {
+            let exA = poissonRandom(extraLambdaA);
+            let exB = poissonRandom(extraLambdaB);
+            gA += exA;
+            gB += exB;
+            if (gA > gB) {
+              winsA++;
+            } else if (gB > gA) {
+              // Team B wins
+            } else {
+              if (Math.random() < penProbA) {
+                winsA++;
+              }
+            }
+          }
+        }
+        return winsA / runs;
+      }
+
       function renderBracketMatchGrid(gridId, matches) {
         const grid = document.getElementById(gridId);
         if (!grid) return;
@@ -834,12 +882,16 @@
           const prob = calculateScoreProbability(m.teamA.rating, m.teamB.rating, m.goalsA, m.goalsB);
           const probPct = (prob * 100).toFixed(1) + '%';
 
+          const pAdvanceA = calculateProgressionProbability(m.teamA, m.teamB);
+          const pctA = Math.round(pAdvanceA * 100) + '%';
+          const pctB = Math.round((1 - pAdvanceA) * 100) + '%';
+
           card.innerHTML = `
             <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
               <div style="display: flex; justify-content: space-between; align-items: center; ${teamAColor} line-height: 1.2;">
                 <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 0.95rem;">
                   <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 22px; height: 15px; border-radius: 2px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">${m.teamA.name}</span>
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">${m.teamA.name} <span style="font-size: 0.75rem; font-weight: normal; opacity: 0.7;">(${pctA})</span></span>
                 </span>
                 <span style="font-weight: 700; font-family: monospace; flex-shrink: 0; font-size: 1.3rem;">${scoreTextA}</span>
               </div>
@@ -856,7 +908,7 @@
               <div style="display: flex; justify-content: space-between; align-items: center; ${teamBColor} line-height: 1.2;">
                 <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 0.95rem;">
                   <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 22px; height: 15px; border-radius: 2px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">${m.teamB.name}</span>
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;">${m.teamB.name} <span style="font-size: 0.75rem; font-weight: normal; opacity: 0.7;">(${pctB})</span></span>
                 </span>
                 <span style="font-weight: 700; font-family: monospace; flex-shrink: 0; font-size: 1.3rem;">${scoreTextB}</span>
               </div>
