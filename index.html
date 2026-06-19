@@ -884,14 +884,14 @@
             const x_mid = (x1_A + x2) / 2;
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
+            pathA.setAttribute('d', `M ${x1_A} ${y1_A} C ${x_mid} ${y1_A}, ${x_mid} ${y2}, ${x2} ${y2}`);
             pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
             pathA.setAttribute('stroke-width', '2');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
+            pathB.setAttribute('d', `M ${x1_B} ${y1_B} C ${x_mid} ${y1_B}, ${x_mid} ${y2}, ${x2} ${y2}`);
             pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
             pathB.setAttribute('stroke-width', '2');
             pathB.setAttribute('fill', 'none');
