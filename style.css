@@ -45,6 +45,7 @@ body {
 }
 
 .container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -102,9 +103,16 @@ body {
 /* App Grid layout - Desktop */
 .app-layout {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: 24px;
   align-items: start;
+  width: 100%;
+  max-width: 100%;
+}
+
+.config-panel, .results-panel {
+  min-width: 0;
+  width: 100%;
 }
 
 /* Section Headings */
@@ -553,8 +561,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
   }
   
   .app-layout {
-    grid-template-columns: 1fr; /* Single column stack */
+    grid-template-columns: minmax(0, 1fr); /* Single column stack */
     gap: 16px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .glass {
@@ -933,4 +943,47 @@ input[type="range"]::-webkit-slider-thumb:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   border-color: rgba(255, 255, 255, 0.15) !important;
   background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Layout boundary safety fixes */
+.results-pages-wrapper {
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+.results-page-slide {
+  overflow: hidden;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.bracket-matches-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+#simulation-results-card {
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+/* Fix for stats grid wrapping on small viewports */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .group-finish-chart {
+    gap: 6px;
+  }
+  
+  .finish-val {
+    font-size: 0.7rem;
+  }
+  
+  .finish-label {
+    font-size: 0.75rem;
+  }
 }
