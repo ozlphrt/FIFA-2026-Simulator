@@ -616,7 +616,8 @@
           
           // Dynamically scale cards slightly in reverse of the board scale to maintain legibility when zoomed out
           if (forceRedraw || scale !== lastAppliedScale) {
-            const cardScale = Math.pow(1 / scale, 0.75);
+            const isMobile = window.innerWidth < 768;
+            const cardScale = isMobile ? 1 : Math.min(1.25, Math.pow(1 / scale, 0.5));
             const cards = board.querySelectorAll('.match-card');
             cards.forEach(card => {
               card.style.transform = `scale(${cardScale})`;
