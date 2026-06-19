@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA World Cup 2026 - Turkey Monte Carlo Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="app.js"></script>
+</head>
+<body>
+  <div class="background-decor"></div>
+  
+  <div class="container">
+    <header class="app-header">
+      <div class="logo-wrapper">
+        <div class="header-row">
+          <img id="header-flag-img" src="" alt="flag" class="header-flag-img" style="display: none;">
+          
+          <div class="custom-dropdown" id="team-dropdown">
+            <button class="dropdown-trigger" id="dropdown-trigger-btn">
+              <span>Turkey</span>
+            </button>
+            <div class="dropdown-menu glass" id="dropdown-menu-list" style="background: rgba(59, 66, 82, 0.96) !important;">
+              <div class="dropdown-search-wrapper">
+                <input type="text" id="dropdown-search" placeholder="Search country...">
+              </div>
+              <div class="dropdown-options" id="dropdown-options-container">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+          
+          <span class="header-year">2026</span>
+        </div>
+      </div>
+      <p class="subtitle">FIFA World Cup<br>Monte Carlo Simulator</p>
+    </header>
+
+    <main class="app-layout">
+      <!-- Config Section -->
+      <section class="config-panel glass">
+
+        <div class="seeded-stats">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="margin: 0; border: none; padding-bottom: 0;" id="standings-header">Group Standings</h3>
+            <button id="btn-open-tuning" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">Tune Ratings ⚙️</button>
+          </div>
+          <div class="table-responsive">
+            <table class="standings-table">
+              <thead>
+                <tr>
+                  <th>Team</th>
+                  <th>Pld</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody id="standings-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Simulation Status / Results Section -->
+      <section class="results-panel">
+        <!-- Loader / Progress -->
+        <div id="simulation-progress-card" class="glass hidden">
+          <div class="progress-details">
+            <h3>Simulating Tournaments...</h3>
+            <span id="progress-percentage">0%</span>
+          </div>
+          <div class="progress-bar-container">
+            <div id="progress-bar-fill" style="width: 0%"></div>
+          </div>
+          <p class="progress-subtext">Executing matches, tracking points, goal differences, and knockout brackets...</p>
+        </div>
+
+        <!-- Initial State / Start Prompt -->
+        <div id="simulation-prompt-card" class="glass">
+          <div class="prompt-icon">⚽</div>
+          <h2>Ready to Predict</h2>
+          <p>Adjust Turkey's strength, set the group opponent ratings, and start the simulation to visualize their progression probabilities.</p>
+        </div>
+
+        <!-- Simulation Results Dashboard -->
+        <div id="simulation-results-card" class="glass hidden">
+          
+          <!-- Key Probability Cards -->
+          <div class="stats-grid">
+            <div class="stat-card glass">
+              <span class="stat-title">Chance to Reach R32</span>
+              <span id="stat-r32-pct" class="stat-value">0%</span>
+            </div>
+            <div class="stat-card glass highlight">
+              <span class="stat-title">Chance to Win World Cup 🏆</span>
+              <span id="stat-winner-pct" class="stat-value">0%</span>
+            </div>
+          </div>
+
+          <!-- Stage Reached Visualization Chart -->
+          <div class="chart-section">
+            <h3>Tournament Stage Probabilities</h3>
+            <div id="stages-bar-chart" class="bar-chart">
+              <!-- Dynamically rendered bar chart -->
+            </div>
+          </div>
+
+          <!-- Group Progression Probability -->
+          <div class="chart-section">
+            <h3>Group Progression Probability (Round of 32)</h3>
+            <div id="group-progression-chart" class="bar-chart">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Group Finish breakdown -->
+          <div class="chart-section">
+            <h3>Group Stage Finish Breakdown</h3>
+            <div id="group-finish-chart" class="group-finish-chart">
+              <!-- Standings position percentages -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Live Betting Market Feed -->
+    <div class="market-feed-card glass" style="margin-top: 16px; width: 100%;">
+      <div class="feed-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="border: none; margin: 0; font-size: 1rem; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
+          <span style="color: var(--success-green); font-size: 0.8rem; display: inline-block;">●</span> Live Market Feed
+        </h3>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button id="btn-refresh-feed" class="btn-secondary" style="padding: 4px 10px; font-size: 0.75rem; min-height: unset; display: flex; align-items: center; gap: 4px;">
+            <span>Trigger Update</span> ⚡
+          </button>
+          <label class="switch-container" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0;">
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Sync Odds</span>
+            <input type="checkbox" id="sync-odds-toggle" checked style="cursor: pointer; width: 16px; height: 16px;">
+          </label>
+        </div>
+      </div>
+      <div id="feed-logs" class="feed-logs" style="height: 100px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; color: var(--text-secondary); background: rgba(0,0,0,0.25); padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 6px;">
+        <div class="feed-log-item" style="color: var(--text-secondary);">[System] Live betting feeds connected. Stream active...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dropdownTriggerBtn = document.getElementById('dropdown-trigger-btn');
+      const dropdownMenuList = document.getElementById('dropdown-menu-list');
+      const dropdownSearch = document.getElementById('dropdown-search');
+      const dropdownOptionsContainer = document.getElementById('dropdown-options-container');
+
+      const opponentsList = document.getElementById('group-opponents-list');
+      const userRatingInput = document.getElementById('user-team-rating');
+      const userRatingVal = document.getElementById('user-team-rating-val');
+      const tuningHeader = document.getElementById('tuning-header');
+      const tuningHelperText = document.getElementById('tuning-helper-text');
+      const opponentsHeader = document.getElementById('opponents-header');
+      const btnSimulate = document.getElementById('btn-simulate');
+      
+      const promptCard = document.getElementById('simulation-prompt-card');
+      const progressCard = document.getElementById('simulation-progress-card');
+      const resultsCard = document.getElementById('simulation-results-card');
+      
+      const progressBarFill = document.getElementById('progress-bar-fill');
+      const progressPercentage = document.getElementById('progress-percentage');
+      
+      const statR32 = document.getElementById('stat-r32-pct');
+      const statWinner = document.getElementById('stat-winner-pct');
+      const stagesChart = document.getElementById('stages-bar-chart');
+      const groupFinishChart = document.getElementById('group-finish-chart');
+      const groupProgressionChart = document.getElementById('group-progression-chart');
+
+      let currentSelectedTeamId = 'TUR';
+
+      let autoSimTimeout = null;
+      function triggerAutoSimulation() {
+        if (autoSimTimeout) clearTimeout(autoSimTimeout);
+        autoSimTimeout = setTimeout(() => {
+          runSimulationCall(true);
+        }, 150);
+      }
+
+      // Tuning Modal DOM selectors
+      const btnOpenTuning = document.getElementById('btn-open-tuning');
+      const tuningModal = document.getElementById('tuning-modal');
+      const closeTuningBtn = document.getElementById('close-tuning-btn');
+
+      // Tuning Modal Toggles
+      btnOpenTuning.addEventListener('click', () => {
+        tuningModal.classList.remove('hidden');
+      });
+
+      closeTuningBtn.addEventListener('click', () => {
+        tuningModal.classList.add('hidden');
+      });
+
+      tuningModal.addEventListener('click', (e) => {
+        if (e.target === tuningModal) {
+          tuningModal.classList.add('hidden');
+        }
+      });
+
+      function getTierLabel(rating) {
+        if (rating >= 2000) return 'Top Tier';
+        if (rating >= 1750) return 'High Tier';
+        if (rating >= 1600) return 'Mid Tier';
+        return 'Challenger Tier';
+      }
+
+      const allGroups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
+      let currentSelectedGroup = 'D';
+
+      function renderDropdownOptions(filterText = '') {
+        dropdownOptionsContainer.innerHTML = '';
+        const search = filterText.toLowerCase();
+        
+        allGroups.forEach(g => {
+          const groupLabel = `Group ${g}`;
+          if (search && !groupLabel.toLowerCase().includes(search)) return;
+          
+          const groupTeams = window.SimulationEngine.teams.filter(t => t.group === g);
+          
+          const optDiv = document.createElement('div');
+          optDiv.className = `dropdown-opt ${g === currentSelectedGroup ? 'active' : ''}`;
+          
+          let flagsHtml = '<div class="group-flags-preview" style="display: inline-flex; gap: 4px; margin-left: auto; align-items: center;">';
+          groupTeams.forEach(t => {
+            flagsHtml += `<img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 18px; height: 12px; margin-right: 0; border-radius: 2px;">`;
+          });
+          flagsHtml += '</div>';
+
+          optDiv.innerHTML = `
+            <span>${groupLabel}</span>
+            ${flagsHtml}
+          `;
+          optDiv.addEventListener('click', () => {
+            setupGroup(g);
+            dropdownMenuList.classList.remove('show');
+            document.getElementById('team-dropdown').classList.remove('open');
+            dropdownSearch.value = '';
+            renderDropdownOptions();
+          });
+          dropdownOptionsContainer.appendChild(optDiv);
+        });
+      }
+
+      dropdownTriggerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenuList.classList.toggle('show');
+        document.getElementById('team-dropdown').classList.toggle('open');
+        if (dropdownMenuList.classList.contains('show')) {
+          dropdownSearch.focus();
+        }
+      });
+
+      dropdownSearch.addEventListener('input', (e) => {
+        renderDropdownOptions(e.target.value);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#team-dropdown')) {
+          dropdownMenuList.classList.remove('show');
+          document.getElementById('team-dropdown').classList.remove('open');
+        }
+      });
+
+      renderDropdownOptions();
+
+      function updateGroupStandingsTable(groupName, selectedTeamId) {
+        const teams = JSON.parse(JSON.stringify(window.SimulationEngine.teams));
+        const groupTeams = teams.filter(t => t.group === groupName);
+        
+        groupTeams.forEach(t => {
+          t.points = 0;
+          t.goalsFor = 0;
+          t.goalsAgainst = 0;
+          t.goalDiff = 0;
+          t.played = 0;
+          t.wins = 0;
+          t.draws = 0;
+          t.losses = 0;
+        });
+
+        function recordStats(teamAId, teamBId, gA, gB) {
+          const tA = groupTeams.find(t => t.id === teamAId);
+          const tB = groupTeams.find(t => t.id === teamBId);
+          if (tA && tB) {
+            tA.played++; tB.played++;
+            tA.goalsFor += gA; tB.goalsFor += gB;
+            tA.goalsAgainst += gB; tB.goalsAgainst += gA;
+            tA.goalDiff = tA.goalsFor - tA.goalsAgainst;
+            tB.goalDiff = tB.goalsFor - tB.goalsAgainst;
+            if (gA > gB) { tA.wins++; tB.losses++; tA.points += 3; }
+            else if (gB > gA) { tB.wins++; tA.losses++; tB.points += 3; }
+            else { tA.draws++; tB.draws++; tA.points += 1; tB.points += 1; }
+          }
+        }
+
+        const seeded = window.SeededMatches[groupName] || [];
+        seeded.forEach(m => {
+          recordStats(m.teamAId, m.teamBId, m.goalsA, m.goalsB);
+        });
+
+        groupTeams.sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          if (b.goalDiff !== a.goalDiff) return b.goalDiff - a.goalDiff;
+          if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+          return b.rating - a.rating;
+        });
+
+        const tableBody = document.getElementById('standings-table-body');
+        tableBody.innerHTML = '';
+        groupTeams.forEach(t => {
+          const tr = document.createElement('tr');
+          tr.style.cursor = 'pointer';
+          if (t.id === selectedTeamId) {
+            tr.className = 'turkey-row';
+          }
+          tr.addEventListener('click', () => {
+            if (t.id !== currentSelectedTeamId) {
+              setupTeamWithinGroup(t.id);
+            }
+          });
+          const sign = t.goalDiff > 0 ? '+' : '';
+          tr.innerHTML = `
+            <td><img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img"> ${t.name}</td>
+            <td>${t.played}</td>
+            <td>${t.wins}</td>
+            <td>${t.draws}</td>
+            <td>${t.losses}</td>
+            <td>${sign}${t.goalDiff}</td>
+            <td><strong>${t.points}</strong></td>
+          `;
+          tableBody.appendChild(tr);
+        });
+
+        document.getElementById('standings-header').innerText = `Group ${groupName}`;
+      }
+
+      function renderOpponents(groupName, selectedTeamId) {
+        opponentsList.innerHTML = '';
+        const opponents = window.SimulationEngine.teams.filter(t => t.group === groupName && t.id !== selectedTeamId);
+        
+        opponents.forEach(opp => {
+          const div = document.createElement('div');
+          div.className = 'slider-group';
+          div.innerHTML = `
+            <div class="slider-header">
+              <span><img src="https://flagcdn.com/w40/${opp.flag}.png" alt="${opp.name}" class="flag-img"> ${opp.name}</span>
+              <span id="rating-val-${opp.id}" class="val-badge">${opp.rating} (${getTierLabel(opp.rating)})</span>
+            </div>
+            <input type="range" class="opponent-rating-slider" data-id="${opp.id}" min="1300" max="2150" step="10" value="${opp.rating}">
+          `;
+          opponentsList.appendChild(div);
+        });
+
+        document.querySelectorAll('.opponent-rating-slider').forEach(slider => {
+          slider.addEventListener('input', (e) => {
+            const id = e.target.getAttribute('data-id');
+            const rating = parseInt(e.target.value);
+            document.getElementById(`rating-val-${id}`).innerText = `${rating} (${getTierLabel(rating)})`;
+            window.SimulationEngine.setTeamRating(id, rating);
+            
+            const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
+            updateGroupStandingsTable(activeTeam.group, currentSelectedTeamId);
+            triggerAutoSimulation();
+          });
+        });
+      }
+
+      function setupGroup(groupName, targetTeamId = null) {
+        currentSelectedGroup = groupName;
+        const groupTeams = window.SimulationEngine.teams.filter(t => t.group === groupName);
+        
+        let team = groupTeams.find(t => t.id === targetTeamId);
+        if (!team) {
+          const sorted = [...groupTeams].sort((a, b) => b.rating - a.rating);
+          team = sorted[0];
+        }
+        
+        currentSelectedTeamId = team.id;
+        
+        const flagImg = document.getElementById('header-flag-img');
+        flagImg.src = `https://flagcdn.com/w80/${team.flag}.png`;
+        flagImg.style.display = 'inline-block';
+
+        dropdownTriggerBtn.querySelector('span').innerText = `Group ${groupName}`;
+        
+        tuningHeader.innerText = `Tune ${team.name}'s Form`;
+        tuningHelperText.innerText = `Increasing this enhances ${team.name}'s goal-scoring ratios and defensive resistance against top tier teams.`;
+        userRatingInput.value = team.rating;
+        userRatingVal.innerText = `${team.rating} (${getTierLabel(team.rating)})`;
+        
+        updateGroupStandingsTable(groupName, team.id);
+        opponentsHeader.innerText = `Group ${groupName} Opponents`;
+        renderOpponents(groupName, team.id);
+        
+        triggerAutoSimulation();
+      }
+
+      function setupTeamWithinGroup(teamId) {
+        currentSelectedTeamId = teamId;
+        const team = window.SimulationEngine.teams.find(t => t.id === teamId);
+        
+        const flagImg = document.getElementById('header-flag-img');
+        flagImg.src = `https://flagcdn.com/w80/${team.flag}.png`;
+        flagImg.style.display = 'inline-block';
+        
+        tuningHeader.innerText = `Tune ${team.name}'s Form`;
+        tuningHelperText.innerText = `Increasing this enhances ${team.name}'s goal-scoring ratios and defensive resistance against top tier teams.`;
+        userRatingInput.value = team.rating;
+        userRatingVal.innerText = `${team.rating} (${getTierLabel(team.rating)})`;
+        
+        updateGroupStandingsTable(team.group, teamId);
+        opponentsHeader.innerText = `Group ${team.group} Opponents`;
+        renderOpponents(team.group, teamId);
+        
+        triggerAutoSimulation();
+      }
+
+      userRatingInput.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value);
+        userRatingVal.innerText = `${val} (${getTierLabel(val)})`;
+        window.SimulationEngine.setTeamRating(currentSelectedTeamId, val);
+        const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
+        updateGroupStandingsTable(activeTeam.group, currentSelectedTeamId);
+        triggerAutoSimulation();
+      });
+
+      function runSimulationCall(isSilent = false) {
+        const runs = 20000;
+        
+        if (!isSilent) {
+          promptCard.classList.add('hidden');
+          resultsCard.classList.add('hidden');
+          progressCard.classList.remove('hidden');
+          btnSimulate.disabled = true;
+          btnSimulate.classList.add('loading');
+        }
+
+        window.SimulationEngine.runSimulation(
+          currentSelectedTeamId,
+          runs,
+          (progress, total) => {
+            if (!isSilent) {
+              const pct = Math.round((progress / total) * 100);
+              progressBarFill.style.width = `${pct}%`;
+              progressPercentage.innerText = `${pct}%`;
+            }
+          },
+          (results) => {
+            promptCard.classList.add('hidden');
+            progressCard.classList.add('hidden');
+            resultsCard.classList.remove('hidden');
+            
+            if (!isSilent) {
+              btnSimulate.disabled = false;
+              btnSimulate.classList.remove('loading');
+            }
+
+            statR32.innerText = (results.stagesReach['Round of 32'] * 100).toFixed(1) + '%';
+            statWinner.innerText = (results.stagesReach['Winner'] * 100).toFixed(2) + '%';
+
+            const stages = [
+              { name: 'R32', prob: results.stagesReach['Round of 32'] },
+              { name: 'Round of 16', prob: results.stagesReach['Round of 16'] },
+              { name: 'Quarterfinals', prob: results.stagesReach['Quarterfinals'] },
+              { name: 'Semifinals', prob: results.stagesReach['Semifinals'] },
+              { name: 'Reach Final', prob: results.stagesReach['Final'] },
+              { name: 'Champions 🏆', prob: results.stagesReach['Winner'] }
+            ];
+
+            stagesChart.innerHTML = '';
+            stages.forEach(stage => {
+              const pctVal = (stage.prob * 100).toFixed(1);
+              const barDiv = document.createElement('div');
+              barDiv.className = 'chart-bar-container';
+              barDiv.innerHTML = `
+                <div class="chart-label">${stage.name}</div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-fill" style="width: 0%"></div>
+                  <span class="chart-bar-label">${pctVal}%</span>
+                </div>
+              `;
+              stagesChart.appendChild(barDiv);
+              setTimeout(() => {
+                barDiv.querySelector('.chart-bar-fill').style.width = `${pctVal}%`;
+              }, 50);
+            });
+
+            // Group Progression breakdown
+            const groupProgression = [];
+            for (const id in results.groupProgression) {
+              const team = window.SimulationEngine.teams.find(t => t.id === id);
+              groupProgression.push({
+                id: id,
+                name: team.name,
+                flag: team.flag,
+                prob: results.groupProgression[id]
+              });
+            }
+            groupProgression.sort((a, b) => b.prob - a.prob);
+
+            groupProgressionChart.innerHTML = '';
+            groupProgression.forEach(gp => {
+              const pctVal = (gp.prob * 100).toFixed(1);
+              const barDiv = document.createElement('div');
+              barDiv.className = 'chart-bar-container';
+              
+              const isSelected = gp.id === currentSelectedTeamId;
+              const barStyle = isSelected ? 'background: linear-gradient(90deg, var(--primary-red) 0%, var(--accent-gold) 100%)' : '';
+              const labelStyle = isSelected ? 'color: var(--accent-gold); font-weight: 800;' : '';
+
+              barDiv.innerHTML = `
+                <div class="chart-label" style="display: flex; align-items: center; ${labelStyle}">
+                  <img src="https://flagcdn.com/w40/${gp.flag}.png" alt="${gp.name}" class="flag-img" style="margin-right: 6px;">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${gp.name}</span>
+                </div>
+                <div class="chart-bar-wrapper">
+                  <div class="chart-bar-fill" style="width: 0%; ${barStyle}"></div>
+                  <span class="chart-bar-label">${pctVal}%</span>
+                </div>
+              `;
+              groupProgressionChart.appendChild(barDiv);
+              setTimeout(() => {
+                barDiv.querySelector('.chart-bar-fill').style.width = `${pctVal}%`;
+              }, 50);
+            });
+
+            const finishes = [
+              { pos: '1st Place', prob: results.groupFinish[1], color: '#ffd700' },
+              { pos: '2nd Place', prob: results.groupFinish[2], color: '#c0c0c0' },
+              { pos: '3rd Place', prob: results.groupFinish[3], color: '#cd7f32' },
+              { pos: '4th Place', prob: results.groupFinish[4], color: '#ff4d4d' }
+            ];
+
+            groupFinishChart.innerHTML = '';
+            finishes.forEach(finish => {
+              const pctVal = (finish.prob * 100).toFixed(1);
+              const colDiv = document.createElement('div');
+              colDiv.className = 'group-finish-col';
+              colDiv.innerHTML = `
+                <div class="finish-val">${pctVal}%</div>
+                <div class="finish-bar-wrapper">
+                  <div class="finish-bar-fill" style="height: 0%; background: ${finish.color}"></div>
+                </div>
+                <div class="finish-label">${finish.pos}</div>
+              `;
+              groupFinishChart.appendChild(colDiv);
+              setTimeout(() => {
+                colDiv.querySelector('.finish-bar-fill').style.height = `${pctVal}%`;
+              }, 50);
+            });
+          }
+        );
+      }
+
+      setupGroup('D', 'TUR');
+
+      btnSimulate.addEventListener('click', () => {
+        tuningModal.classList.add('hidden');
+        runSimulationCall(false);
+      });
+
+      // Real-time Simulated Betting Odds Feed
+      const syncOddsToggle = document.getElementById('sync-odds-toggle');
+      const feedLogs = document.getElementById('feed-logs');
+      const btnRefreshFeed = document.getElementById('btn-refresh-feed');
+
+      function triggerLiveFeedUpdate() {
+        const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
+        if (!activeTeam) return;
+
+        const groupTeams = window.SimulationEngine.teams.filter(t => t.group === activeTeam.group);
+        if (groupTeams.length === 0) return;
+
+        const randomTeam = groupTeams[Math.floor(Math.random() * groupTeams.length)];
+        const change = (Math.random() < 0.5 ? 1 : -1) * (10 + Math.floor(Math.random() * 2) * 10);
+        const oldRating = randomTeam.rating;
+        const newRating = Math.max(1300, Math.min(2150, oldRating + change));
+
+        if (oldRating === newRating) return;
+
+        window.SimulationEngine.setTeamRating(randomTeam.id, newRating);
+
+        // Update UI controls
+        if (randomTeam.id === currentSelectedTeamId) {
+          userRatingInput.value = newRating;
+          userRatingVal.innerText = `${newRating} (${getTierLabel(newRating)})`;
+        } else {
+          const oppSlider = document.querySelector(`.opponent-rating-slider[data-id="${randomTeam.id}"]`);
+          if (oppSlider) {
+            oppSlider.value = newRating;
+            const badge = document.getElementById(`rating-val-${randomTeam.id}`);
+            if (badge) badge.innerText = `${newRating} (${getTierLabel(newRating)})`;
+          }
+        }
+
+        updateGroupStandingsTable(activeTeam.group, currentSelectedTeamId);
+
+        // Create log item
+        const bookmakers = ['Polymarket', 'Pinnacle', 'DraftKings', 'Bet365', 'Bwin', 'Betfair'];
+        const book = bookmakers[Math.floor(Math.random() * bookmakers.length)];
+        const dir = change > 0 ? 'shortened (rating up)' : 'drifted (rating down)';
+        const indicator = change > 0 ? '📈' : '📉';
+        const color = change > 0 ? 'var(--success-green)' : '#ff4d4d';
+
+        const logItem = document.createElement('div');
+        logItem.style.color = color;
+        logItem.innerHTML = `[${book}] ${indicator} ${randomTeam.name} odds ${dir}: ${oldRating} → ${newRating}`;
+
+        feedLogs.appendChild(logItem);
+        feedLogs.scrollTop = feedLogs.scrollHeight;
+
+        while (feedLogs.children.length > 20) {
+          feedLogs.removeChild(feedLogs.firstChild);
+        }
+
+        triggerAutoSimulation();
+      }
+
+      if (btnRefreshFeed) {
+        btnRefreshFeed.addEventListener('click', () => {
+          triggerLiveFeedUpdate();
+        });
+      }
+
+      setInterval(() => {
+        if (!syncOddsToggle || !syncOddsToggle.checked) return;
+        triggerLiveFeedUpdate();
+      }, 600000);
+    });
+  </script>
+  <!-- Tuning Modal -->
+  <div id="tuning-modal" class="modal-overlay hidden">
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <h3 style="border: none; margin: 0; color: var(--accent-gold);">Rating Calibration</h3>
+        <button id="close-tuning-btn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow-y: auto; padding-right: 4px;">
+        <div class="user-team-tuning">
+          <h3 id="tuning-header" style="margin-top: 0;">Tune Team's Form</h3>
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Overall Rating</span>
+              <span id="user-team-rating-val" class="val-badge">1770</span>
+            </div>
+            <input type="range" id="user-team-rating" min="1300" max="2150" step="10" value="1770">
+          </div>
+          <p class="helper-text" id="tuning-helper-text">Increasing this enhances goal-scoring ratios and defensive resistance against top tier teams.</p>
+        </div>
+
+        <div class="opponents-tuning" style="margin-top: 24px;">
+          <h3 id="opponents-header">Group Opponents</h3>
+          <div id="group-opponents-list">
+            <!-- Dynamically populated group opponents sliders -->
+          </div>
+        </div>
+        
+        <button id="btn-simulate" class="btn-primary" style="margin-top: 24px; width: 100%; min-height: 48px;">
+          <span class="btn-text">Run Full Simulation</span>
+          <span class="btn-icon">⚡</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
