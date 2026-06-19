@@ -319,12 +319,19 @@ function initSeededMatches() {
       const t2 = groupTeams[2];
       const t3 = groupTeams[3];
       
+      // Matchday 1
       const [g0, g1] = simulateMatch(t0, t1);
       const [g2, g3] = simulateMatch(t2, t3);
       
+      // Matchday 2
+      const [g4, g5] = simulateMatch(t0, t2);
+      const [g6, g7] = simulateMatch(t1, t3);
+      
       window.SeededMatches[groupName] = [
         { teamAId: t0.id, teamBId: t1.id, goalsA: g0, goalsB: g1 },
-        { teamAId: t2.id, teamBId: t3.id, goalsA: g2, goalsB: g3 }
+        { teamAId: t2.id, teamBId: t3.id, goalsA: g2, goalsB: g3 },
+        { teamAId: t0.id, teamBId: t2.id, goalsA: g4, goalsB: g5 },
+        { teamAId: t1.id, teamBId: t3.id, goalsA: g6, goalsB: g7 }
       ];
     }
   }
