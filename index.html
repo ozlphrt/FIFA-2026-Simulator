@@ -638,8 +638,11 @@
       function focusOnSelectedTeam() {
         if (!board || !currentSelectedTeamId) return;
 
-        // Find the first match-card containing the selected team
-        const cards = Array.from(board.querySelectorAll('.match-card'));
+        const gridR32 = document.getElementById('bracket-grid-r32');
+        if (!gridR32) return;
+
+        // Find the match-card containing the selected team in the Round of 32
+        const cards = Array.from(gridR32.querySelectorAll('.match-card'));
         const targetCard = cards.find(card => {
           return card.dataset.teamAId === currentSelectedTeamId || card.dataset.teamBId === currentSelectedTeamId;
         });
