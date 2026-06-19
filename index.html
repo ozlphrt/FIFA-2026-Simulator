@@ -165,6 +165,25 @@
         <div class="feed-log-item" style="color: var(--text-secondary);">[System] Live betting feeds connected. Stream active...</div>
       </div>
     </div>
+
+    <!-- Live Results JSON Sync -->
+    <div class="market-feed-card glass" style="margin-top: 16px; width: 100%;">
+      <div class="feed-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="border: none; margin: 0; font-size: 1rem; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
+          🌐 Live Scores Sync (Keyless JSON)
+        </h3>
+        <span id="sync-status-badge" style="font-size: 0.75rem; color: var(--text-secondary); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--glass-border);">Idle</span>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; width: 100%;">
+        <input type="text" id="live-scores-url" class="search-input" value="https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json" placeholder="Enter GitHub Raw JSON URL" style="flex-grow: 1; padding: 8px 12px; font-size: 0.85rem; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); color: var(--text-primary); outline: none;">
+        <button id="btn-sync-scores" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem; min-height: unset; margin: 0; white-space: nowrap; height: 35px; display: flex; align-items: center; justify-content: center;">
+          Sync Scores
+        </button>
+      </div>
+      <p style="margin: 8px 0 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.3;">
+        Sync results directly from any keyless public GitHub repository (e.g. OpenFootball format or a simple matches array).
+      </p>
+    </div>
   </div>
 
   <script>
@@ -1104,6 +1123,132 @@
         if (!syncOddsToggle || !syncOddsToggle.checked) return;
         triggerLiveFeedUpdate();
       }, 600000);
+      // JSON Scores Sync Logic
+      const btnSyncScores = document.getElementById('btn-sync-scores');
+      const liveScoresUrlInput = document.getElementById('live-scores-url');
+      const syncStatusBadge = document.getElementById('sync-status-badge');
+
+      function parseJSONScores(data) {
+        const parsedMatches = [];
+        const getTeamKey = (t) => {
+          if (!t) return null;
+          if (typeof t === 'string') return t;
+          return t.code || t.name || null;
+        };
+
+        if (data && Array.isArray(data.rounds)) {
+          data.rounds.forEach(round => {
+            if (Array.isArray(round.matches)) {
+              round.matches.forEach(m => {
+                const team1 = getTeamKey(m.team1);
+                const team2 = getTeamKey(m.team2);
+                const score1 = m.score1 !== undefined && m.score1 !== null ? parseInt(m.score1) : null;
+                const score2 = m.score2 !== undefined && m.score2 !== null ? parseInt(m.score2) : null;
+                if (team1 && team2 && !isNaN(score1) && !isNaN(score2) && score1 !== null && score2 !== null) {
+                  parsedMatches.push({ teamA: team1, teamB: team2, goalsA: score1, goalsB: score2 });
+                }
+              });
+            }
+          });
+        } else if (Array.isArray(data)) {
+          data.forEach(m => {
+            const teamA = m.teamA || getTeamKey(m.team1);
+            const teamB = m.teamB || getTeamKey(m.team2);
+            const goalsA = m.goalsA !== undefined ? m.goalsA : m.score1;
+            const goalsB = m.goalsB !== undefined ? m.goalsB : m.score2;
+            if (teamA && teamB && goalsA !== undefined && goalsB !== undefined && goalsA !== null && goalsB !== null) {
+              parsedMatches.push({ teamA, teamB, goalsA: parseInt(goalsA), goalsB: parseInt(goalsB) });
+            }
+          });
+        } else if (data && Array.isArray(data.matches)) {
+          data.matches.forEach(m => {
+            const teamA = m.teamA || getTeamKey(m.team1);
+            const teamB = m.teamB || getTeamKey(m.team2);
+            const goalsA = m.goalsA !== undefined ? m.goalsA : m.score1;
+            const goalsB = m.goalsB !== undefined ? m.goalsB : m.score2;
+            if (teamA && teamB && goalsA !== undefined && goalsB !== undefined && goalsA !== null && goalsB !== null) {
+              parsedMatches.push({ teamA, teamB, goalsA: parseInt(goalsA), goalsB: parseInt(goalsB) });
+            }
+          });
+        }
+        return parsedMatches;
+      }
+
+      if (btnSyncScores && liveScoresUrlInput && syncStatusBadge) {
+        btnSyncScores.addEventListener('click', () => {
+          const url = liveScoresUrlInput.value.trim();
+          if (!url) {
+            syncStatusBadge.innerText = 'Empty URL';
+            syncStatusBadge.style.color = '#ff4d4d';
+            return;
+          }
+
+          syncStatusBadge.innerText = 'Syncing...';
+          syncStatusBadge.style.color = 'var(--accent-gold)';
+
+          fetch(url)
+            .then(res => {
+              if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+              return res.json();
+            })
+            .then(data => {
+              const matches = parseJSONScores(data);
+              if (matches.length === 0) {
+                throw new Error('No valid match results found in JSON file.');
+              }
+
+              // Reset window.SeededMatches
+              window.SeededMatches = {};
+              const allGroups = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+              allGroups.forEach(g => {
+                window.SeededMatches[g] = [];
+              });
+
+              let appliedCount = 0;
+              matches.forEach(m => {
+                const teamA = window.SimulationEngine.teams.find(t => t.id === m.teamA || t.name.toLowerCase() === m.teamA.toLowerCase() || t.id.toLowerCase() === m.teamA.toLowerCase());
+                const teamB = window.SimulationEngine.teams.find(t => t.id === m.teamB || t.name.toLowerCase() === m.teamB.toLowerCase() || t.id.toLowerCase() === m.teamB.toLowerCase());
+
+                if (teamA && teamB && teamA.group === teamB.group) {
+                  window.SeededMatches[teamA.group].push({
+                    teamAId: teamA.id,
+                    teamBId: teamB.id,
+                    goalsA: m.goalsA,
+                    goalsB: m.goalsB
+                  });
+                  appliedCount++;
+                }
+              });
+
+              syncStatusBadge.innerText = `Synced ${appliedCount} games`;
+              syncStatusBadge.style.color = 'var(--success-green)';
+
+              // Re-run simulation with newly applied scores
+              triggerAutoSimulation();
+
+              // Add a log entry to betting feed
+              if (feedLogs) {
+                const logItem = document.createElement('div');
+                logItem.style.color = 'var(--success-green)';
+                logItem.innerHTML = `[System] Successfully synced ${appliedCount} match scores from GitHub. Simulation updated.`;
+                feedLogs.appendChild(logItem);
+                feedLogs.scrollTop = feedLogs.scrollHeight;
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              syncStatusBadge.innerText = 'Sync failed';
+              syncStatusBadge.style.color = '#ff4d4d';
+              if (feedLogs) {
+                const logItem = document.createElement('div');
+                logItem.style.color = '#ff4d4d';
+                logItem.innerHTML = `[Error] Live scores sync failed: ${err.message}`;
+                feedLogs.appendChild(logItem);
+                feedLogs.scrollTop = feedLogs.scrollHeight;
+              }
+            });
+        });
+      }
 
       // Refresh standings, odds and rerun simulation if last refresh was 60 minutes or longer ago (placed here after all variables are initialized)
       const lastRefresh = localStorage.getItem('fifa_sim_last_refresh');
