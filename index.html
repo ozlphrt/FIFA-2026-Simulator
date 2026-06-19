@@ -776,21 +776,6 @@
         updateCarouselView();
       }
 
-      function calculateScoreProbability(ratingA, ratingB, gA, gB) {
-        const ratingDiff = ratingA - ratingB;
-        const lambdaA = 1.35 * Math.pow(10, ratingDiff / 800);
-        const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 800);
-        
-        function poissonProb(lambda, k) {
-          let factorial = 1;
-          for (let i = 1; i <= k; i++) factorial *= i;
-          return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial;
-        }
-        
-        const probA = poissonProb(lambdaA, gA);
-        const probB = poissonProb(lambdaB, gB);
-        return probA * probB;
-      }
 
       function calculateProgressionProbability(teamA, teamB) {
         let winsA = 0;
@@ -879,9 +864,6 @@
             }
           }
 
-          const prob = calculateScoreProbability(m.teamA.rating, m.teamB.rating, m.goalsA, m.goalsB);
-          const probPct = (prob * 100).toFixed(1) + '%';
-
           const pAdvanceA = calculateProgressionProbability(m.teamA, m.teamB);
           const pctA = Math.round(pAdvanceA * 100) + '%';
           const pctB = Math.round((1 - pAdvanceA) * 100) + '%';
@@ -896,14 +878,8 @@
                 <span style="font-weight: 700; font-family: monospace; flex-shrink: 0; font-size: 1.3rem;">${scoreTextA}</span>
               </div>
               
-              <!-- Divider and Likelihood Badge -->
-              <div style="display: flex; align-items: center; justify-content: space-between; margin: 1px 0;">
-                <div style="flex-grow: 1; height: 1px; background: rgba(255,255,255,0.06); margin-right: 8px;"></div>
-                <span style="font-size: 0.65rem; color: var(--text-secondary); background: rgba(255, 255, 255, 0.06); padding: 1px 6px; border-radius: 4px; font-family: monospace; border: 1px solid rgba(255,255,255,0.04); flex-shrink: 0;">
-                  ${probPct}
-                </span>
-                <div style="width: 8px; flex-shrink: 0; margin-left: 8px; height: 1px; background: rgba(255,255,255,0.06);"></div>
-              </div>
+              <!-- Subtle Divider Line -->
+              <div style="height: 1px; background: rgba(255, 255, 255, 0.06); margin: 5px 0;"></div>
 
               <div style="display: flex; justify-content: space-between; align-items: center; ${teamBColor} line-height: 1.2;">
                 <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 0.95rem;">
