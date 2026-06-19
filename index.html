@@ -608,9 +608,6 @@
       const board = document.getElementById('bracket-board');
       const btnOpenBracket = document.getElementById('btn-open-bracket');
       const btnCloseBracket = document.getElementById('btn-close-bracket');
-      const btnZoomIn = document.getElementById('btn-zoom-in');
-      const btnZoomOut = document.getElementById('btn-zoom-out');
-      const btnZoomReset = document.getElementById('btn-zoom-reset');
 
       function updateTransform() {
         if (board) {
@@ -650,27 +647,7 @@
         });
       }
 
-      // Keyboard & Zoom buttons
-      if (btnZoomIn) {
-        btnZoomIn.addEventListener('click', () => {
-          scale = Math.min(3, scale + 0.15);
-          updateTransform();
-        });
-      }
-      if (btnZoomOut) {
-        btnZoomOut.addEventListener('click', () => {
-          scale = Math.max(0.2, scale - 0.15);
-          updateTransform();
-        });
-      }
-      if (btnZoomReset) {
-        btnZoomReset.addEventListener('click', () => {
-          scale = 0.55;
-          panX = 0;
-          panY = 0;
-          updateTransform();
-        });
-      }
+
 
       // Mouse Wheel Zoom
       if (overlay) {
@@ -1082,10 +1059,6 @@
     <div style="position: absolute; top: 20px; left: 20px; z-index: 100000; display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
       <button id="btn-close-bracket" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; min-height: unset; margin: 0; background: var(--primary-red); color: white; border: none; font-weight: bold; display: flex; align-items: center; gap: 4px; cursor: pointer;">❌ Exit</button>
       <button id="btn-update-bracket" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; min-height: unset; margin: 0; background: var(--accent-gold); color: black; border: none; font-weight: bold; display: flex; align-items: center; gap: 4px; cursor: pointer;">⚡ Update Bet Rates</button>
-      <button id="btn-zoom-in" class="btn-secondary" style="padding: 6px 10px; font-size: 0.85rem; min-height: unset; margin: 0; cursor: pointer;">➕</button>
-      <button id="btn-zoom-out" class="btn-secondary" style="padding: 6px 10px; font-size: 0.85rem; min-height: unset; margin: 0; cursor: pointer;">➖</button>
-      <button id="btn-zoom-reset" class="btn-secondary" style="padding: 6px 10px; font-size: 0.85rem; min-height: unset; margin: 0; cursor: pointer;">🔄 Reset</button>
-      <span style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 8px; font-family: sans-serif;">Pinch/Scroll to Zoom, Drag to Pan</span>
     </div>
     
     <!-- Inner wrapper for scaling/panning -->
