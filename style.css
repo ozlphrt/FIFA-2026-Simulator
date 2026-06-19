@@ -1006,7 +1006,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   display: flex;
   gap: 48px;
   min-width: 1500px;
-  height: 960px;
+  height: 1380px;
 }
 
 .bracket-column {
@@ -1034,6 +1034,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   flex-direction: column;
   justify-content: space-around;
   flex-grow: 1;
-  height: 880px;
+  height: 1300px;
   position: relative;
 }
