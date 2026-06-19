@@ -299,6 +299,13 @@ function initSeededMatches() {
         { teamAId: 'USA', teamBId: 'PRY', goalsA: 4, goalsB: 1 },
         { teamAId: 'AUS', teamBId: 'TUR', goalsA: 2, goalsB: 0 }
       ];
+    } else if (groupName === 'A') {
+      window.SeededMatches['A'] = [
+        { teamAId: 'MEX', teamBId: 'CMR', goalsA: 2, goalsB: 0 },
+        { teamAId: 'COL', teamBId: 'NZL', goalsA: 2, goalsB: 1 },
+        { teamAId: 'NZL', teamBId: 'CMR', goalsA: 1, goalsB: 1 },
+        { teamAId: 'MEX', teamBId: 'COL', goalsA: 1, goalsB: 0 }
+      ];
     } else {
       const t0 = groupTeams[0];
       const t1 = groupTeams[1];
