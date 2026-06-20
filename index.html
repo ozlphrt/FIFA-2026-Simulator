@@ -140,6 +140,10 @@
             <span>🏆 View Interactive Bracket Board</span>
             <span class="btn-icon">⚡</span>
           </button>
+          
+          <button id="btn-open-win-probabilities" class="btn-secondary" style="margin-top: 4px; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; border: 1px solid var(--accent-gold); color: var(--accent-gold);">
+            <span>📊 View Win Probability Standings</span>
+          </button>
 
         </div>
       </section>
@@ -670,6 +674,7 @@
             }
           },
           (results, lastBracket) => {
+            window.latestSimulationResults = results;
             promptCard.classList.add('hidden');
             progressCard.classList.add('hidden');
             resultsCard.classList.remove('hidden');
@@ -1302,6 +1307,75 @@
       if (!lastRefresh || (now - parseInt(lastRefresh)) >= 60 * 60 * 1000) {
         triggerLiveFeedUpdate();
       }
+      // Win Probabilities Standings Modal logic
+      const btnOpenWinProbabilities = document.getElementById('btn-open-win-probabilities');
+      const winProbabilitiesModal = document.getElementById('win-probabilities-modal');
+      const closeWinProbabilitiesBtn = document.getElementById('close-win-probabilities-btn');
+      const winProbabilitiesTableBody = document.getElementById('win-probabilities-table-body');
+
+      if (btnOpenWinProbabilities) {
+        btnOpenWinProbabilities.addEventListener('click', () => {
+          if (!window.latestSimulationResults) {
+            alert("Simulation is currently running or starting. Please wait a moment.");
+            return;
+          }
+          
+          const teams = window.SimulationEngine.teams;
+          const results = window.latestSimulationResults;
+          
+          const sortedTeams = teams.map(t => {
+            const winProb = results.teamStages[t.id] ? results.teamStages[t.id]['Winner'] : 0;
+            return { ...t, winProb };
+          }).sort((a, b) => {
+            if (b.winProb !== a.winProb) return b.winProb - a.winProb;
+            return b.rating - a.rating;
+          });
+
+          winProbabilitiesTableBody.innerHTML = '';
+          sortedTeams.forEach((t, idx) => {
+            const tr = document.createElement('tr');
+            tr.style.cursor = 'pointer';
+            if (t.id === currentSelectedTeamId) {
+              tr.className = 'turkey-row';
+            }
+            
+            tr.innerHTML = `
+              <td style="padding: 10px; font-weight: bold; color: ${idx < 3 ? 'var(--accent-gold)' : 'var(--text-secondary)'};">${idx + 1}</td>
+              <td style="padding: 10px; display: flex; align-items: center; gap: 8px;">
+                <img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 20px; height: 14px; border-radius: 2px;">
+                <span style="font-weight: 600;">${t.name}</span>
+              </td>
+              <td style="padding: 10px; text-align: center; color: var(--text-secondary);">Group ${t.group}</td>
+              <td style="padding: 10px; text-align: right; font-weight: 500;">${t.rating}</td>
+              <td style="padding: 10px; text-align: right; font-weight: bold; color: var(--accent-gold);">${(t.winProb * 100).toFixed(2)}%</td>
+            `;
+            
+            tr.addEventListener('click', () => {
+              setupTeamWithinGroup(t.id);
+              winProbabilitiesModal.classList.add('hidden');
+            });
+            
+            winProbabilitiesTableBody.appendChild(tr);
+          });
+
+          winProbabilitiesModal.classList.remove('hidden');
+        });
+      }
+
+      if (closeWinProbabilitiesBtn) {
+        closeWinProbabilitiesBtn.addEventListener('click', () => {
+          winProbabilitiesModal.classList.add('hidden');
+        });
+      }
+
+      if (winProbabilitiesModal) {
+        winProbabilitiesModal.addEventListener('click', (e) => {
+          if (e.target === winProbabilitiesModal) {
+            winProbabilitiesModal.classList.add('hidden');
+          }
+        });
+      }
+
       // Dismiss standings tooltip when tapping outside on mobile
       document.addEventListener('touchstart', (e) => {
         const tooltip = document.getElementById('standings-tooltip');
@@ -1312,6 +1386,39 @@
       }, { passive: true });
     });
   </script>
+  <!-- Win Probabilities Standings Modal -->
+  <div id="win-probabilities-modal" class="modal-overlay hidden">
+    <div class="modal-content glass" style="max-width: 600px; width: 95%;">
+      <div class="modal-header">
+        <h3 style="border: none; margin: 0; color: var(--accent-gold); display: flex; align-items: center; gap: 8px;">
+          <span>📊 Win Probability Standings</span>
+        </h3>
+        <button id="close-win-probabilities-btn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow-y: auto; padding-right: 4px;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px; margin-top: 0;">
+          The statistical chance of each team winning the World Cup, calculated from 20,000 Monte Carlo simulation runs. Click any team to select them.
+        </p>
+        <div class="table-responsive">
+          <table class="standings-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th style="text-align: left; padding: 10px;">Rank</th>
+                <th style="text-align: left; padding: 10px;">Team</th>
+                <th style="text-align: center; padding: 10px;">Group</th>
+                <th style="text-align: right; padding: 10px;">Rating</th>
+                <th style="text-align: right; padding: 10px;">Win Prob</th>
+              </tr>
+            </thead>
+            <tbody id="win-probabilities-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Tuning Modal -->
   <div id="tuning-modal" class="modal-overlay hidden">
     <div class="modal-content glass">
