@@ -389,12 +389,29 @@ window.SimulationEngine = {
         'Final': 0,
         'Winner': 0
       },
-      groupProgression: {}
+      groupProgression: {},
+      teamStages: {} // Track stage reaches for all 48 teams
     };
+
+    this.teams.forEach(t => {
+      stats.teamStages[t.id] = {
+        'Round of 32': 0,
+        'Round of 16': 0,
+        'Quarterfinals': 0,
+        'Semifinals': 0,
+        'Final': 0,
+        'Winner': 0
+      };
+    });
 
     groupTeamIds.forEach(id => stats.groupProgression[id] = 0);
 
-    let lastBracket = null;
+    // Track R32 match slot frequencies (16 slots, each has Team A and Team B position)
+    const r32Slots = [];
+    for (let i = 0; i < 16; i++) {
+      r32Slots.push({ A: {}, B: {} });
+    }
+
     function processChunk() {
       const end = Math.min(currentIteration + chunkSize, iterations);
       for (let i = currentIteration; i < end; i++) {
@@ -406,8 +423,27 @@ window.SimulationEngine = {
             stats.groupProgression[id]++;
           }
         });
-        if (i === iterations - 1) {
-          lastBracket = res.bracket;
+
+        // Record slot frequencies in Round of 32
+        res.bracket['Round of 32'].forEach((m, idx) => {
+          const slot = r32Slots[idx];
+          slot.A[m.teamA.id] = (slot.A[m.teamA.id] || 0) + 1;
+          slot.B[m.teamB.id] = (slot.B[m.teamB.id] || 0) + 1;
+        });
+
+        // Track stage reach counts for all teams
+        const b = res.bracket;
+        const roundNames = ['Round of 32', 'Round of 16', 'Quarterfinals', 'Semifinals', 'Final'];
+        roundNames.forEach(round => {
+          if (b[round]) {
+            b[round].forEach(m => {
+              stats.teamStages[m.teamA.id][round]++;
+              stats.teamStages[m.teamB.id][round]++;
+            });
+          }
+        });
+        if (b['Winner']) {
+          stats.teamStages[b['Winner'].id]['Winner']++;
         }
       }
       
@@ -433,14 +469,116 @@ window.SimulationEngine = {
             'Final': (stats.stages['Final'] + stats.stages['Winner']) / iterations,
             'Winner': stats.stages['Winner'] / iterations
           },
-          groupProgression: {}
+          groupProgression: {},
+          teamStages: {}
         };
 
         for (const id in stats.groupProgression) {
           probabilities.groupProgression[id] = stats.groupProgression[id] / iterations;
         }
 
-        onComplete(probabilities, lastBracket);
+        for (const teamId in stats.teamStages) {
+          probabilities.teamStages[teamId] = {
+            'Round of 32': stats.teamStages[teamId]['Round of 32'] / iterations,
+            'Round of 16': stats.teamStages[teamId]['Round of 16'] / iterations,
+            'Quarterfinals': stats.teamStages[teamId]['Quarterfinals'] / iterations,
+            'Semifinals': stats.teamStages[teamId]['Semifinals'] / iterations,
+            'Final': stats.teamStages[teamId]['Final'] / iterations,
+            'Winner': stats.teamStages[teamId]['Winner'] / iterations
+          };
+        }
+
+        // Construct mathematically most likely (consensus) bracket
+        const mostLikelyBracket = {
+          'Round of 32': [],
+          'Round of 16': [],
+          'Quarterfinals': [],
+          'Semifinals': [],
+          'Final': [],
+          'Winner': null
+        };
+
+        const findTeam = (id) => SimulationEngine.teams.find(t => t.id === id);
+
+        // Step 1: Establish R32 most likely matchups
+        for (let i = 0; i < 16; i++) {
+          const slot = r32Slots[i];
+          
+          let maxAId = null, maxACount = -1;
+          for (const id in slot.A) {
+            if (slot.A[id] > maxACount) { maxACount = slot.A[id]; maxAId = id; }
+          }
+          
+          let maxBId = null, maxBCount = -1;
+          for (const id in slot.B) {
+            if (slot.B[id] > maxBCount) { maxBCount = slot.B[id]; maxBId = id; }
+          }
+
+          const teamA = findTeam(maxAId);
+          const teamB = findTeam(maxBId);
+
+          const probA = stats.teamStages[teamA.id]['Round of 16'];
+          const probB = stats.teamStages[teamB.id]['Round of 16'];
+          const winnerId = probA >= probB ? teamA.id : teamB.id;
+
+          const diff = teamA.rating - teamB.rating;
+          let goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
+          let goalsB = Math.round(1.35 * Math.pow(10, -diff / 1600));
+          if (goalsA === goalsB) {
+            if (winnerId === teamA.id) goalsA++; else goalsB++;
+          }
+
+          mostLikelyBracket['Round of 32'].push({
+            teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
+            teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
+            goalsA, goalsB, pens: false, winnerId
+          });
+        }
+
+        // Step 2: Establish progression matches for later rounds based on stats
+        const roundsList = [
+          { current: 'Round of 32', next: 'Round of 16', reachStage: 'Quarterfinals' },
+          { current: 'Round of 16', next: 'Quarterfinals', reachStage: 'Semifinals' },
+          { current: 'Quarterfinals', next: 'Semifinals', reachStage: 'Final' },
+          { current: 'Semifinals', next: 'Final', reachStage: 'Winner' }
+        ];
+
+        roundsList.forEach(r => {
+          const matches = mostLikelyBracket[r.current];
+          for (let i = 0; i < matches.length; i += 2) {
+            const wAId = matches[i].winnerId;
+            const wBId = matches[i+1].winnerId;
+
+            const teamA = findTeam(wAId);
+            const teamB = findTeam(wBId);
+
+            const countA = stats.teamStages[teamA.id][r.reachStage];
+            const countB = stats.teamStages[teamB.id][r.reachStage];
+            const winnerId = countA >= countB ? teamA.id : teamB.id;
+
+            const diff = teamA.rating - teamB.rating;
+            let goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
+            let goalsB = Math.round(1.35 * Math.pow(10, -diff / 1600));
+            if (goalsA === goalsB) {
+              if (winnerId === teamA.id) goalsA++; else goalsB++;
+            }
+
+            mostLikelyBracket[r.next].push({
+              teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
+              teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
+              goalsA, goalsB, pens: false, winnerId
+            });
+          }
+        });
+
+        // Step 3: Set absolute winner
+        const finalMatch = mostLikelyBracket['Final'][0];
+        if (finalMatch) {
+          const champ = findTeam(finalMatch.winnerId);
+          mostLikelyBracket['Winner'] = { id: champ.id, name: champ.name, flag: champ.flag, rating: champ.rating };
+        }
+
+        onComplete(probabilities, mostLikelyBracket);
       }
     }
 
