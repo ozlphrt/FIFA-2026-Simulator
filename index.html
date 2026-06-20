@@ -1380,15 +1380,15 @@
             tr.className = `win-prob-row ${isSelected ? 'turkey-row' : ''} ${isEliminated ? 'eliminated-row' : ''}`;
             
             tr.innerHTML = `
-              <td style="padding: 10px 6px; font-weight: bold; color: ${idx < 3 ? 'var(--accent-gold)' : 'var(--text-secondary)'};">${idx + 1}</td>
-              <td style="padding: 10px 6px; display: flex; align-items: center; gap: 8px; overflow: hidden;">
-                <img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0;">
+              <td style="padding: 5px 4px; font-weight: bold; color: ${idx < 3 ? 'var(--accent-gold)' : 'var(--text-secondary)'};">${idx + 1}</td>
+              <td style="padding: 5px 4px; display: flex; align-items: center; gap: 4px; overflow: hidden;">
+                <img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0; margin-right: 0;">
                 <span style="font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${t.name}</span>
               </td>
-              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.6);">${(qfProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.7);">${(sfProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.85);">${(fProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px 6px; text-align: right; font-weight: bold; color: var(--accent-gold);">${(winProb * 100).toFixed(2)}%</td>
+              <td style="padding: 5px 4px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.6);">${(qfProb * 100).toFixed(1)}%</td>
+              <td style="padding: 5px 4px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.7);">${(sfProb * 100).toFixed(1)}%</td>
+              <td style="padding: 5px 4px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.85);">${(fProb * 100).toFixed(1)}%</td>
+              <td style="padding: 5px 4px; text-align: right; font-weight: bold; color: var(--accent-gold);">${(winProb * 100).toFixed(2)}%</td>
             `;
             
             tr.addEventListener('click', () => {
@@ -1445,12 +1445,12 @@
           <table class="standings-table" style="width: 100%; table-layout: fixed;">
             <thead>
               <tr>
-                <th style="width: 12%; text-align: left; padding: 10px 6px;">Rank</th>
-                <th style="width: 36%; text-align: left; padding: 10px 6px;">Team</th>
-                <th style="width: 13%; text-align: right; padding: 10px 6px;">QF%</th>
-                <th style="width: 13%; text-align: right; padding: 10px 6px;">SF%</th>
-                <th style="width: 13%; text-align: right; padding: 10px 6px;">Final%</th>
-                <th style="width: 13%; text-align: right; padding: 10px 6px;">Win%</th>
+                <th style="width: 12%; text-align: left; padding: 5px 4px;">Rank</th>
+                <th style="width: 36%; text-align: left; padding: 5px 4px;">Team</th>
+                <th style="width: 13%; text-align: right; padding: 5px 4px;">QF%</th>
+                <th style="width: 13%; text-align: right; padding: 5px 4px;">SF%</th>
+                <th style="width: 13%; text-align: right; padding: 5px 4px;">Final%</th>
+                <th style="width: 13%; text-align: right; padding: 5px 4px;">Win%</th>
               </tr>
             </thead>
             <tbody id="win-probabilities-table-body">
