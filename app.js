@@ -62,6 +62,7 @@ const DEFAULT_TEAMS = [
   { id: 'CRO', name: 'Croatia', rating: 1880, group: 'L', flag: 'hr' },
   { id: 'GHA', name: 'Ghana', rating: 1620, group: 'L', flag: 'gh' },
   { id: 'PAN', name: 'Panama', rating: 1580, group: 'L', flag: 'pa' }
+];
 
 // Knuth-Poisson generator for goals
 function poissonRandom(lambda) {
