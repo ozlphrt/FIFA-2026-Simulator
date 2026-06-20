@@ -312,6 +312,14 @@
         btnRunPrediction.click();
       });
 
+      // Recalculate simulation when Team A or Team B is modified
+      predictorTeamA.addEventListener('change', () => {
+        btnRunPrediction.click();
+      });
+      predictorTeamB.addEventListener('change', () => {
+        btnRunPrediction.click();
+      });
+
       closePredictorBtn.addEventListener('click', () => {
         matchPredictorModal.classList.add('hidden');
       });
