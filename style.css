@@ -1088,13 +1088,18 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-bottom: 3px solid var(--accent-gold-glow);
   letter-spacing: 4px;
   text-shadow: 0 0 12px var(--accent-gold-glow);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .bracket-column-matches {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  flex-grow: 1;
+  flex: none;
   height: calc(16 * var(--card-height) + 15 * var(--card-gap));
   position: relative;
 }
