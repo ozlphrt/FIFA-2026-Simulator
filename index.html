@@ -98,14 +98,31 @@
           </div>
 
           <!-- Key Probability Cards -->
-          <div class="stats-grid">
-            <div class="stat-card glass">
-              <span class="stat-title">Chance to Reach R32</span>
-              <span id="stat-r32-pct" class="stat-value">0%</span>
+          <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+            <!-- 2x2 Matrix for Stage Probabilities -->
+            <div class="probability-matrix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Reach R16</span>
+                <span id="stat-r16-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+              </div>
+              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Reach QF</span>
+                <span id="stat-qf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+              </div>
+              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Reach SF</span>
+                <span id="stat-sf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+              </div>
+              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Reach Final</span>
+                <span id="stat-final-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+              </div>
             </div>
-            <div class="stat-card glass highlight">
-              <span class="stat-title">Chance to Win World Cup 🏆</span>
-              <span id="stat-winner-pct" class="stat-value">0%</span>
+
+            <!-- Bottom Highlight Card -->
+            <div class="stat-card glass highlight" style="display: flex; flex-direction: column; align-items: center; padding: 16px; text-align: center; width: 100%;">
+              <span class="stat-title" style="font-size: 0.85rem;">Chance to Win World Cup 🏆</span>
+              <span id="stat-winner-pct" class="stat-value" style="font-size: 1.8rem;">0%</span>
             </div>
           </div>
 
@@ -195,7 +212,10 @@
       const progressBarFill = document.getElementById('progress-bar-fill');
       const progressPercentage = document.getElementById('progress-percentage');
       
-      const statR32 = document.getElementById('stat-r32-pct');
+      const statR16 = document.getElementById('stat-r16-pct');
+      const statQF = document.getElementById('stat-qf-pct');
+      const statSF = document.getElementById('stat-sf-pct');
+      const statFinal = document.getElementById('stat-final-pct');
       const statWinner = document.getElementById('stat-winner-pct');
       const stagesChart = document.getElementById('stages-bar-chart');
       const groupFinishChart = document.getElementById('group-finish-chart');
@@ -691,7 +711,10 @@
               btnSimulate.classList.remove('loading');
             }
 
-            statR32.innerText = (results.stagesReach['Round of 32'] * 100).toFixed(1) + '%';
+            statR16.innerText = (results.stagesReach['Round of 16'] * 100).toFixed(1) + '%';
+            statQF.innerText = (results.stagesReach['Quarterfinals'] * 100).toFixed(1) + '%';
+            statSF.innerText = (results.stagesReach['Semifinals'] * 100).toFixed(1) + '%';
+            statFinal.innerText = (results.stagesReach['Final'] * 100).toFixed(1) + '%';
             statWinner.innerText = (results.stagesReach['Winner'] * 100).toFixed(2) + '%';
 
             const stages = [
