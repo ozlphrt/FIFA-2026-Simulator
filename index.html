@@ -1075,22 +1075,7 @@
         if (board) {
           board.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
           
-          // Dynamically scale cards slightly in reverse of the board scale to maintain legibility when zoomed out
           if (forceRedraw || scale !== lastAppliedScale) {
-            const isMobile = window.innerWidth < 768;
-            const cardScale = isMobile ? 1 : Math.min(1.25, Math.pow(1 / scale, 0.5));
-            const cards = board.querySelectorAll('.match-card');
-            cards.forEach(card => {
-              card.style.transform = `scale(${cardScale})`;
-              card.style.transformOrigin = 'center center';
-            });
-
-            const champCard = document.getElementById('champion-highlight-card');
-            if (champCard) {
-              champCard.style.transform = `scale(${cardScale})`;
-              champCard.style.transformOrigin = 'center center';
-            }
-            
             drawBracketConnectors();
             lastAppliedScale = scale;
           }
@@ -1320,9 +1305,9 @@
           
           const hasSelectedTeam = m.teamA.id === currentSelectedTeamId || m.teamB.id === currentSelectedTeamId;
           if (hasSelectedTeam) {
-            card.style.border = '2px solid var(--accent-gold)';
-            card.style.boxShadow = '0 0 15px rgba(205, 162, 80, 0.35)';
-            card.style.background = 'rgba(205, 162, 80, 0.05)';
+            card.style.border = '2px solid #e5a93b';
+            card.style.boxShadow = '0 0 20px rgba(229, 169, 59, 0.4)';
+            card.style.background = 'rgba(229, 169, 59, 0.15)';
           } else {
             card.style.border = '1px solid var(--glass-border)';
             card.style.background = 'rgba(255, 255, 255, 0.02)';
