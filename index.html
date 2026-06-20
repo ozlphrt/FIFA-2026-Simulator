@@ -201,7 +201,7 @@
       const groupFinishChart = document.getElementById('group-finish-chart');
       const groupProgressionChart = document.getElementById('group-progression-chart');
 
-      let currentSelectedTeamId = 'TUR';
+      let currentSelectedTeamId = 'ARG';
 
       let autoSimTimeout = null;
       function triggerAutoSimulation() {
@@ -1245,7 +1245,10 @@
         }
       });
 
-      setupGroup('D', 'TUR');
+      // Select the team with the highest rating as the default (most likely to win the cup)
+      const allTeams = window.SimulationEngine.teams;
+      const topTeam = allTeams.reduce((max, t) => t.rating > max.rating ? t : max, allTeams[0]);
+      setupGroup(topTeam.group, topTeam.id);
 
 
       btnSimulate.addEventListener('click', () => {
