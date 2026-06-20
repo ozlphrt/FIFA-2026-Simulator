@@ -1299,8 +1299,7 @@
           card.className = 'match-card glass';
           card.dataset.teamAId = m.teamA.id;
           card.dataset.teamBId = m.teamB.id;
-          
-          card.style.padding = '14px 18px';
+           card.style.padding = '8px 10px';
           card.style.borderRadius = '12px';
           
           const hasSelectedTeam = m.teamA.id === currentSelectedTeamId || m.teamB.id === currentSelectedTeamId;
@@ -1316,7 +1315,7 @@
           card.style.display = 'flex';
           card.style.flexDirection = 'column';
           card.style.justifyContent = 'center';
-          card.style.fontSize = '1.3rem';
+          card.style.fontSize = '1.5rem';
 
           const isWinA = m.winnerId === m.teamA.id;
           const isWinB = m.winnerId === m.teamB.id;
@@ -1334,24 +1333,24 @@
           const pctB = Math.round((1 - pAdvanceA) * 100) + '%';
 
           card.innerHTML = `
-            <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-              <div class="bracket-team-row" data-id="${m.teamA.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamAColor} line-height: 1.4; padding: 4px 6px; border-radius: 6px; transition: background-color 0.2s;">
-                <span style="display: flex; align-items: center; gap: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.35rem; pointer-events: none;">
-                  <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 36px; height: 24px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800;">${m.teamA.name} <span style="font-size: 0.95rem; font-weight: normal; opacity: 0.85;">(${pctA})</span></span>
+            <div style="display: flex; flex-direction: column; justify-content: space-around; height: 100%;">
+              <div class="bracket-team-row" data-id="${m.teamA.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamAColor} line-height: 1.1; padding: 2px 4px; border-radius: 6px; transition: background-color 0.2s;">
+                <span style="display: flex; align-items: center; gap: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.6rem; pointer-events: none;">
+                  <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 38px; height: 26px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.5px;">${m.teamA.name} <span style="font-size: 1.05rem; font-weight: normal; opacity: 0.85;">(${pctA})</span></span>
                 </span>
-                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.0rem; pointer-events: none;">${scoreTextA}</span>
+                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.4rem; pointer-events: none; line-height: 1;">${scoreTextA}</span>
               </div>
               
               <!-- Subtle Divider Line -->
-              <div style="height: 1px; background: rgba(255, 255, 255, 0.1); margin: 6px 0;"></div>
+              <div style="height: 1px; background: rgba(255, 255, 255, 0.1); margin: 2px 0;"></div>
 
-              <div class="bracket-team-row" data-id="${m.teamB.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamBColor} line-height: 1.4; padding: 4px 6px; border-radius: 6px; transition: background-color 0.2s;">
-                <span style="display: flex; align-items: center; gap: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.35rem; pointer-events: none;">
-                  <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 36px; height: 24px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800;">${m.teamB.name} <span style="font-size: 0.95rem; font-weight: normal; opacity: 0.85;">(${pctB})</span></span>
+              <div class="bracket-team-row" data-id="${m.teamB.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamBColor} line-height: 1.1; padding: 2px 4px; border-radius: 6px; transition: background-color 0.2s;">
+                <span style="display: flex; align-items: center; gap: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.6rem; pointer-events: none;">
+                  <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 38px; height: 26px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.5px;">${m.teamB.name} <span style="font-size: 1.05rem; font-weight: normal; opacity: 0.85;">(${pctB})</span></span>
                 </span>
-                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.0rem; pointer-events: none;">${scoreTextB}</span>
+                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.4rem; pointer-events: none; line-height: 1;">${scoreTextB}</span>
               </div>
             </div>
           `;
