@@ -965,12 +965,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
   max-height: var(--card-height) !important;
   box-sizing: border-box;
   overflow: hidden;
+  background: rgba(55, 57, 66, 0.92) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 .match-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  background: rgba(255, 255, 255, 0.04) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--accent-gold) !important;
+  background: rgba(70, 72, 82, 0.96) !important;
 }
 
 /* Layout boundary safety fixes */
