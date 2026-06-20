@@ -454,26 +454,18 @@ function initSeededMatches() {
         { teamAId: 'ENG', teamBId: 'CRO', goalsA: 4, goalsB: 2 },
         { teamAId: 'GHA', teamBId: 'PAN', goalsA: 1, goalsB: 0 }
       ];
-    } else {
-      const t0 = groupTeams[0];
-      const t1 = groupTeams[1];
-      const t2 = groupTeams[2];
-      const t3 = groupTeams[3];
-      
-      // Matchday 1
-      const [g0, g1] = simulateMatch(t0, t1);
-      const [g2, g3] = simulateMatch(t2, t3);
-      
-      // Matchday 2
-      const [g4, g5] = simulateMatch(t0, t2);
-      const [g6, g7] = simulateMatch(t1, t3);
-      
-      window.SeededMatches[groupName] = [
-        { teamAId: t0.id, teamBId: t1.id, goalsA: g0, goalsB: g1 },
-        { teamAId: t2.id, teamBId: t3.id, goalsA: g2, goalsB: g3 },
-        { teamAId: t0.id, teamBId: t2.id, goalsA: g4, goalsB: g5 },
-        { teamAId: t1.id, teamBId: t3.id, goalsA: g6, goalsB: g7 }
+    } else if (groupName === 'G') {
+      window.SeededMatches['G'] = [
+        { teamAId: 'BEL', teamBId: 'EGY', goalsA: 1, goalsB: 1 },
+        { teamAId: 'IRN', teamBId: 'NZL', goalsA: 2, goalsB: 2 }
       ];
+    } else if (groupName === 'H') {
+      window.SeededMatches['H'] = [
+        { teamAId: 'ESP', teamBId: 'CPV', goalsA: 0, goalsB: 0 },
+        { teamAId: 'KSA', teamBId: 'URU', goalsA: 1, goalsB: 1 }
+      ];
+    } else {
+      window.SeededMatches[groupName] = [];
     }
   }
 }
