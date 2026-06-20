@@ -177,10 +177,6 @@
           <button id="btn-refresh-feed" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">
             <span>Refresh Rates</span>
           </button>
-          <label class="switch-container" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0;">
-            <span style="font-size: 0.8rem; color: var(--text-secondary);">Sync Odds</span>
-            <input type="checkbox" id="sync-odds-toggle" checked style="cursor: pointer; width: 16px; height: 16px;">
-          </label>
         </div>
       </div>
       <div id="feed-logs" class="feed-logs" style="height: 100px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; color: var(--text-secondary); background: rgba(0,0,0,0.25); padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 6px;">
@@ -1279,7 +1275,6 @@
       });
 
       // Real-time Simulated Betting Odds Feed
-      const syncOddsToggle = document.getElementById('sync-odds-toggle');
       const feedLogs = document.getElementById('feed-logs');
       const btnRefreshFeed = document.getElementById('btn-refresh-feed');
 
@@ -1346,10 +1341,7 @@
         });
       }
 
-      setInterval(() => {
-        if (!syncOddsToggle || !syncOddsToggle.checked) return;
-        triggerLiveFeedUpdate();
-      }, 600000);
+
 
       // Refresh standings, odds and rerun simulation if last refresh was 60 minutes or longer ago (placed here after all variables are initialized)
       const lastRefresh = localStorage.getItem('fifa_sim_last_refresh');
