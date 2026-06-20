@@ -439,6 +439,11 @@ function initSeededMatches() {
         { teamAId: 'FRA', teamBId: 'SEN', goalsA: 3, goalsB: 1 },
         { teamAId: 'NOR', teamBId: 'IRQ', goalsA: 4, goalsB: 1 }
       ];
+    } else if (groupName === 'J') {
+      window.SeededMatches['J'] = [
+        { teamAId: 'ARG', teamBId: 'ALG', goalsA: 3, goalsB: 0 },
+        { teamAId: 'AUT', teamBId: 'JOR', goalsA: 3, goalsB: 1 }
+      ];
     } else {
       const t0 = groupTeams[0];
       const t1 = groupTeams[1];
