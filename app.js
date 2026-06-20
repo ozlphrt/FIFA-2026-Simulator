@@ -630,9 +630,20 @@ window.SimulationEngine = {
           const teamA = findTeam(maxAId);
           const teamB = findTeam(maxBId);
 
-          const probA = stats.teamStages[teamA.id]['Round of 16'];
-          const probB = stats.teamStages[teamB.id]['Round of 16'];
-          const winnerId = probA >= probB ? teamA.id : teamB.id;
+          const winA = stats.teamStages[teamA.id]['Winner'];
+          const winB = stats.teamStages[teamB.id]['Winner'];
+          let winnerId = teamA.id;
+          if (winA !== winB) {
+            winnerId = winA > winB ? teamA.id : teamB.id;
+          } else {
+            const probA = stats.teamStages[teamA.id]['Round of 16'];
+            const probB = stats.teamStages[teamB.id]['Round of 16'];
+            if (probA !== probB) {
+              winnerId = probA > probB ? teamA.id : teamB.id;
+            } else {
+              winnerId = teamA.rating >= teamB.rating ? teamA.id : teamB.id;
+            }
+          }
 
           const diff = teamA.rating - teamB.rating;
           let goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
@@ -665,9 +676,20 @@ window.SimulationEngine = {
             const teamA = findTeam(wAId);
             const teamB = findTeam(wBId);
 
-            const countA = stats.teamStages[teamA.id][r.reachStage];
-            const countB = stats.teamStages[teamB.id][r.reachStage];
-            const winnerId = countA >= countB ? teamA.id : teamB.id;
+            const winA = stats.teamStages[teamA.id]['Winner'];
+            const winB = stats.teamStages[teamB.id]['Winner'];
+            let winnerId = teamA.id;
+            if (winA !== winB) {
+              winnerId = winA > winB ? teamA.id : teamB.id;
+            } else {
+              const countA = stats.teamStages[teamA.id][r.reachStage];
+              const countB = stats.teamStages[teamB.id][r.reachStage];
+              if (countA !== countB) {
+                winnerId = countA > countB ? teamA.id : teamB.id;
+              } else {
+                winnerId = teamA.rating >= teamB.rating ? teamA.id : teamB.id;
+              }
+            }
 
             const diff = teamA.rating - teamB.rating;
             let goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
