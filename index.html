@@ -277,14 +277,39 @@
         });
 
         predictorTeamA.value = currentSelectedTeamId;
-        const remainingTeams = teams.filter(t => t.id !== currentSelectedTeamId);
-        predictorTeamB.value = remainingTeams.length > 0 ? remainingTeams[0].id : teams[0].id;
+        
+        // Find upcoming opponent in the group stage calendar
+        const groupTeams = teams.filter(t => t.group === currentSelectedGroup);
+        const groupName = currentSelectedGroup;
+        const seeded = window.SeededMatches[groupName] || [];
+        
+        // Find which matches for currentSelectedTeamId are not yet in seeded matches
+        const allPossibleOpponentIds = groupTeams.filter(t => t.id !== currentSelectedTeamId).map(t => t.id);
+        const playedOpponentIds = [];
+        seeded.forEach(m => {
+          if (m.teamAId === currentSelectedTeamId) playedOpponentIds.push(m.teamBId);
+          if (m.teamBId === currentSelectedTeamId) playedOpponentIds.push(m.teamAId);
+        });
+
+        // The upcoming opponents are those not yet played in the group stage
+        const upcomingOpponentIds = allPossibleOpponentIds.filter(id => !playedOpponentIds.includes(id));
+        
+        if (upcomingOpponentIds.length > 0) {
+          // Select the first upcoming opponent
+          predictorTeamB.value = upcomingOpponentIds[0];
+        } else {
+          // Fallback to any remaining team if all group games are played
+          const remainingTeams = teams.filter(t => t.id !== currentSelectedTeamId);
+          predictorTeamB.value = remainingTeams.length > 0 ? remainingTeams[0].id : teams[0].id;
+        }
       }
 
       btnOpenPredictor.addEventListener('click', () => {
         populatePredictorDropdowns();
         predictorResults.classList.add('hidden');
         matchPredictorModal.classList.remove('hidden');
+        // Automatically click run prediction to display results right away
+        btnRunPrediction.click();
       });
 
       closePredictorBtn.addEventListener('click', () => {
