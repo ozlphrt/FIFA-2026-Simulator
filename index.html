@@ -101,26 +101,26 @@
           <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
             <!-- 2x2 Matrix for Stage Probabilities -->
             <div class="probability-matrix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                 <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Round of 16</span>
                 <span id="stat-r16-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
               </div>
-              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                 <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Quarterfinals</span>
                 <span id="stat-qf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
               </div>
-              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                 <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Semifinals</span>
                 <span id="stat-sf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
               </div>
-              <div class="stat-card glass" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                 <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Final</span>
                 <span id="stat-final-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
               </div>
             </div>
 
             <!-- Bottom Highlight Card -->
-            <div class="stat-card glass highlight" style="display: flex; flex-direction: column; align-items: center; padding: 16px; text-align: center; width: 100%;">
+            <div class="stat-card glass highlight dashboard-stat-card" style="display: flex; flex-direction: column; align-items: center; padding: 16px; text-align: center; width: 100%;">
               <span class="stat-title" style="font-size: 0.85rem;">Chance to Win World Cup 🏆</span>
               <span id="stat-winner-pct" class="stat-value" style="font-size: 1.8rem;">0%</span>
             </div>
@@ -1439,6 +1439,14 @@
           }
         });
       }
+
+      document.querySelectorAll('.dashboard-stat-card').forEach(card => {
+        card.addEventListener('click', () => {
+          if (btnOpenWinProbabilities) {
+            btnOpenWinProbabilities.click();
+          }
+        });
+      });
 
       // Dismiss standings tooltip when tapping outside on mobile
       document.addEventListener('touchstart', (e) => {
