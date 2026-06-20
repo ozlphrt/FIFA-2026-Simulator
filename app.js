@@ -316,7 +316,8 @@ function initSeededMatches() {
       window.SeededMatches['D'] = [
         { teamAId: 'USA', teamBId: 'PRY', goalsA: 4, goalsB: 1 },
         { teamAId: 'AUS', teamBId: 'TUR', goalsA: 2, goalsB: 0 },
-        { teamAId: 'USA', teamBId: 'AUS', goalsA: 2, goalsB: 0 }
+        { teamAId: 'USA', teamBId: 'AUS', goalsA: 2, goalsB: 0 },
+        { teamAId: 'TUR', teamBId: 'PRY', goalsA: 0, goalsB: 1 }
       ];
     } else if (groupName === 'A') {
       window.SeededMatches['A'] = [
