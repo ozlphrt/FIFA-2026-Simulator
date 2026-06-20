@@ -1091,32 +1091,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 /* Win Probabilities Leaderboard Button & Rows */
-#btn-open-win-probabilities {
-  margin-top: 6px;
-  margin-bottom: 8px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-weight: 600;
-  background: transparent;
-  border: 1.5px solid var(--accent-gold);
-  color: var(--accent-gold);
-  box-shadow: 0 4px 15px rgba(205, 162, 80, 0.1);
-  border-radius: 12px;
-  padding: 16px;
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  min-height: 48px;
-  box-sizing: border-box;
-}
-
 #btn-open-win-probabilities:hover {
-  background: rgba(205, 162, 80, 0.1);
+  background: rgba(205, 162, 80, 0.1) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(205, 162, 80, 0.2);
+  box-shadow: 0 6px 20px rgba(205, 162, 80, 0.2) !important;
 }
 
 #btn-open-win-probabilities:active {
