@@ -1067,14 +1067,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .bracket-column-header {
   text-align: center;
-  font-size: 1.7rem;
-  font-weight: 800;
+  font-size: 3.8rem;
+  font-weight: 900;
   color: var(--accent-gold);
   text-transform: uppercase;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--glass-border);
-  letter-spacing: 2px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--accent-gold-glow);
+  letter-spacing: 4px;
+  text-shadow: 0 0 12px var(--accent-gold-glow);
 }
 
 .bracket-column-matches {
