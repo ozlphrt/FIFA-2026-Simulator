@@ -152,17 +152,19 @@
             </div>
           </div>
 
-          <!-- View Interactive Bracket Trigger Button -->
-          <button id="btn-open-bracket" class="btn-primary" style="margin-top: 14px; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%);">
-            <span>🏆 Bracket Board</span>
-            <span class="btn-icon">⚡</span>
-          </button>
-          
-          <button id="btn-open-win-probabilities" class="btn-primary" style="margin-top: 6px; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-primary); box-shadow: 0 4px 15px rgba(138, 12, 37, 0.4);">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-primary); flex-shrink: 0;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-            <span>Win Probabilities</span>
-            <span class="btn-icon">⚡</span>
-          </button>
+          <!-- Action Buttons (Side by Side) -->
+          <div style="display: flex; gap: 12px; margin-top: 14px; margin-bottom: 8px;">
+            <button id="btn-open-bracket" class="btn-primary" style="flex: 1; padding: 10px 8px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%); min-height: 40px; margin: 0;">
+              <span>🏆 Bracket Board</span>
+              <span class="btn-icon">⚡</span>
+            </button>
+            
+            <button id="btn-open-win-probabilities" class="btn-primary" style="flex: 1; padding: 10px 8px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-primary); box-shadow: 0 4px 15px rgba(138, 12, 37, 0.4); min-height: 40px; margin: 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-primary); flex-shrink: 0;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              <span>Win Probabilities</span>
+              <span class="btn-icon">⚡</span>
+            </button>
+          </div>
 
         </div>
       </section>
