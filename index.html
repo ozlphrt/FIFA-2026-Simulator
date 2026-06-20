@@ -1304,12 +1304,7 @@
           
           const hasSelectedTeam = m.teamA.id === currentSelectedTeamId || m.teamB.id === currentSelectedTeamId;
           if (hasSelectedTeam) {
-            card.style.border = '2px solid #e5a93b';
-            card.style.boxShadow = '0 0 20px rgba(229, 169, 59, 0.4)';
-            card.style.background = 'rgba(229, 169, 59, 0.15)';
-          } else {
-            card.style.border = '1px solid var(--glass-border)';
-            card.style.background = 'rgba(255, 255, 255, 0.02)';
+            card.classList.add('highlight-user-team');
           }
           
           card.style.display = 'flex';
