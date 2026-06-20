@@ -313,7 +313,26 @@
         let totalGoalsA = 0, totalGoalsB = 0;
         const scorelines = {};
 
-        const ratingDiff = teamA.rating - teamB.rating;
+        // Calculate Form Ratings
+        // If a team has high probability of reaching deep stages (e.g. SF/Final/Winner) in the tournament simulator, we apply a dynamic form modifier.
+        let formModifierA = 0;
+        let formModifierB = 0;
+        if (window.latestSimulationResults) {
+          const statsA = window.latestSimulationResults.teamStages[teamA.id];
+          const statsB = window.latestSimulationResults.teamStages[teamB.id];
+          if (statsA && statsB) {
+            // Give a boost based on champion probability & reach final probability
+            const powerA = (statsA['Winner'] * 150) + (statsA['Final'] * 50);
+            const powerB = (statsB['Winner'] * 150) + (statsB['Final'] * 50);
+            formModifierA = Math.round(powerA);
+            formModifierB = Math.round(powerB);
+          }
+        }
+
+        const ratingA = teamA.rating + formModifierA;
+        const ratingB = teamB.rating + formModifierB;
+
+        const ratingDiff = ratingA - ratingB;
         const lambdaA = 1.35 * Math.pow(10, ratingDiff / 1600);
         const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 1600);
 
@@ -407,11 +426,23 @@
         if (gap < 50) {
           reasoningHtml += `These teams are extremely evenly matched (Elo gap is only ${gap} points), making a highly competitive match or a draw very likely. `;
         } else {
-          reasoningHtml += `<strong>${favorite.name}</strong> holds a substantial rating advantage of ${gap} Elo points over ${underdog.name}, making them the clear favorite. `;
+          reasoningHtml += `<strong>${favorite.name}</strong> holds a substantial baseline advantage of ${gap} Elo points over ${underdog.name}. `;
         }
 
-        reasoningHtml += `<br><br><strong>Attacking Expectation (xG):</strong> Based on rating differentials, ${teamA.name} is expected to score <strong>${avgGoalsA.toFixed(2)}</strong> goals per match on average, while ${teamB.name} has an expected goals value of <strong>${avgGoalsB.toFixed(2)}</strong>. `;
-        reasoningHtml += `<br><br><strong>Outcome Projection:</strong> Running 5,000 simulations projects a <strong>${pctWinA}%</strong> chance of a ${teamA.name} victory, a <strong>${pctWinB}%</strong> chance for a ${teamB.name} victory, and a <strong>${pctDraw}%</strong> chance of a draw. The most statistically common scoreline obtained in the simulation is <strong>${predGoalsA} - ${predGoalsB}</strong>.`;
+        // Output Form Momentum context if active
+        if (formModifierA !== 0 || formModifierB !== 0) {
+          reasoningHtml += `<br><br><strong>Tournament Form & Momentum:</strong> `;
+          if (formModifierA > formModifierB) {
+            reasoningHtml += `${teamA.name} enters with superior dynamic tournament form, gaining a simulated performance boost of <strong>+${formModifierA} Elo</strong> based on deep-run probability, compared to ${teamB.name}'s form adjustment of +${formModifierB} Elo. `;
+          } else if (formModifierB > formModifierA) {
+            reasoningHtml += `${teamB.name} enters with superior dynamic tournament form, gaining a simulated performance boost of <strong>+${formModifierB} Elo</strong> based on deep-run probability, compared to ${teamA.name}'s form adjustment of +${formModifierA} Elo. `;
+          } else {
+            reasoningHtml += `Both teams carry equivalent tournament form adjustments (+${formModifierA} Elo) based on their simulated advancement momentum. `;
+          }
+        }
+
+        reasoningHtml += `<br><br><strong>Attacking Expectation (xG):</strong> Based on adjusted rating differentials, ${teamA.name} is expected to score <strong>${avgGoalsA.toFixed(2)}</strong> goals per match on average, while ${teamB.name} has an expected goals value of <strong>${avgGoalsB.toFixed(2)}</strong>. `;
+        reasoningHtml += `<br><br><strong>Outcome Projection:</strong> Running 10,000 simulations projects a <strong>${pctWinA}%</strong> chance of a ${teamA.name} victory, a <strong>${pctWinB}%</strong> chance for a ${teamB.name} victory, and a <strong>${pctDraw}%</strong> chance of a draw. The most statistically common scoreline obtained in the simulation is <strong>${predGoalsA} - ${predGoalsB}</strong>.`;
 
         document.getElementById('pred-reasoning').innerHTML = reasoningHtml;
         predictorResults.classList.remove('hidden');
