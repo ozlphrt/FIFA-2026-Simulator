@@ -14,9 +14,9 @@
   --success-green: #00e676;
 
   /* Bracket Sizing Variables */
-  --card-height: 140px;
-  --card-gap: 18px;
-  --col-width: 360px;
+  --card-height: 150px;
+  --card-gap: 20px;
+  --col-width: 410px;
 }
 
 * {
