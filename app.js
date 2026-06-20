@@ -147,13 +147,18 @@ function runSingleSimulation(teamsList, selectedTeamId) {
     groups[team.group].push(team);
   });
 
+  const groupMatchesTrack = {};
+
   // Group Stage
   for (const groupName in groups) {
     const groupTeams = groups[groupName];
+    const groupMatches = [];
+    groupMatchesTrack[groupName] = groupMatches;
     
     // Seed pre-played games for this group
     const seeded = window.SeededMatches[groupName] || [];
     seeded.forEach(m => {
+      groupMatches.push({ teamAId: m.teamAId, teamBId: m.teamBId, goalsA: m.goalsA, goalsB: m.goalsB });
       const tA = groupTeams.find(t => t.id === m.teamAId);
       const tB = groupTeams.find(t => t.id === m.teamBId);
       if (tA && tB) {
@@ -175,6 +180,7 @@ function runSingleSimulation(teamsList, selectedTeamId) {
         const teamB = groupTeams[j];
         if (!isSeeded(teamA.id, teamB.id)) {
           const [gA, gB] = simulateMatch(teamA, teamB);
+          groupMatches.push({ teamAId: teamA.id, teamBId: teamB.id, goalsA: gA, goalsB: gB });
           recordMatchStats(teamA, teamB, gA, gB);
         }
       }
@@ -189,14 +195,92 @@ function runSingleSimulation(teamsList, selectedTeamId) {
 
   for (const groupName in groups) {
     const groupTeams = groups[groupName];
+    const groupMatches = groupMatchesTrack[groupName];
+    
     groupTeams.forEach(t => {
       t.goalDiff = t.goalsFor - t.goalsAgainst;
     });
     
     groupTeams.sort((a, b) => {
-      if (b.points !== a.points) return b.points - a.points;
-      if (b.goalDiff !== a.goalDiff) return b.goalDiff - a.goalDiff;
-      if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+      // 1. Points
+      if (b.points !== a.points) {
+        return b.points - a.points;
+      }
+      
+      // Find all teams with the same points as a and b
+      const tiedTeams = groupTeams.filter(t => t.points === a.points);
+      if (tiedTeams.length > 1) {
+        // 2. Head-to-head points among tied teams
+        const getH2HPoints = (teamId) => {
+          let pts = 0;
+          groupMatches.forEach(m => {
+            if (tiedTeams.some(t => t.id === m.teamAId) && tiedTeams.some(t => t.id === m.teamBId)) {
+              if (m.teamAId === teamId) {
+                if (m.goalsA > m.goalsB) pts += 3;
+                else if (m.goalsA === m.goalsB) pts += 1;
+              } else if (m.teamBId === teamId) {
+                if (m.goalsB > m.goalsA) pts += 3;
+                else if (m.goalsA === m.goalsB) pts += 1;
+              }
+            }
+          });
+          return pts;
+        };
+        
+        const h2hPtsA = getH2HPoints(a.id);
+        const h2hPtsB = getH2HPoints(b.id);
+        if (h2hPtsB !== h2hPtsA) {
+          return h2hPtsB - h2hPtsA;
+        }
+        
+        // 3. Head-to-head goal difference among tied teams
+        const getH2HGoalDiff = (teamId) => {
+          let gd = 0;
+          groupMatches.forEach(m => {
+            if (tiedTeams.some(t => t.id === m.teamAId) && tiedTeams.some(t => t.id === m.teamBId)) {
+              if (m.teamAId === teamId) gd += (m.goalsA - m.goalsB);
+              else if (m.teamBId === teamId) gd += (m.goalsB - m.goalsA);
+            }
+          });
+          return gd;
+        };
+        
+        const h2hGDA = getH2HGoalDiff(a.id);
+        const h2hGDB = getH2HGoalDiff(b.id);
+        if (h2hGDB !== h2hGDA) {
+          return h2hGDB - h2hGDA;
+        }
+        
+        // 4. Head-to-head goals scored among tied teams
+        const getH2HGoalsFor = (teamId) => {
+          let gf = 0;
+          groupMatches.forEach(m => {
+            if (tiedTeams.some(t => t.id === m.teamAId) && tiedTeams.some(t => t.id === m.teamBId)) {
+              if (m.teamAId === teamId) gf += m.goalsA;
+              else if (m.teamBId === teamId) gf += m.goalsB;
+            }
+          });
+          return gf;
+        };
+        
+        const h2hGFA = getH2HGoalsFor(a.id);
+        const h2hGFB = getH2HGoalsFor(b.id);
+        if (h2hGFB !== h2hGFA) {
+          return h2hGFB - h2hGFA;
+        }
+      }
+      
+      // 5. Overall goal difference
+      if (b.goalDiff !== a.goalDiff) {
+        return b.goalDiff - a.goalDiff;
+      }
+      
+      // 6. Overall goals scored
+      if (b.goalsFor !== a.goalsFor) {
+        return b.goalsFor - a.goalsFor;
+      }
+      
+      // 7. Rating
       return b.rating - a.rating;
     });
 
