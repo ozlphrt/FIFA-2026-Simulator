@@ -1111,3 +1111,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
   filter: grayscale(50%);
 }
 
+.bracket-team-row {
+  cursor: pointer;
+}
+.bracket-team-row:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+
