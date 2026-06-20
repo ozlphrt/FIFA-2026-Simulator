@@ -1325,10 +1325,16 @@
           const results = window.latestSimulationResults;
           
           const sortedTeams = teams.map(t => {
+            const qfProb = results.teamStages[t.id] ? results.teamStages[t.id]['Quarterfinals'] : 0;
+            const sfProb = results.teamStages[t.id] ? results.teamStages[t.id]['Semifinals'] : 0;
+            const fProb = results.teamStages[t.id] ? results.teamStages[t.id]['Final'] : 0;
             const winProb = results.teamStages[t.id] ? results.teamStages[t.id]['Winner'] : 0;
-            return { ...t, winProb };
+            return { ...t, qfProb, sfProb, fProb, winProb };
           }).sort((a, b) => {
             if (b.winProb !== a.winProb) return b.winProb - a.winProb;
+            if (b.fProb !== a.fProb) return b.fProb - a.fProb;
+            if (b.sfProb !== a.sfProb) return b.sfProb - a.sfProb;
+            if (b.qfProb !== a.qfProb) return b.qfProb - a.qfProb;
             return b.rating - a.rating;
           });
 
@@ -1337,10 +1343,10 @@
             const tr = document.createElement('tr');
             tr.style.cursor = 'pointer';
             
-            const qfProb = results.teamStages[t.id] ? results.teamStages[t.id]['Quarterfinals'] : 0;
-            const sfProb = results.teamStages[t.id] ? results.teamStages[t.id]['Semifinals'] : 0;
-            const fProb = results.teamStages[t.id] ? results.teamStages[t.id]['Final'] : 0;
-            const winProb = results.teamStages[t.id] ? results.teamStages[t.id]['Winner'] : 0;
+            const qfProb = t.qfProb;
+            const sfProb = t.sfProb;
+            const fProb = t.fProb;
+            const winProb = t.winProb;
 
             const isSelected = t.id === currentSelectedTeamId;
             tr.className = `win-prob-row ${isSelected ? 'turkey-row' : ''}`;
