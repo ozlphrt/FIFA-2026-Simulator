@@ -432,7 +432,8 @@ function initSeededMatches() {
     } else if (groupName === 'F') {
       window.SeededMatches['F'] = [
         { teamAId: 'SWE', teamBId: 'TUN', goalsA: 5, goalsB: 1 },
-        { teamAId: 'NED', teamBId: 'JPN', goalsA: 2, goalsB: 2 }
+        { teamAId: 'NED', teamBId: 'JPN', goalsA: 2, goalsB: 2 },
+        { teamAId: 'NED', teamBId: 'SWE', goalsA: 5, goalsB: 1 }
       ];
     } else if (groupName === 'I') {
       window.SeededMatches['I'] = [

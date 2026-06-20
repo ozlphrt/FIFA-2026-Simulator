@@ -1,0 +1,59 @@
+{
+  "A": [
+    { "teamAId": "MEX", "teamBId": "RSA", "goalsA": 2, "goalsB": 0 },
+    { "teamAId": "KOR", "teamBId": "CZE", "goalsA": 2, "goalsB": 1 },
+    { "teamAId": "CZE", "teamBId": "RSA", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "MEX", "teamBId": "KOR", "goalsA": 1, "goalsB": 0 }
+  ],
+  "B": [
+    { "teamAId": "CAN", "teamBId": "BIH", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "SUI", "teamBId": "QAT", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "CAN", "teamBId": "QAT", "goalsA": 6, "goalsB": 0 },
+    { "teamAId": "SUI", "teamBId": "BIH", "goalsA": 4, "goalsB": 1 }
+  ],
+  "C": [
+    { "teamAId": "BRA", "teamBId": "MAR", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "SCO", "teamBId": "HAI", "goalsA": 1, "goalsB": 0 },
+    { "teamAId": "BRA", "teamBId": "HAI", "goalsA": 3, "goalsB": 0 },
+    { "teamAId": "MAR", "teamBId": "SCO", "goalsA": 1, "goalsB": 0 }
+  ],
+  "D": [
+    { "teamAId": "USA", "teamBId": "PRY", "goalsA": 4, "goalsB": 1 },
+    { "teamAId": "AUS", "teamBId": "TUR", "goalsA": 2, "goalsB": 0 },
+    { "teamAId": "USA", "teamBId": "AUS", "goalsA": 2, "goalsB": 0 },
+    { "teamAId": "TUR", "teamBId": "PRY", "goalsA": 0, "goalsB": 1 }
+  ],
+  "E": [
+    { "teamAId": "GER", "teamBId": "CUW", "goalsA": 7, "goalsB": 1 },
+    { "teamAId": "CIV", "teamBId": "ECU", "goalsA": 1, "goalsB": 0 }
+  ],
+  "F": [
+    { "teamAId": "SWE", "teamBId": "TUN", "goalsA": 5, "goalsB": 1 },
+    { "teamAId": "NED", "teamBId": "JPN", "goalsA": 2, "goalsB": 2 },
+    { "teamAId": "NED", "teamBId": "SWE", "goalsA": 5, "goalsB": 1 }
+  ],
+  "G": [
+    { "teamAId": "BEL", "teamBId": "EGY", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "IRN", "teamBId": "NZL", "goalsA": 2, "goalsB": 2 }
+  ],
+  "H": [
+    { "teamAId": "ESP", "teamBId": "CPV", "goalsA": 0, "goalsB": 0 },
+    { "teamAId": "KSA", "teamBId": "URU", "goalsA": 1, "goalsB": 1 }
+  ],
+  "I": [
+    { "teamAId": "FRA", "teamBId": "SEN", "goalsA": 3, "goalsB": 1 },
+    { "teamAId": "NOR", "teamBId": "IRQ", "goalsA": 4, "goalsB": 1 }
+  ],
+  "J": [
+    { "teamAId": "ARG", "teamBId": "ALG", "goalsA": 3, "goalsB": 0 },
+    { "teamAId": "AUT", "teamBId": "JOR", "goalsA": 3, "goalsB": 1 }
+  ],
+  "K": [
+    { "teamAId": "POR", "teamBId": "COD", "goalsA": 1, "goalsB": 1 },
+    { "teamAId": "COL", "teamBId": "UZB", "goalsA": 3, "goalsB": 1 }
+  ],
+  "L": [
+    { "teamAId": "ENG", "teamBId": "CRO", "goalsA": 4, "goalsB": 2 },
+    { "teamAId": "GHA", "teamBId": "PAN", "goalsA": 1, "goalsB": 0 }
+  ]
+}
