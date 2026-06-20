@@ -444,6 +444,16 @@ function initSeededMatches() {
         { teamAId: 'ARG', teamBId: 'ALG', goalsA: 3, goalsB: 0 },
         { teamAId: 'AUT', teamBId: 'JOR', goalsA: 3, goalsB: 1 }
       ];
+    } else if (groupName === 'K') {
+      window.SeededMatches['K'] = [
+        { teamAId: 'POR', teamBId: 'COD', goalsA: 1, goalsB: 1 },
+        { teamAId: 'COL', teamBId: 'UZB', goalsA: 3, goalsB: 1 }
+      ];
+    } else if (groupName === 'L') {
+      window.SeededMatches['L'] = [
+        { teamAId: 'ENG', teamBId: 'CRO', goalsA: 4, goalsB: 2 },
+        { teamAId: 'GHA', teamBId: 'PAN', goalsA: 1, goalsB: 0 }
+      ];
     } else {
       const t0 = groupTeams[0];
       const t1 = groupTeams[1];
