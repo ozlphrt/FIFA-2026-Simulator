@@ -4,65 +4,64 @@
 const DEFAULT_TEAMS = [
   // Group A
   { id: 'MEX', name: 'Mexico', rating: 1680, group: 'A', flag: 'mx' },
-  { id: 'COL', name: 'Colombia', rating: 1820, group: 'A', flag: 'co' },
-  { id: 'CMR', name: 'Cameroon', rating: 1610, group: 'A', flag: 'cm' },
-  { id: 'NZL', name: 'New Zealand', rating: 1510, group: 'A', flag: 'nz' },
+  { id: 'RSA', name: 'South Africa', rating: 1600, group: 'A', flag: 'za' },
+  { id: 'KOR', name: 'South Korea', rating: 1740, group: 'A', flag: 'kr' },
+  { id: 'CZE', name: 'Czechia', rating: 1670, group: 'A', flag: 'cz' },
   // Group B
   { id: 'CAN', name: 'Canada', rating: 1690, group: 'B', flag: 'ca' },
-  { id: 'ECU', name: 'Ecuador', rating: 1720, group: 'B', flag: 'ec' },
-  { id: 'POL', name: 'Poland', rating: 1650, group: 'B', flag: 'pl' },
-  { id: 'ANG', name: 'Angola', rating: 1540, group: 'B', flag: 'ao' },
+  { id: 'SUI', name: 'Switzerland', rating: 1780, group: 'B', flag: 'ch' },
+  { id: 'QAT', name: 'Qatar', rating: 1600, group: 'B', flag: 'qa' },
+  { id: 'BIH', name: 'Bosnia and Herzegovina', rating: 1640, group: 'B', flag: 'ba' },
   // Group C
-  { id: 'URU', name: 'Uruguay', rating: 1890, group: 'C', flag: 'uy' },
+  { id: 'BRA', name: 'Brazil', rating: 2020, group: 'C', flag: 'br' },
+  { id: 'MAR', name: 'Morocco', rating: 1840, group: 'C', flag: 'ma' },
+  { id: 'HAI', name: 'Haiti', rating: 1510, group: 'C', flag: 'ht' },
   { id: 'SCO', name: 'Scotland', rating: 1640, group: 'C', flag: 'gb-sct' },
-  { id: 'UZB', name: 'Uzbekistan', rating: 1580, group: 'C', flag: 'uz' },
-  { id: 'JAM', name: 'Jamaica', rating: 1550, group: 'C', flag: 'jm' },
-  // Group D (Official: USA, Australia, Turkey, Paraguay)
+  // Group D
   { id: 'USA', name: 'United States', rating: 1860, group: 'D', flag: 'us' },
-  { id: 'AUS', name: 'Australia', rating: 1690, group: 'D', flag: 'au' },
-  { id: 'TUR', name: 'Turkey', rating: 1770, group: 'D', flag: 'tr' }, 
   { id: 'PRY', name: 'Paraguay', rating: 1650, group: 'D', flag: 'py' },
+  { id: 'AUS', name: 'Australia', rating: 1690, group: 'D', flag: 'au' },
+  { id: 'TUR', name: 'Turkey', rating: 1770, group: 'D', flag: 'tr' },
   // Group E
-  { id: 'BRA', name: 'Brazil', rating: 2020, group: 'E', flag: 'br' },
-  { id: 'AUT', name: 'Austria', rating: 1760, group: 'E', flag: 'at' },
-  { id: 'MLI', name: 'Mali', rating: 1630, group: 'E', flag: 'ml' },
-  { id: 'IRQ', name: 'Iraq', rating: 1570, group: 'E', flag: 'iq' },
+  { id: 'GER', name: 'Germany', rating: 1980, group: 'E', flag: 'de' },
+  { id: 'CUW', name: 'Curaçao', rating: 1500, group: 'E', flag: 'cw' },
+  { id: 'CIV', name: 'Côte d\'Ivoire', rating: 1710, group: 'E', flag: 'ci' },
+  { id: 'ECU', name: 'Ecuador', rating: 1720, group: 'E', flag: 'ec' },
   // Group F
-  { id: 'ENG', name: 'England', rating: 2040, group: 'F', flag: 'gb-eng' },
-  { id: 'UKR', name: 'Ukraine', rating: 1740, group: 'F', flag: 'ua' },
-  { id: 'PER', name: 'Peru', rating: 1660, group: 'F', flag: 'pe' },
-  { id: 'OMA', name: 'Oman', rating: 1530, group: 'F', flag: 'om' },
+  { id: 'NED', name: 'Netherlands', rating: 2000, group: 'F', flag: 'nl' },
+  { id: 'JPN', name: 'Japan', rating: 1810, group: 'F', flag: 'jp' },
+  { id: 'TUN', name: 'Tunisia', rating: 1620, group: 'F', flag: 'tn' },
+  { id: 'SWE', name: 'Sweden', rating: 1750, group: 'F', flag: 'se' },
   // Group G
-  { id: 'ARG', name: 'Argentina', rating: 2110, group: 'G', flag: 'ar' },
-  { id: 'SRB', name: 'Serbia', rating: 1710, group: 'G', flag: 'rs' },
-  { id: 'CRC', name: 'Costa Rica', rating: 1590, group: 'G', flag: 'cr' },
-  { id: 'RSA', name: 'South Africa', rating: 1600, group: 'G', flag: 'za' },
+  { id: 'BEL', name: 'Belgium', rating: 1950, group: 'G', flag: 'be' },
+  { id: 'EGY', name: 'Egypt', rating: 1670, group: 'G', flag: 'eg' },
+  { id: 'IRN', name: 'Iran', rating: 1750, group: 'G', flag: 'ir' },
+  { id: 'NZL', name: 'New Zealand', rating: 1510, group: 'G', flag: 'nz' },
   // Group H
   { id: 'ESP', name: 'Spain', rating: 2070, group: 'H', flag: 'es' },
-  { id: 'SWE', name: 'Sweden', rating: 1750, group: 'H', flag: 'se' },
-  { id: 'EGY', name: 'Egypt', rating: 1670, group: 'H', flag: 'eg' },
-  { id: 'CHN', name: 'China', rating: 1480, group: 'H', flag: 'cn' },
+  { id: 'CPV', name: 'Cabo Verde', rating: 1590, group: 'H', flag: 'cv' },
+  { id: 'KSA', name: 'Saudi Arabia', rating: 1610, group: 'H', flag: 'sa' },
+  { id: 'URU', name: 'Uruguay', rating: 1890, group: 'H', flag: 'uy' },
   // Group I
-  { id: 'GER', name: 'Germany', rating: 1980, group: 'I', flag: 'de' },
-  { id: 'NGA', name: 'Nigeria', rating: 1730, group: 'I', flag: 'ng' },
-  { id: 'ROU', name: 'Romania', rating: 1680, group: 'I', flag: 'ro' },
-  { id: 'PAN', name: 'Panama', rating: 1580, group: 'I', flag: 'pa' },
+  { id: 'FRA', name: 'France', rating: 2050, group: 'I', flag: 'fr' },
+  { id: 'SEN', name: 'Senegal', rating: 1720, group: 'I', flag: 'sn' },
+  { id: 'NOR', name: 'Norway', rating: 1760, group: 'I', flag: 'no' },
+  { id: 'IRQ', name: 'Iraq', rating: 1570, group: 'I', flag: 'iq' },
   // Group J
-  { id: 'BEL', name: 'Belgium', rating: 1950, group: 'J', flag: 'be' },
-  { id: 'JPN', name: 'Japan', rating: 1810, group: 'J', flag: 'jp' },
-  { id: 'VEN', name: 'Venezuela', rating: 1650, group: 'J', flag: 've' },
-  { id: 'TUN', name: 'Tunisia', rating: 1620, group: 'J', flag: 'tn' },
+  { id: 'ARG', name: 'Argentina', rating: 2110, group: 'J', flag: 'ar' },
+  { id: 'ALG', name: 'Algeria', rating: 1680, group: 'J', flag: 'dz' },
+  { id: 'AUT', name: 'Austria', rating: 1760, group: 'J', flag: 'at' },
+  { id: 'JOR', name: 'Jordan', rating: 1540, group: 'J', flag: 'jo' },
   // Group K
   { id: 'POR', name: 'Portugal', rating: 2010, group: 'K', flag: 'pt' },
-  { id: 'DEN', name: 'Denmark', rating: 1790, group: 'K', flag: 'dk' },
-  { id: 'KOR', name: 'South Korea', rating: 1740, group: 'K', flag: 'kr' },
-  { id: 'GHA', name: 'Ghana', rating: 1620, group: 'K', flag: 'gh' },
+  { id: 'UZB', name: 'Uzbekistan', rating: 1580, group: 'K', flag: 'uz' },
+  { id: 'COL', name: 'Colombia', rating: 1820, group: 'K', flag: 'co' },
+  { id: 'COD', name: 'Congo DR', rating: 1600, group: 'K', flag: 'cd' },
   // Group L
-  { id: 'NED', name: 'Netherlands', rating: 2000, group: 'L', flag: 'nl' },
-  { id: 'SUI', name: 'Switzerland', rating: 1780, group: 'L', flag: 'ch' },
-  { id: 'SEN', name: 'Senegal', rating: 1720, group: 'L', flag: 'sn' },
-  { id: 'FRA', name: 'France', rating: 2050, group: 'L', flag: 'fr' }
-];
+  { id: 'ENG', name: 'England', rating: 2040, group: 'L', flag: 'gb-eng' },
+  { id: 'CRO', name: 'Croatia', rating: 1880, group: 'L', flag: 'hr' },
+  { id: 'GHA', name: 'Ghana', rating: 1620, group: 'L', flag: 'gh' },
+  { id: 'PAN', name: 'Panama', rating: 1580, group: 'L', flag: 'pa' }
 
 // Knuth-Poisson generator for goals
 function poissonRandom(lambda) {
@@ -321,17 +320,17 @@ function initSeededMatches() {
       ];
     } else if (groupName === 'A') {
       window.SeededMatches['A'] = [
-        { teamAId: 'MEX', teamBId: 'CMR', goalsA: 2, goalsB: 0 },
-        { teamAId: 'COL', teamBId: 'NZL', goalsA: 2, goalsB: 1 },
-        { teamAId: 'NZL', teamBId: 'CMR', goalsA: 1, goalsB: 1 },
-        { teamAId: 'MEX', teamBId: 'COL', goalsA: 1, goalsB: 0 }
+        { teamAId: 'MEX', teamBId: 'RSA', goalsA: 2, goalsB: 0 },
+        { teamAId: 'KOR', teamBId: 'CZE', goalsA: 2, goalsB: 1 },
+        { teamAId: 'CZE', teamBId: 'RSA', goalsA: 1, goalsB: 1 },
+        { teamAId: 'MEX', teamBId: 'KOR', goalsA: 1, goalsB: 0 }
       ];
     } else if (groupName === 'B') {
       window.SeededMatches['B'] = [
-        { teamAId: 'CAN', teamBId: 'POL', goalsA: 1, goalsB: 1 },
-        { teamAId: 'ANG', teamBId: 'ECU', goalsA: 1, goalsB: 1 },
-        { teamAId: 'ECU', teamBId: 'POL', goalsA: 4, goalsB: 1 },
-        { teamAId: 'CAN', teamBId: 'ANG', goalsA: 6, goalsB: 0 }
+        { teamAId: 'CAN', teamBId: 'BIH', goalsA: 1, goalsB: 1 },
+        { teamAId: 'SUI', teamBId: 'QAT', goalsA: 1, goalsB: 1 },
+        { teamAId: 'CAN', teamBId: 'QAT', goalsA: 6, goalsB: 0 },
+        { teamAId: 'SUI', teamBId: 'BIH', goalsA: 4, goalsB: 1 }
       ];
     } else {
       const t0 = groupTeams[0];
