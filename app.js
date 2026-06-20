@@ -417,6 +417,28 @@ function initSeededMatches() {
         { teamAId: 'CAN', teamBId: 'QAT', goalsA: 6, goalsB: 0 },
         { teamAId: 'SUI', teamBId: 'BIH', goalsA: 4, goalsB: 1 }
       ];
+    } else if (groupName === 'C') {
+      window.SeededMatches['C'] = [
+        { teamAId: 'BRA', teamBId: 'MAR', goalsA: 1, goalsB: 1 },
+        { teamAId: 'SCO', teamBId: 'HAI', goalsA: 1, goalsB: 0 },
+        { teamAId: 'BRA', teamBId: 'HAI', goalsA: 3, goalsB: 0 },
+        { teamAId: 'MAR', teamBId: 'SCO', goalsA: 1, goalsB: 0 }
+      ];
+    } else if (groupName === 'E') {
+      window.SeededMatches['E'] = [
+        { teamAId: 'GER', teamBId: 'CUW', goalsA: 7, goalsB: 1 },
+        { teamAId: 'CIV', teamBId: 'ECU', goalsA: 1, goalsB: 0 }
+      ];
+    } else if (groupName === 'F') {
+      window.SeededMatches['F'] = [
+        { teamAId: 'SWE', teamBId: 'TUN', goalsA: 5, goalsB: 1 },
+        { teamAId: 'NED', teamBId: 'JPN', goalsA: 2, goalsB: 2 }
+      ];
+    } else if (groupName === 'I') {
+      window.SeededMatches['I'] = [
+        { teamAId: 'FRA', teamBId: 'SEN', goalsA: 3, goalsB: 1 },
+        { teamAId: 'NOR', teamBId: 'IRQ', goalsA: 4, goalsB: 1 }
+      ];
     } else {
       const t0 = groupTeams[0];
       const t1 = groupTeams[1];
