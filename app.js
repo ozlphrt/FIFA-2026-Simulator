@@ -614,19 +614,37 @@ window.SimulationEngine = {
 
         const findTeam = (id) => SimulationEngine.teams.find(t => t.id === id);
 
-        // Step 1: Establish R32 most likely matchups
+        // Step 1: Establish R32 most likely matchups (ensuring unique teams are selected)
+        const selectedTeams = new Set();
         for (let i = 0; i < 16; i++) {
           const slot = r32Slots[i];
           
           let maxAId = null, maxACount = -1;
           for (const id in slot.A) {
-            if (slot.A[id] > maxACount) { maxACount = slot.A[id]; maxAId = id; }
+            if (!selectedTeams.has(id) && slot.A[id] > maxACount) { 
+              maxACount = slot.A[id]; 
+              maxAId = id; 
+            }
           }
           
           let maxBId = null, maxBCount = -1;
           for (const id in slot.B) {
-            if (slot.B[id] > maxBCount) { maxBCount = slot.B[id]; maxBId = id; }
+            if (!selectedTeams.has(id) && id !== maxAId && slot.B[id] > maxBCount) { 
+              maxBCount = slot.B[id]; 
+              maxBId = id; 
+            }
           }
+
+          // Fallback if set logic exhausts candidates
+          if (!maxAId) {
+            for (const id in slot.A) { maxAId = id; break; }
+          }
+          if (!maxBId || maxBId === maxAId) {
+            for (const id in slot.B) { if (id !== maxAId) { maxBId = id; break; } }
+          }
+
+          selectedTeams.add(maxAId);
+          selectedTeams.add(maxBId);
 
           const teamA = findTeam(maxAId);
           const teamB = findTeam(maxBId);
