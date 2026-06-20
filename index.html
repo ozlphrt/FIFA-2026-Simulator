@@ -1346,16 +1346,15 @@
             tr.className = `win-prob-row ${isSelected ? 'turkey-row' : ''}`;
             
             tr.innerHTML = `
-              <td style="padding: 10px; font-weight: bold; color: ${idx < 3 ? 'var(--accent-gold)' : 'var(--text-secondary)'};">${idx + 1}</td>
-              <td style="padding: 10px; display: flex; align-items: center; gap: 8px;">
-                <img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 20px; height: 14px; border-radius: 2px;">
-                <span style="font-weight: 600;">${t.name}</span>
+              <td style="padding: 10px 6px; font-weight: bold; color: ${idx < 3 ? 'var(--accent-gold)' : 'var(--text-secondary)'};">${idx + 1}</td>
+              <td style="padding: 10px 6px; display: flex; align-items: center; gap: 8px; overflow: hidden;">
+                <img src="https://flagcdn.com/w40/${t.flag}.png" alt="${t.name}" class="flag-img" style="width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0;">
+                <span style="font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${t.name}</span>
               </td>
-              <td style="padding: 10px; text-align: center; color: var(--text-secondary);">${t.group}</td>
-              <td style="padding: 10px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.6);">${(qfProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.7);">${(sfProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.85);">${(fProb * 100).toFixed(1)}%</td>
-              <td style="padding: 10px; text-align: right; font-weight: bold; color: var(--accent-gold);">${(winProb * 100).toFixed(2)}%</td>
+              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.6);">${(qfProb * 100).toFixed(1)}%</td>
+              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.7);">${(sfProb * 100).toFixed(1)}%</td>
+              <td style="padding: 10px 6px; text-align: right; font-weight: 500; color: rgba(255, 255, 255, 0.85);">${(fProb * 100).toFixed(1)}%</td>
+              <td style="padding: 10px 6px; text-align: right; font-weight: bold; color: var(--accent-gold);">${(winProb * 100).toFixed(2)}%</td>
             `;
             
             tr.addEventListener('click', () => {
@@ -1408,16 +1407,15 @@
           The statistical chance of each team winning the World Cup or reaching key stages, calculated from 20,000 Monte Carlo simulation runs. Click any team to select them.
         </p>
         <div class="table-responsive">
-          <table class="standings-table" style="width: 100%;">
+          <table class="standings-table" style="width: 100%; table-layout: fixed;">
             <thead>
               <tr>
-                <th style="text-align: left; padding: 10px;">Rank</th>
-                <th style="text-align: left; padding: 10px;">Team</th>
-                <th style="text-align: center; padding: 10px;">Group</th>
-                <th style="text-align: right; padding: 10px;">QF%</th>
-                <th style="text-align: right; padding: 10px;">SF%</th>
-                <th style="text-align: right; padding: 10px;">Final%</th>
-                <th style="text-align: right; padding: 10px;">Win%</th>
+                <th style="width: 12%; text-align: left; padding: 10px 6px;">Rank</th>
+                <th style="width: 36%; text-align: left; padding: 10px 6px;">Team</th>
+                <th style="width: 13%; text-align: right; padding: 10px 6px;">QF%</th>
+                <th style="width: 13%; text-align: right; padding: 10px 6px;">SF%</th>
+                <th style="width: 13%; text-align: right; padding: 10px 6px;">Final%</th>
+                <th style="width: 13%; text-align: right; padding: 10px 6px;">Win%</th>
               </tr>
             </thead>
             <tbody id="win-probabilities-table-body">
