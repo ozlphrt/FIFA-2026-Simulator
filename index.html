@@ -44,9 +44,12 @@
       <section class="config-panel glass">
 
         <div class="seeded-stats">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; flex-wrap: wrap;">
             <h3 style="margin: 0; border: none; padding-bottom: 0;" id="standings-header">Group Standings</h3>
-            <button id="btn-open-tuning" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">Tune Ratings</button>
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-open-tuning" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">Tune Ratings</button>
+              <button id="btn-open-predictor" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%) !important;">Predict Match</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table class="standings-table">
@@ -227,6 +230,7 @@
       }
 
       // Tuning Modal DOM selectors
+      // Tuning Modal DOM selectors
       const btnOpenTuning = document.getElementById('btn-open-tuning');
       const tuningModal = document.getElementById('tuning-modal');
       const closeTuningBtn = document.getElementById('close-tuning-btn');
@@ -244,6 +248,173 @@
         if (e.target === tuningModal) {
           tuningModal.classList.add('hidden');
         }
+      });
+
+      // Match Predictor DOM selectors
+      const btnOpenPredictor = document.getElementById('btn-open-predictor');
+      const matchPredictorModal = document.getElementById('match-predictor-modal');
+      const closePredictorBtn = document.getElementById('close-predictor-btn');
+      const predictorTeamA = document.getElementById('predictor-team-a');
+      const predictorTeamB = document.getElementById('predictor-team-b');
+      const btnRunPrediction = document.getElementById('btn-run-prediction');
+      const predictorResults = document.getElementById('predictor-results');
+
+      function populatePredictorDropdowns() {
+        const teams = [...window.SimulationEngine.teams].sort((a, b) => a.name.localeCompare(b.name));
+        predictorTeamA.innerHTML = '';
+        predictorTeamB.innerHTML = '';
+        
+        teams.forEach(t => {
+          const optA = document.createElement('option');
+          optA.value = t.id;
+          optA.innerText = `${t.name} (Group ${t.group})`;
+          predictorTeamA.appendChild(optA);
+          
+          const optB = document.createElement('option');
+          optB.value = t.id;
+          optB.innerText = `${t.name} (Group ${t.group})`;
+          predictorTeamB.appendChild(optB);
+        });
+
+        predictorTeamA.value = currentSelectedTeamId;
+        const remainingTeams = teams.filter(t => t.id !== currentSelectedTeamId);
+        predictorTeamB.value = remainingTeams.length > 0 ? remainingTeams[0].id : teams[0].id;
+      }
+
+      btnOpenPredictor.addEventListener('click', () => {
+        populatePredictorDropdowns();
+        predictorResults.classList.add('hidden');
+        matchPredictorModal.classList.remove('hidden');
+      });
+
+      closePredictorBtn.addEventListener('click', () => {
+        matchPredictorModal.classList.add('hidden');
+      });
+
+      matchPredictorModal.addEventListener('click', (e) => {
+        if (e.target === matchPredictorModal) {
+          matchPredictorModal.classList.add('hidden');
+        }
+      });
+
+      btnRunPrediction.addEventListener('click', () => {
+        const idA = predictorTeamA.value;
+        const idB = predictorTeamB.value;
+        if (idA === idB) {
+          alert("Please select two different teams!");
+          return;
+        }
+
+        const teamA = window.SimulationEngine.teams.find(t => t.id === idA);
+        const teamB = window.SimulationEngine.teams.find(t => t.id === idB);
+
+        const iterations = 5000;
+        let winsA = 0, draws = 0, winsB = 0;
+        let totalGoalsA = 0, totalGoalsB = 0;
+        const scorelines = {};
+
+        const ratingDiff = teamA.rating - teamB.rating;
+        const lambdaA = 1.35 * Math.pow(10, ratingDiff / 1600);
+        const lambdaB = 1.35 * Math.pow(10, -ratingDiff / 1600);
+
+        for (let i = 0; i < iterations; i++) {
+          const getPoisson = (l) => {
+            const L = Math.exp(-l);
+            let k = 0;
+            let p = 1.0;
+            do {
+              k++;
+              p *= Math.random();
+            } while (p > L && k < 15);
+            return k - 1;
+          };
+
+          const gA = getPoisson(lambdaA);
+          const gB = getPoisson(lambdaB);
+
+          totalGoalsA += gA;
+          totalGoalsB += gB;
+
+          if (gA > gB) winsA++;
+          else if (gA < gB) winsB++;
+          else draws++;
+
+          const scoreKey = `${gA}-${gB}`;
+          scorelines[scoreKey] = (scorelines[scoreKey] || 0) + 1;
+        }
+
+        let mostFreqScore = "1-1";
+        let maxCount = -1;
+        for (const score in scorelines) {
+          if (scorelines[score] > maxCount) {
+            maxCount = scorelines[score];
+            mostFreqScore = score;
+          }
+        }
+
+        const [predGoalsA, predGoalsB] = mostFreqScore.split('-').map(Number);
+        const avgGoalsA = totalGoalsA / iterations;
+        const avgGoalsB = totalGoalsB / iterations;
+
+        const pctWinA = (winsA / iterations * 100).toFixed(1);
+        const pctDraw = (draws / iterations * 100).toFixed(1);
+        const pctWinB = (winsB / iterations * 100).toFixed(1);
+
+        document.getElementById('pred-flag-a').src = `https://flagcdn.com/w40/${teamA.flag}.png`;
+        document.getElementById('pred-name-a').innerText = teamA.id;
+        document.getElementById('pred-flag-b').src = `https://flagcdn.com/w40/${teamB.flag}.png`;
+        document.getElementById('pred-name-b').innerText = teamB.id;
+        
+        document.getElementById('pred-score-text').innerText = `${predGoalsA} - ${predGoalsB}`;
+
+        const barWinA = document.getElementById('pred-bar-win-a');
+        const barDraw = document.getElementById('pred-bar-draw');
+        const barWinB = document.getElementById('pred-bar-win-b');
+
+        barWinA.style.width = `${pctWinA}%`;
+        barWinA.innerText = pctWinA > 10 ? `${pctWinA}%` : '';
+        barDraw.style.width = `${pctDraw}%`;
+        barDraw.innerText = pctDraw > 10 ? `${pctDraw}%` : '';
+        barWinB.style.width = `${pctWinB}%`;
+        barWinB.innerText = pctWinB > 10 ? `${pctWinB}%` : '';
+
+        document.getElementById('pred-lbl-win-a').innerText = `${teamA.name}: ${pctWinA}%`;
+        document.getElementById('pred-lbl-draw').innerText = `Draw: ${pctDraw}%`;
+        document.getElementById('pred-lbl-win-b').innerText = `${teamB.name}: ${pctWinB}%`;
+
+        document.getElementById('pred-name-xg-a').innerText = teamA.name;
+        document.getElementById('pred-name-xg-b').innerText = teamB.name;
+        document.getElementById('pred-xg-val-a').innerText = avgGoalsA.toFixed(2);
+        document.getElementById('pred-xg-val-b').innerText = avgGoalsB.toFixed(2);
+
+        document.getElementById('pred-xg-bar-a').style.width = `${Math.min(100, (avgGoalsA / 4.0) * 100)}%`;
+        document.getElementById('pred-xg-bar-b').style.width = `${Math.min(100, (avgGoalsB / 4.0) * 100)}%`;
+
+        const getTier = (r) => {
+          if (r >= 2000) return 'Top Tier';
+          if (r >= 1750) return 'High Tier';
+          if (r >= 1600) return 'Mid Tier';
+          return 'Challenger Tier';
+        };
+
+        const tierA = getTier(teamA.rating);
+        const tierB = getTier(teamB.rating);
+        const gap = Math.abs(teamA.rating - teamB.rating);
+        const favorite = teamA.rating > teamB.rating ? teamA : teamB;
+        const underdog = teamA.rating > teamB.rating ? teamB : teamA;
+
+        let reasoningHtml = `<strong>Elo Comparison:</strong> ${teamA.name} (${teamA.rating}, ${tierA}) vs. ${teamB.name} (${teamB.rating}, ${tierB}). `;
+        if (gap < 50) {
+          reasoningHtml += `These teams are extremely evenly matched (Elo gap is only ${gap} points), making a highly competitive match or a draw very likely. `;
+        } else {
+          reasoningHtml += `<strong>${favorite.name}</strong> holds a substantial rating advantage of ${gap} Elo points over ${underdog.name}, making them the clear favorite. `;
+        }
+
+        reasoningHtml += `<br><br><strong>Attacking Expectation (xG):</strong> Based on rating differentials, ${teamA.name} is expected to score <strong>${avgGoalsA.toFixed(2)}</strong> goals per match on average, while ${teamB.name} has an expected goals value of <strong>${avgGoalsB.toFixed(2)}</strong>. `;
+        reasoningHtml += `<br><br><strong>Outcome Projection:</strong> Running 5,000 simulations projects a <strong>${pctWinA}%</strong> chance of a ${teamA.name} victory, a <strong>${pctWinB}%</strong> chance for a ${teamB.name} victory, and a <strong>${pctDraw}%</strong> chance of a draw. The most statistically common scoreline obtained in the simulation is <strong>${predGoalsA} - ${predGoalsB}</strong>.`;
+
+        document.getElementById('pred-reasoning').innerHTML = reasoningHtml;
+        predictorResults.classList.remove('hidden');
       });
 
       function getTierLabel(rating) {
@@ -1479,6 +1650,103 @@
               <!-- Dynamically populated -->
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match Predictor Modal -->
+  <div id="match-predictor-modal" class="modal-overlay hidden">
+    <div class="modal-content glass" style="max-width: 500px; width: 95%;">
+      <div class="modal-header">
+        <h3 style="border: none; margin: 0; color: var(--accent-gold);">Match Predictor</h3>
+        <button id="close-predictor-btn" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height: 80vh; overflow-y: auto; padding-right: 4px;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; margin-top: 0;">
+          Select any two teams to run a 5,000-match Poisson simulation and predict their head-to-head score and advancement probabilities.
+        </p>
+        
+        <!-- Team Selectors -->
+        <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px;">Team A</label>
+            <div class="select-wrapper">
+              <select id="predictor-team-a" style="font-size: 0.9rem; padding: 10px;"></select>
+            </div>
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px;">Team B</label>
+            <div class="select-wrapper">
+              <select id="predictor-team-b" style="font-size: 0.9rem; padding: 10px;"></select>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-run-prediction" class="btn-primary" style="margin-top: 8px; width: 100%; min-height: 44px; padding: 10px 16px; font-size: 1rem; font-weight: bold; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%) !important;">Predict Scoreline</button>
+        
+        <!-- Results Section -->
+        <div id="predictor-results" class="hidden" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--glass-border);">
+          <!-- Predicted Score Display -->
+          <div style="text-align: center; margin-bottom: 24px;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Predicted Scoreline</div>
+            <div style="display: inline-flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.3); padding: 12px 28px; border-radius: 12px; border: 1px solid var(--glass-border);">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <img id="pred-flag-a" src="" style="width: 24px; height: 16px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.1); display: block;">
+                <span id="pred-name-a" style="font-weight: bold; font-size: 0.9rem; color: var(--text-primary);">ARG</span>
+              </div>
+              <div id="pred-score-text" style="font-size: 2.2rem; font-weight: 800; font-family: monospace; color: var(--accent-gold); letter-spacing: 2px;">2 - 1</div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <img id="pred-flag-b" src="" style="width: 24px; height: 16px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.1); display: block;">
+                <span id="pred-name-b" style="font-weight: bold; font-size: 0.9rem; color: var(--text-primary);">FRA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Probability Breakdown Bars -->
+          <div style="margin-bottom: 24px;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Win Probabilities</div>
+            <div style="display: flex; height: 28px; border-radius: 6px; overflow: hidden; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);">
+              <div id="pred-bar-win-a" style="background: var(--primary-red); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: white; transition: width 0.5s ease; overflow: hidden;">Win A</div>
+              <div id="pred-bar-draw" style="background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: var(--text-secondary); transition: width 0.5s ease; overflow: hidden;">Draw</div>
+              <div id="pred-bar-win-b" style="background: var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold; color: black; transition: width 0.5s ease; overflow: hidden;">Win B</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); margin-top: 6px; font-weight: 600;">
+              <span id="pred-lbl-win-a">Team A: 0%</span>
+              <span id="pred-lbl-draw">Draw: 0%</span>
+              <span id="pred-lbl-win-b">Team B: 0%</span>
+            </div>
+          </div>
+
+          <!-- Expected Goals -->
+          <div style="margin-bottom: 24px;">
+            <div style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Expected Goals (xG)</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span id="pred-name-xg-a" style="width: 100px; font-size: 0.8rem; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Team A</span>
+                <div class="chart-bar-wrapper" style="flex-grow: 1; height: 18px; margin: 0; background: rgba(255,255,255,0.03);">
+                  <div id="pred-xg-bar-a" class="chart-bar-fill" style="width: 0%; background: var(--primary-red); height: 100%;"></div>
+                  <span id="pred-xg-val-a" class="chart-bar-label" style="font-size: 0.75rem;">0.00</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span id="pred-name-xg-b" style="width: 100px; font-size: 0.8rem; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Team B</span>
+                <div class="chart-bar-wrapper" style="flex-grow: 1; height: 18px; margin: 0; background: rgba(255,255,255,0.03);">
+                  <div id="pred-xg-bar-b" class="chart-bar-fill" style="width: 0%; background: var(--accent-gold); height: 100%;"></div>
+                  <span id="pred-xg-val-b" class="chart-bar-label" style="font-size: 0.75rem; color: black;">0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plain English Reasoning Text -->
+          <div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Simulation Reasoning</div>
+            <div id="pred-reasoning" style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.5; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px;">
+              Reasoning text goes here...
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
