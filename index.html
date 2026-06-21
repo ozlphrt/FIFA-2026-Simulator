@@ -1593,8 +1593,15 @@
       // Fetch live scores from a public source to dynamically populate seeded matches
       async function syncLiveScores() {
         try {
-          // Fetch from a public, reliable community mirror of live 2026 World Cup match data JSON
-          const response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
+          let response;
+          try {
+            // Try fetching locally first to support local developer edits immediately
+            response = await fetch('live_scores.json?t=' + Date.now());
+            if (!response.ok) throw new Error("Local fetch not ok");
+          } catch (e) {
+            // Fallback to remote repository if running in an environment where relative fetch fails
+            response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
+          }
           if (!response.ok) return;
           const data = await response.json();
           if (data && typeof data === 'object') {
@@ -1607,10 +1614,7 @@
               }
             }
             if (updated) {
-              const activeTeam = window.SimulationEngine.teams.find(t => t.id === currentSelectedTeamId);
-              if (activeTeam) {
-                updateGroupStandingsTable(activeTeam.group, currentSelectedTeamId);
-              }
+              updateGroupStandingsTable(currentSelectedGroup, currentSelectedTeamId);
               triggerAutoSimulation();
               
               const logItem = document.createElement('div');
