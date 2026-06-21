@@ -883,10 +883,14 @@
       function setupTeamWithinGroup(teamId) {
         currentSelectedTeamId = teamId;
         const team = window.SimulationEngine.teams.find(t => t.id === teamId);
+        currentSelectedGroup = team.group;
         
         const flagImg = document.getElementById('header-flag-img');
-        flagImg.src = `https://flagcdn.com/w80/${team.flag}.png`;
+        flagImg.src = `https://flagcdn.com/w40/${team.flag}.png`;
         flagImg.style.display = 'inline-block';
+        
+        dropdownTriggerBtn.querySelector('span').innerText = `Group ${team.group}`;
+        renderDropdownOptions();
         
         tuningHeader.innerText = `Tune ${team.name}'s Form`;
         tuningHelperText.innerText = `Increasing this enhances ${team.name}'s goal-scoring ratios and defensive resistance against top tier teams.`;
