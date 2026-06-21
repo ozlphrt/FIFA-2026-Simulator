@@ -1594,6 +1594,7 @@
       async function syncLiveScores() {
         try {
           let response;
+          let source = 'local file';
           try {
             // Try fetching locally first to support local developer edits immediately
             response = await fetch('live_scores.json?t=' + Date.now());
@@ -1601,6 +1602,7 @@
           } catch (e) {
             // Fallback to remote repository if running in an environment where relative fetch fails
             response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
+            source = 'GitHub repository (remote)';
           }
           if (!response.ok) return;
           const data = await response.json();
@@ -1619,13 +1621,13 @@
               
               const logItem = document.createElement('div');
               logItem.style.color = 'var(--accent-gold)';
-              logItem.innerText = `[System] Live tournament match scores synchronized successfully.`;
+              logItem.innerText = `[System] Match scores synchronized successfully from ${source}.`;
               feedLogs.appendChild(logItem);
               feedLogs.scrollTop = feedLogs.scrollHeight;
             }
           }
         } catch (e) {
-          console.warn("Could not load remote live scores, fallback to local seeded matches:", e);
+          console.warn("Could not load live scores, fallback to local seeded matches:", e);
         }
       }
 
