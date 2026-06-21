@@ -1593,28 +1593,28 @@
       // Fetch live scores from a public source to dynamically populate seeded matches
       async function syncLiveScores() {
         let data = null;
-        let source = 'local file';
+        let source = 'GitHub repository (remote)';
         
         try {
-          // Try fetching and parsing locally first to support local developer edits immediately
-          const response = await fetch('live_scores.json?t=' + Date.now());
+          // Try fetching from the remote repository first to ensure latest tournament results
+          const response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
           if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
           data = await response.json();
         } catch (e) {
           const errLog = document.createElement('div');
-          errLog.style.color = '#ff4d4d';
-          errLog.innerText = `[System] Local score sync failed: ${e.message}. Falling back to GitHub.`;
+          errLog.style.color = 'var(--text-secondary)';
+          errLog.innerText = `[System] Remote live score sync failed: ${e.message}. Trying local fallback...`;
           feedLogs.appendChild(errLog);
           feedLogs.scrollTop = feedLogs.scrollHeight;
           
           try {
-            // Fallback to remote repository if running in an environment where relative fetch fails
-            const response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
+            // Fallback to local file if offline or remote is down
+            const response = await fetch('live_scores.json?t=' + Date.now());
             if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
             data = await response.json();
-            source = 'GitHub repository (remote)';
-          } catch (remoteErr) {
-            console.warn("Could not load remote live scores:", remoteErr);
+            source = 'local file';
+          } catch (localErr) {
+            console.warn("Could not load local live scores:", localErr);
           }
         }
 
