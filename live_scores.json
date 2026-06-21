@@ -25,7 +25,9 @@
   ],
   "E": [
     { "teamAId": "GER", "teamBId": "CUW", "goalsA": 7, "goalsB": 1 },
-    { "teamAId": "CIV", "teamBId": "ECU", "goalsA": 1, "goalsB": 0 }
+    { "teamAId": "CIV", "teamBId": "ECU", "goalsA": 1, "goalsB": 0 },
+    { "teamAId": "GER", "teamBId": "CIV", "goalsA": 1, "goalsB": 0 },
+    { "teamAId": "ECU", "teamBId": "CUW", "goalsA": 1, "goalsB": 1 }
   ],
   "F": [
     { "teamAId": "SWE", "teamBId": "TUN", "goalsA": 5, "goalsB": 1 },

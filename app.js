@@ -427,7 +427,9 @@ function initSeededMatches() {
     } else if (groupName === 'E') {
       window.SeededMatches['E'] = [
         { teamAId: 'GER', teamBId: 'CUW', goalsA: 7, goalsB: 1 },
-        { teamAId: 'CIV', teamBId: 'ECU', goalsA: 1, goalsB: 0 }
+        { teamAId: 'CIV', teamBId: 'ECU', goalsA: 1, goalsB: 0 },
+        { teamAId: 'GER', teamBId: 'CIV', goalsA: 1, goalsB: 0 },
+        { teamAId: 'ECU', teamBId: 'CUW', goalsA: 1, goalsB: 1 }
       ];
     } else if (groupName === 'F') {
       window.SeededMatches['F'] = [
