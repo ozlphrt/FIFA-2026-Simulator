@@ -1592,47 +1592,51 @@
 
       // Fetch live scores from a public source to dynamically populate seeded matches
       async function syncLiveScores() {
+        let data = null;
+        let source = 'local file';
+        
         try {
-          let response;
-          let source = 'local file';
-          try {
-            // Try fetching locally first to support local developer edits immediately
-            response = await fetch('live_scores.json?t=' + Date.now());
-            if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
-          } catch (e) {
-            const errLog = document.createElement('div');
-            errLog.style.color = '#ff4d4d';
-            errLog.innerText = `[System] Local score fetch failed: ${e.message}. Falling back to GitHub.`;
-            feedLogs.appendChild(errLog);
-            
-            // Fallback to remote repository if running in an environment where relative fetch fails
-            response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
-            source = 'GitHub repository (remote)';
-          }
-          if (!response.ok) return;
-          const data = await response.json();
-          if (data && typeof data === 'object') {
-            // Update seeded matches from remote data
-            let updated = false;
-            for (const groupName in data) {
-              if (Array.isArray(data[groupName])) {
-                window.SeededMatches[groupName] = data[groupName];
-                updated = true;
-              }
-            }
-            if (updated) {
-              updateGroupStandingsTable(currentSelectedGroup, currentSelectedTeamId);
-              triggerAutoSimulation();
-              
-              const logItem = document.createElement('div');
-              logItem.style.color = 'var(--accent-gold)';
-              logItem.innerText = `[System] Match scores synchronized successfully from ${source}.`;
-              feedLogs.appendChild(logItem);
-              feedLogs.scrollTop = feedLogs.scrollHeight;
-            }
-          }
+          // Try fetching and parsing locally first to support local developer edits immediately
+          const response = await fetch('live_scores.json?t=' + Date.now());
+          if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+          data = await response.json();
         } catch (e) {
-          console.warn("Could not load live scores, fallback to local seeded matches:", e);
+          const errLog = document.createElement('div');
+          errLog.style.color = '#ff4d4d';
+          errLog.innerText = `[System] Local score sync failed: ${e.message}. Falling back to GitHub.`;
+          feedLogs.appendChild(errLog);
+          feedLogs.scrollTop = feedLogs.scrollHeight;
+          
+          try {
+            // Fallback to remote repository if running in an environment where relative fetch fails
+            const response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
+            if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+            data = await response.json();
+            source = 'GitHub repository (remote)';
+          } catch (remoteErr) {
+            console.warn("Could not load remote live scores:", remoteErr);
+          }
+        }
+
+        if (data && typeof data === 'object') {
+          // Update seeded matches from loaded data
+          let updated = false;
+          for (const groupName in data) {
+            if (Array.isArray(data[groupName])) {
+              window.SeededMatches[groupName] = data[groupName];
+              updated = true;
+            }
+          }
+          if (updated) {
+            updateGroupStandingsTable(currentSelectedGroup, currentSelectedTeamId);
+            triggerAutoSimulation();
+            
+            const logItem = document.createElement('div');
+            logItem.style.color = 'var(--accent-gold)';
+            logItem.innerText = `[System] Match scores synchronized successfully from ${source}.`;
+            feedLogs.appendChild(logItem);
+            feedLogs.scrollTop = feedLogs.scrollHeight;
+          }
         }
       }
 
