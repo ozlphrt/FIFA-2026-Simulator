@@ -1598,8 +1598,13 @@
           try {
             // Try fetching locally first to support local developer edits immediately
             response = await fetch('live_scores.json?t=' + Date.now());
-            if (!response.ok) throw new Error("Local fetch not ok");
+            if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
           } catch (e) {
+            const errLog = document.createElement('div');
+            errLog.style.color = '#ff4d4d';
+            errLog.innerText = `[System] Local score fetch failed: ${e.message}. Falling back to GitHub.`;
+            feedLogs.appendChild(errLog);
+            
             // Fallback to remote repository if running in an environment where relative fetch fails
             response = await fetch('https://raw.githubusercontent.com/ozlphrt/FIFA-2026-Simulator/main/live_scores.json?t=' + Date.now());
             source = 'GitHub repository (remote)';
