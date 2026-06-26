@@ -401,42 +401,54 @@ function initSeededMatches() {
         { teamAId: 'USA', teamBId: 'PRY', goalsA: 4, goalsB: 1 },
         { teamAId: 'AUS', teamBId: 'TUR', goalsA: 2, goalsB: 0 },
         { teamAId: 'USA', teamBId: 'AUS', goalsA: 2, goalsB: 0 },
-        { teamAId: 'TUR', teamBId: 'PRY', goalsA: 0, goalsB: 1 }
+        { teamAId: 'TUR', teamBId: 'PRY', goalsA: 0, goalsB: 1 },
+        { teamAId: 'USA', teamBId: 'TUR', goalsA: 2, goalsB: 3 },
+        { teamAId: 'AUS', teamBId: 'PRY', goalsA: 0, goalsB: 0 }
       ];
     } else if (groupName === 'A') {
       window.SeededMatches['A'] = [
         { teamAId: 'MEX', teamBId: 'RSA', goalsA: 2, goalsB: 0 },
         { teamAId: 'KOR', teamBId: 'CZE', goalsA: 2, goalsB: 1 },
         { teamAId: 'CZE', teamBId: 'RSA', goalsA: 1, goalsB: 1 },
-        { teamAId: 'MEX', teamBId: 'KOR', goalsA: 1, goalsB: 0 }
+        { teamAId: 'MEX', teamBId: 'KOR', goalsA: 1, goalsB: 0 },
+        { teamAId: 'MEX', teamBId: 'CZE', goalsA: 3, goalsB: 0 },
+        { teamAId: 'KOR', teamBId: 'RSA', goalsA: 0, goalsB: 1 }
       ];
     } else if (groupName === 'B') {
       window.SeededMatches['B'] = [
         { teamAId: 'CAN', teamBId: 'BIH', goalsA: 1, goalsB: 1 },
         { teamAId: 'SUI', teamBId: 'QAT', goalsA: 1, goalsB: 1 },
         { teamAId: 'CAN', teamBId: 'QAT', goalsA: 6, goalsB: 0 },
-        { teamAId: 'SUI', teamBId: 'BIH', goalsA: 4, goalsB: 1 }
+        { teamAId: 'SUI', teamBId: 'BIH', goalsA: 4, goalsB: 1 },
+        { teamAId: 'SUI', teamBId: 'CAN', goalsA: 2, goalsB: 1 },
+        { teamAId: 'BIH', teamBId: 'QAT', goalsA: 3, goalsB: 1 }
       ];
     } else if (groupName === 'C') {
       window.SeededMatches['C'] = [
         { teamAId: 'BRA', teamBId: 'MAR', goalsA: 1, goalsB: 1 },
         { teamAId: 'SCO', teamBId: 'HAI', goalsA: 1, goalsB: 0 },
         { teamAId: 'BRA', teamBId: 'HAI', goalsA: 3, goalsB: 0 },
-        { teamAId: 'MAR', teamBId: 'SCO', goalsA: 1, goalsB: 0 }
+        { teamAId: 'MAR', teamBId: 'SCO', goalsA: 1, goalsB: 0 },
+        { teamAId: 'BRA', teamBId: 'SCO', goalsA: 3, goalsB: 0 },
+        { teamAId: 'MAR', teamBId: 'HAI', goalsA: 4, goalsB: 2 }
       ];
     } else if (groupName === 'E') {
       window.SeededMatches['E'] = [
         { teamAId: 'GER', teamBId: 'CUW', goalsA: 7, goalsB: 1 },
         { teamAId: 'CIV', teamBId: 'ECU', goalsA: 1, goalsB: 0 },
         { teamAId: 'GER', teamBId: 'CIV', goalsA: 1, goalsB: 0 },
-        { teamAId: 'ECU', teamBId: 'CUW', goalsA: 1, goalsB: 1 }
+        { teamAId: 'ECU', teamBId: 'CUW', goalsA: 1, goalsB: 1 },
+        { teamAId: 'GER', teamBId: 'ECU', goalsA: 1, goalsB: 2 },
+        { teamAId: 'CIV', teamBId: 'CUW', goalsA: 2, goalsB: 0 }
       ];
     } else if (groupName === 'F') {
       window.SeededMatches['F'] = [
         { teamAId: 'SWE', teamBId: 'TUN', goalsA: 5, goalsB: 1 },
         { teamAId: 'NED', teamBId: 'JPN', goalsA: 2, goalsB: 2 },
         { teamAId: 'NED', teamBId: 'SWE', goalsA: 5, goalsB: 1 },
-        { teamAId: 'JPN', teamBId: 'TUN', goalsA: 4, goalsB: 0 }
+        { teamAId: 'JPN', teamBId: 'TUN', goalsA: 4, goalsB: 0 },
+        { teamAId: 'NED', teamBId: 'TUN', goalsA: 3, goalsB: 1 },
+        { teamAId: 'JPN', teamBId: 'SWE', goalsA: 1, goalsB: 1 }
       ];
     } else if (groupName === 'I') {
       window.SeededMatches['I'] = [
