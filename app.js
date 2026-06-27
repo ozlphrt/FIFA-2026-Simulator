@@ -455,14 +455,17 @@ function initSeededMatches() {
         { teamAId: 'FRA', teamBId: 'SEN', goalsA: 3, goalsB: 1 },
         { teamAId: 'NOR', teamBId: 'IRQ', goalsA: 4, goalsB: 1 },
         { teamAId: 'NOR', teamBId: 'SEN', goalsA: 3, goalsB: 2 },
-        { teamAId: 'FRA', teamBId: 'IRQ', goalsA: 3, goalsB: 0 }
+        { teamAId: 'FRA', teamBId: 'IRQ', goalsA: 3, goalsB: 0 },
+        { teamAId: 'FRA', teamBId: 'NOR', goalsA: 4, goalsB: 1 },
+        { teamAId: 'SEN', teamBId: 'IRQ', goalsA: 5, goalsB: 0 }
       ];
     } else if (groupName === 'J') {
       window.SeededMatches['J'] = [
         { teamAId: 'ARG', teamBId: 'ALG', goalsA: 3, goalsB: 0 },
         { teamAId: 'AUT', teamBId: 'JOR', goalsA: 3, goalsB: 1 },
         { teamAId: 'ARG', teamBId: 'AUT', goalsA: 2, goalsB: 0 },
-        { teamAId: 'ALG', teamBId: 'JOR', goalsA: 2, goalsB: 1 }
+        { teamAId: 'ALG', teamBId: 'JOR', goalsA: 2, goalsB: 1 },
+        { teamAId: 'ARG', teamBId: 'JOR', goalsA: 5, goalsB: 1 }
       ];
     } else if (groupName === 'K') {
       window.SeededMatches['K'] = [
@@ -483,14 +486,18 @@ function initSeededMatches() {
         { teamAId: 'BEL', teamBId: 'EGY', goalsA: 1, goalsB: 1 },
         { teamAId: 'IRN', teamBId: 'NZL', goalsA: 2, goalsB: 2 },
         { teamAId: 'BEL', teamBId: 'IRN', goalsA: 0, goalsB: 0 },
-        { teamAId: 'EGY', teamBId: 'NZL', goalsA: 3, goalsB: 1 }
+        { teamAId: 'EGY', teamBId: 'NZL', goalsA: 3, goalsB: 1 },
+        { teamAId: 'BEL', teamBId: 'NZL', goalsA: 5, goalsB: 1 },
+        { teamAId: 'EGY', teamBId: 'IRN', goalsA: 1, goalsB: 1 }
       ];
     } else if (groupName === 'H') {
       window.SeededMatches['H'] = [
         { teamAId: 'ESP', teamBId: 'CPV', goalsA: 0, goalsB: 0 },
         { teamAId: 'KSA', teamBId: 'URU', goalsA: 1, goalsB: 1 },
         { teamAId: 'ESP', teamBId: 'KSA', goalsA: 4, goalsB: 0 },
-        { teamAId: 'URU', teamBId: 'CPV', goalsA: 2, goalsB: 2 }
+        { teamAId: 'URU', teamBId: 'CPV', goalsA: 2, goalsB: 2 },
+        { teamAId: 'ESP', teamBId: 'URU', goalsA: 1, goalsB: 0 },
+        { teamAId: 'CPV', teamBId: 'KSA', goalsA: 0, goalsB: 0 }
       ];
     } else {
       window.SeededMatches[groupName] = [];
