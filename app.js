@@ -465,21 +465,26 @@ function initSeededMatches() {
         { teamAId: 'AUT', teamBId: 'JOR', goalsA: 3, goalsB: 1 },
         { teamAId: 'ARG', teamBId: 'AUT', goalsA: 2, goalsB: 0 },
         { teamAId: 'ALG', teamBId: 'JOR', goalsA: 2, goalsB: 1 },
-        { teamAId: 'ARG', teamBId: 'JOR', goalsA: 5, goalsB: 1 }
+        { teamAId: 'ARG', teamBId: 'JOR', goalsA: 5, goalsB: 1 },
+        { teamAId: 'ALG', teamBId: 'AUT', goalsA: 3, goalsB: 3 }
       ];
     } else if (groupName === 'K') {
       window.SeededMatches['K'] = [
         { teamAId: 'POR', teamBId: 'COD', goalsA: 1, goalsB: 1 },
         { teamAId: 'COL', teamBId: 'UZB', goalsA: 3, goalsB: 1 },
         { teamAId: 'POR', teamBId: 'UZB', goalsA: 5, goalsB: 0 },
-        { teamAId: 'COL', teamBId: 'COD', goalsA: 1, goalsB: 0 }
+        { teamAId: 'COL', teamBId: 'COD', goalsA: 1, goalsB: 0 },
+        { teamAId: 'POR', teamBId: 'COL', goalsA: 0, goalsB: 0 },
+        { teamAId: 'COD', teamBId: 'UZB', goalsA: 3, goalsB: 1 }
       ];
     } else if (groupName === 'L') {
       window.SeededMatches['L'] = [
         { teamAId: 'ENG', teamBId: 'CRO', goalsA: 4, goalsB: 2 },
         { teamAId: 'GHA', teamBId: 'PAN', goalsA: 1, goalsB: 0 },
         { teamAId: 'ENG', teamBId: 'GHA', goalsA: 0, goalsB: 0 },
-        { teamAId: 'PAN', teamBId: 'CRO', goalsA: 0, goalsB: 1 }
+        { teamAId: 'PAN', teamBId: 'CRO', goalsA: 0, goalsB: 1 },
+        { teamAId: 'PAN', teamBId: 'ENG', goalsA: 0, goalsB: 2 },
+        { teamAId: 'CRO', teamBId: 'GHA', goalsA: 2, goalsB: 1 }
       ];
     } else if (groupName === 'G') {
       window.SeededMatches['G'] = [
