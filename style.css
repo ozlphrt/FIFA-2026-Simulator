@@ -985,6 +985,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
   box-shadow: 0 0 25px rgba(205, 162, 80, 0.35) !important;
 }
 
+.match-card.official-match {
+  opacity: 0.4 !important;
+  background: rgba(14, 14, 16, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.03) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.match-card.official-match:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.03) !important;
+  background: rgba(14, 14, 16, 0.8) !important;
+}
+
+
 /* Layout boundary safety fixes */
 .results-pages-wrapper {
   max-width: 100% !important;

@@ -1448,9 +1448,7 @@
           const pctB = Math.round((1 - pAdvanceA) * 100) + '%';
           let badgeHTML = '';
           if (m.isRealResult) {
-            card.style.opacity = '0.55';
-            card.style.border = '1px solid rgba(255, 255, 255, 0.05)';
-            card.style.boxShadow = 'none';
+            card.classList.add('official-match');
             badgeHTML = `
               <div style="position: absolute; top: 4px; right: 8px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                 Official
