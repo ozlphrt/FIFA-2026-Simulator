@@ -366,11 +366,13 @@ function runSingleSimulation(teamsList, selectedTeamId) {
       matchResult.goalsB = 1;
       matchResult.winner = teamB;
       matchResult.pens = false;
+      matchResult.isRealResult = true;
     } else if (teamA.id === 'CAN' && teamB.id === 'RSA') {
       matchResult.goalsA = 1;
       matchResult.goalsB = 0;
       matchResult.winner = teamA;
       matchResult.pens = false;
+      matchResult.isRealResult = true;
     }
 
     bracket['Round of 32'].push({
@@ -379,7 +381,8 @@ function runSingleSimulation(teamsList, selectedTeamId) {
       goalsA: matchResult.goalsA,
       goalsB: matchResult.goalsB,
       pens: matchResult.pens,
-      winnerId: matchResult.winner.id
+      winnerId: matchResult.winner.id,
+      isRealResult: matchResult.isRealResult || false
     });
 
     if (proceedsToR32 && (teamA.id === selectedTeamId || teamB.id === selectedTeamId)) {
