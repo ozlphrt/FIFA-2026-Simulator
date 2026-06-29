@@ -146,6 +146,49 @@ h2 {
   font-weight: 600;
 }
 
+.match-card {
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
+  height: var(--card-height) !important;
+  min-height: var(--card-height) !important;
+  max-height: var(--card-height) !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(24, 24, 28, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  background: rgba(36, 36, 42, 0.98) !important;
+}
+.match-card.highlight-user-team {
+  background: rgba(205, 162, 80, 0.12) !important;
+  border: 2px solid var(--accent-gold) !important;
+  box-shadow: 0 0 20px rgba(205, 162, 80, 0.25) !important;
+}
+.match-card.highlight-user-team:hover {
+  background: rgba(205, 162, 80, 0.18) !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: 0 0 25px rgba(205, 162, 80, 0.35) !important;
+}
+
+.match-card.official-match {
+  opacity: 1.0 !important;
+  background: rgba(50, 50, 50, 0.98) !important; /* neutral distinct grey box */
+  border: 1px solid rgba(255, 255, 255, 0.16) !important; /* subtle outline matching standard cards */
+  box-shadow: none !important;
+  transform: none !important;
+}
+.match-card.official-match:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(50, 50, 50, 0.98) !important;
+}
+
 h3 {
   font-size: 1.1rem;
   color: var(--accent-gold);
@@ -954,49 +997,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 .carousel-dot.active:hover {
   background: var(--accent-gold) !important;
-}
-
-.match-card {
-  transition: all 0.2s ease;
-  position: relative;
-  z-index: 2;
-  height: var(--card-height) !important;
-  min-height: var(--card-height) !important;
-  max-height: var(--card-height) !important;
-  box-sizing: border-box;
-  overflow: hidden;
-  background: rgba(24, 24, 28, 0.96) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-.match-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  background: rgba(36, 36, 42, 0.98) !important;
-}
-.match-card.highlight-user-team {
-  background: rgba(205, 162, 80, 0.12) !important;
-  border: 2px solid var(--accent-gold) !important;
-  box-shadow: 0 0 20px rgba(205, 162, 80, 0.25) !important;
-}
-.match-card.highlight-user-team:hover {
-  background: rgba(205, 162, 80, 0.18) !important;
-  border-color: var(--accent-gold) !important;
-  box-shadow: 0 0 25px rgba(205, 162, 80, 0.35) !important;
-}
-
-.match-card.official-match {
-  opacity: 1.0 !important;
-  background: rgba(50, 50, 50, 0.98) !important; /* neutral distinct grey box */
-  border: 1px solid rgba(255, 255, 255, 0.08) !important; /* subtle outline matching standard cards */
-  box-shadow: none !important;
-  transform: none !important;
-}
-.match-card.official-match:hover {
-  transform: none !important;
-  box-shadow: none !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  background: rgba(50, 50, 50, 0.98) !important;
 }
 
 
