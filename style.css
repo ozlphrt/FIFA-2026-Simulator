@@ -1137,6 +1137,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
   position: relative;
 }
 
+#split-bracket-board .bracket-column {
+  min-width: unset;
+  flex: none;
+}
+
+
 /* Tabs switcher styles */
 .view-tabs {
   display: flex;
