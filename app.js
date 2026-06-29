@@ -754,6 +754,14 @@ window.SimulationEngine = {
             let goalsB = Math.round(1.35 * Math.pow(10, -diff / 1600));
             if (goalsA === goalsB) {
               if (winnerId === teamA.id) goalsA++; else goalsB++;
+            } else if (goalsA > goalsB && winnerId !== teamA.id) {
+              const temp = goalsA;
+              goalsA = goalsB;
+              goalsB = temp;
+            } else if (goalsB > goalsA && winnerId !== teamB.id) {
+              const temp = goalsA;
+              goalsA = goalsB;
+              goalsB = temp;
             }
 
             mostLikelyBracket[r.next].push({
