@@ -1174,11 +1174,6 @@
       function updateTransform(forceRedraw = false) {
         if (board) {
           board.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-          
-          if (forceRedraw || scale !== lastAppliedScale) {
-            drawBracketConnectors();
-            lastAppliedScale = scale;
-          }
         }
       }
 
