@@ -183,7 +183,20 @@
     <div id="bracket-view-container" style="width: 100%; display: flex; flex-direction: column; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px; overflow: hidden;">
       <div id="split-bracket-board-scaler" style="width: 100%; overflow: hidden; transform-origin: top left;">
         <div id="split-bracket-board" style="width: 2600px; height: 1450px; display: flex; gap: 30px; align-items: stretch; justify-content: space-between; position: relative; transform-origin: top left;">
-          <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+          <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+            <defs>
+              <filter id="glow-gold" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feComponentTransfer in="blur" result="boost">
+                  <feFuncA type="linear" slope="1.5"/>
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode in="boost" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
         
         <!-- LEFT WING: Rounds 32 down to Semi -->
         <div class="bracket-wing left-wing" style="display: flex; gap: 30px; flex: 1; justify-content: flex-start;">
@@ -1466,22 +1479,22 @@
             <div style="display: flex; flex-direction: column; justify-content: space-around; height: 100%; position: relative;">
               ${badgeHTML}
               <div class="bracket-team-row" data-id="${m.teamA.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamAColor} line-height: 1.1; padding: 2px 4px; border-radius: 6px; transition: background-color 0.2s; margin-top: 8px;">
-                <span style="display: flex; align-items: center; gap: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.85rem; pointer-events: none;">
-                  <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 44px; height: 30px; border-radius: 4px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.8px;">${m.teamA.name} <span style="font-size: 1.15rem; font-weight: normal; opacity: 0.85;">(${pctA})</span></span>
+                <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 4px; font-size: 1.45rem; pointer-events: none;">
+                  <img src="https://flagcdn.com/w40/${m.teamA.flag}.png" style="width: 36px; height: 25px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.4px;">${m.teamA.name} <span style="font-size: 0.95rem; font-weight: normal; opacity: 0.85;">(${pctA})</span></span>
                 </span>
-                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.8rem; pointer-events: none; line-height: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 2px 10px; border-radius: 6px; min-width: 54px; text-align: center;">${scoreTextA}</span>
+                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.1rem; pointer-events: none; line-height: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 3px 6px; border-radius: 6px; min-width: 40px; text-align: center;">${scoreTextA}</span>
               </div>
               
               <!-- Subtle Divider Line -->
               <div style="height: 1px; background: rgba(255, 255, 255, 0.1); margin: 2px 0;"></div>
-
+ 
               <div class="bracket-team-row" data-id="${m.teamB.id}" style="display: flex; justify-content: space-between; align-items: center; ${teamBColor} line-height: 1.1; padding: 2px 4px; border-radius: 6px; transition: background-color 0.2s;">
-                <span style="display: flex; align-items: center; gap: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; font-size: 1.85rem; pointer-events: none;">
-                  <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 44px; height: 30px; border-radius: 4px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
-                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.8px;">${m.teamB.name} <span style="font-size: 1.15rem; font-weight: normal; opacity: 0.85;">(${pctB})</span></span>
+                <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 4px; font-size: 1.45rem; pointer-events: none;">
+                  <img src="https://flagcdn.com/w40/${m.teamB.flag}.png" style="width: 36px; height: 25px; border-radius: 3px; object-fit: cover; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.15);">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; letter-spacing: -0.4px;">${m.teamB.name} <span style="font-size: 0.95rem; font-weight: normal; opacity: 0.85;">(${pctB})</span></span>
                 </span>
-                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.8rem; pointer-events: none; line-height: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 2px 10px; border-radius: 6px; min-width: 54px; text-align: center;">${scoreTextB}</span>
+                <span style="font-weight: 900; font-family: monospace; flex-shrink: 0; font-size: 2.1rem; pointer-events: none; line-height: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 3px 6px; border-radius: 6px; min-width: 40px; text-align: center;">${scoreTextB}</span>
               </div>
             </div>
           `;
@@ -1594,15 +1607,17 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathA.setAttribute('stroke-width', '3.5');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathA.setAttribute('stroke-width', '2.5');
+            pathA.setAttribute('filter', 'url(#glow-gold)');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathB.setAttribute('stroke-width', '3.5');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathB.setAttribute('stroke-width', '2.5');
+            pathB.setAttribute('filter', 'url(#glow-gold)');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1648,15 +1663,17 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathA.setAttribute('stroke-width', '3.5');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathA.setAttribute('stroke-width', '2.5');
+            pathA.setAttribute('filter', 'url(#glow-gold)');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathB.setAttribute('stroke-width', '3.5');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathB.setAttribute('stroke-width', '2.5');
+            pathB.setAttribute('filter', 'url(#glow-gold)');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1679,8 +1696,9 @@
 
             const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathFinal.setAttribute('d', `M ${x1} ${y1} V ${y2}`);
-            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.6)');
-            pathFinal.setAttribute('stroke-width', '3.5');
+            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.65)');
+            pathFinal.setAttribute('stroke-width', '2.5');
+            pathFinal.setAttribute('filter', 'url(#glow-gold)');
             pathFinal.setAttribute('fill', 'none');
             svg.appendChild(pathFinal);
           }
@@ -1759,15 +1777,17 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathA.setAttribute('stroke-width', '3.5');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathA.setAttribute('stroke-width', '2.5');
+            pathA.setAttribute('filter', 'url(#glow-gold-full)');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
-            pathB.setAttribute('stroke-width', '3.5');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
+            pathB.setAttribute('stroke-width', '2.5');
+            pathB.setAttribute('filter', 'url(#glow-gold-full)');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1790,8 +1810,9 @@
 
             const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathFinal.setAttribute('d', `M ${x1} ${y1} H ${x2}`);
-            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.6)');
-            pathFinal.setAttribute('stroke-width', '3.5');
+            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.65)');
+            pathFinal.setAttribute('stroke-width', '2.5');
+            pathFinal.setAttribute('filter', 'url(#glow-gold-full)');
             pathFinal.setAttribute('fill', 'none');
             svg.appendChild(pathFinal);
           }
@@ -2277,7 +2298,20 @@
       <!-- The actual bracket board -->
       <div class="bracket-board-wrapper" style="border: none; background: transparent; padding: 0; width: auto; max-width: none; overflow: visible;">
         <div class="bracket-board" id="bracket-board" style="position: relative; transform-origin: center center; transition: none; user-select: none;">
-          <svg id="bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+          <svg id="bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+            <defs>
+              <filter id="glow-gold-full" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feComponentTransfer in="blur" result="boost">
+                  <feFuncA type="linear" slope="1.5"/>
+                </feComponentTransfer>
+                <feMerge>
+                  <feMergeNode in="boost" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
           
           <!-- Column 1: R32 -->
           <div class="bracket-column">
