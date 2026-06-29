@@ -180,9 +180,10 @@
     </div>
 
     <!-- Tournament Bracket Tab View -->
-    <div id="bracket-view-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px;">
-      <div style="width: 100%; display: flex; gap: 40px; align-items: stretch; justify-content: space-between; position: relative; min-width: 1800px; height: 1450px;">
-        <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+    <div id="bracket-view-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px; overflow: hidden;">
+      <div id="split-bracket-board-scaler" style="width: 100%; overflow: hidden; transform-origin: top left;">
+        <div id="split-bracket-board" style="width: 1800px; height: 1450px; display: flex; gap: 40px; align-items: stretch; justify-content: space-between; position: relative; transform-origin: top left;">
+          <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
         
         <!-- LEFT WING: Rounds 32 down to Semi -->
         <div class="bracket-wing left-wing" style="display: flex; gap: 40px; flex: 1; justify-content: flex-start;">
@@ -250,6 +251,7 @@
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Live Betting Market Feed -->
     <div class="market-feed-card glass" style="margin-top: 16px; width: 100%;">
@@ -1508,13 +1510,33 @@
         }
       }
 
-      function drawSplitBracketConnectors() {
+      function fitBracketToScreen() {
+        const container = document.getElementById('bracket-view-container');
+        const board = document.getElementById('split-bracket-board');
+        const scaler = document.getElementById('split-bracket-board-scaler');
+        if (!container || !board || !scaler || container.classList.contains('hidden')) return;
+
+        // Reset transform to calculate container width accurately
+        board.style.transform = 'none';
+
+        const containerWidth = container.clientWidth - 48; // subtract padding
+        const fitScale = Math.min(containerWidth / 1800, 1.0); // scale down if needed, max scale of 1.0
+
+        board.style.transform = `scale(${fitScale})`;
+        scaler.style.height = `${1450 * fitScale}px`;
+
+        // Re-draw SVG connectors with the fit scale factor
+        drawSplitBracketConnectors(fitScale);
+      }
+
+      function drawSplitBracketConnectors(fitScale = 1.0) {
         const svg = document.getElementById('split-bracket-connectors');
         const board = document.getElementById('split-bracket-board');
         if (!svg || !board) return;
 
         svg.innerHTML = '';
         const boardRect = board.getBoundingClientRect();
+        const scale = fitScale || 1.0;
 
         // 1. LEFT WING Connectors
         const leftStages = [
@@ -1543,14 +1565,14 @@
             const rectB = cardB.getBoundingClientRect();
             const rectNext = nextCard.getBoundingClientRect();
 
-            const x1_A = (rectA.right - boardRect.left);
-            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top);
+            const x1_A = (rectA.right - boardRect.left) / scale;
+            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top) / scale;
 
-            const x1_B = (rectB.right - boardRect.left);
-            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top);
+            const x1_B = (rectB.right - boardRect.left) / scale;
+            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top) / scale;
 
-            const x2 = (rectNext.left - boardRect.left);
-            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top);
+            const x2 = (rectNext.left - boardRect.left) / scale;
+            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top) / scale;
 
             const x_mid = (x1_A + x2) / 2;
 
@@ -1597,14 +1619,14 @@
             const rectB = cardB.getBoundingClientRect();
             const rectNext = nextCard.getBoundingClientRect();
 
-            const x1_A = (rectA.left - boardRect.left);
-            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top);
+            const x1_A = (rectA.left - boardRect.left) / scale;
+            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top) / scale;
 
-            const x1_B = (rectB.left - boardRect.left);
-            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top);
+            const x1_B = (rectB.left - boardRect.left) / scale;
+            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top) / scale;
 
-            const x2 = (rectNext.right - boardRect.left);
-            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top);
+            const x2 = (rectNext.right - boardRect.left) / scale;
+            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top) / scale;
 
             const x_mid = (x1_A + x2) / 2;
 
@@ -1633,11 +1655,11 @@
             const rectFinal = finalCard.getBoundingClientRect();
             const rectChamp = champCard.getBoundingClientRect();
 
-            const x1 = ((rectFinal.left + rectFinal.right) / 2 - boardRect.left);
-            const y1 = (rectFinal.bottom - boardRect.top);
+            const x1 = ((rectFinal.left + rectFinal.right) / 2 - boardRect.left) / scale;
+            const y1 = (rectFinal.bottom - boardRect.top) / scale;
 
-            const x2 = ((rectChamp.left + rectChamp.right) / 2 - boardRect.left);
-            const y2 = (rectChamp.top - boardRect.top);
+            const x2 = ((rectChamp.left + rectChamp.right) / 2 - boardRect.left) / scale;
+            const y2 = (rectChamp.top - boardRect.top) / scale;
 
             const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathFinal.setAttribute('d', `M ${x1} ${y1} V ${y2}`);
@@ -1670,7 +1692,7 @@
         }
 
         populateSplitBracket(bracket);
-        setTimeout(drawSplitBracketConnectors, 50);
+        setTimeout(fitBracketToScreen, 50);
       }
 
       function drawBracketConnectors() {
@@ -2038,14 +2060,14 @@
           groupsViewContainer.classList.add('hidden');
           bracketViewContainer.classList.remove('hidden');
           
-          // Draw connectors after layout reflow
-          setTimeout(drawSplitBracketConnectors, 50);
+          // Fit bracket scale and draw connectors
+          setTimeout(fitBracketToScreen, 50);
         });
       }
 
       window.addEventListener('resize', () => {
         if (bracketViewContainer && !bracketViewContainer.classList.contains('hidden')) {
-          drawSplitBracketConnectors();
+          fitBracketToScreen();
         }
       });
 
