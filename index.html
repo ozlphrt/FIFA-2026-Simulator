@@ -1463,8 +1463,8 @@
           if (m.isRealResult) {
             card.classList.add('official-match');
             badgeHTML = `
-              <div style="position: absolute; top: 4px; right: 8px; font-size: 0.65rem; color: #00e676; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 3px;">
-                <span style="font-size: 0.5rem;">●</span> Official
+              <div style="position: absolute; top: 4px; right: 8px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.4); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                Official
               </div>
             `;
           } else {
@@ -1607,17 +1607,15 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathA.setAttribute('stroke-width', '2.5');
-            pathA.setAttribute('filter', 'url(#glow-gold)');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathA.setAttribute('stroke-width', '2');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathB.setAttribute('stroke-width', '2.5');
-            pathB.setAttribute('filter', 'url(#glow-gold)');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathB.setAttribute('stroke-width', '2');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1663,17 +1661,15 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathA.setAttribute('stroke-width', '2.5');
-            pathA.setAttribute('filter', 'url(#glow-gold)');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathA.setAttribute('stroke-width', '2');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathB.setAttribute('stroke-width', '2.5');
-            pathB.setAttribute('filter', 'url(#glow-gold)');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathB.setAttribute('stroke-width', '2');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1696,9 +1692,8 @@
 
             const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathFinal.setAttribute('d', `M ${x1} ${y1} V ${y2}`);
-            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.65)');
-            pathFinal.setAttribute('stroke-width', '2.5');
-            pathFinal.setAttribute('filter', 'url(#glow-gold)');
+            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.45)');
+            pathFinal.setAttribute('stroke-width', '2');
             pathFinal.setAttribute('fill', 'none');
             svg.appendChild(pathFinal);
           }
@@ -1777,17 +1772,15 @@
 
             const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
-            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathA.setAttribute('stroke-width', '2.5');
-            pathA.setAttribute('filter', 'url(#glow-gold-full)');
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathA.setAttribute('stroke-width', '2');
             pathA.setAttribute('fill', 'none');
             svg.appendChild(pathA);
 
             const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
-            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.55)');
-            pathB.setAttribute('stroke-width', '2.5');
-            pathB.setAttribute('filter', 'url(#glow-gold-full)');
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.4)');
+            pathB.setAttribute('stroke-width', '2');
             pathB.setAttribute('fill', 'none');
             svg.appendChild(pathB);
           });
@@ -1810,9 +1803,8 @@
 
             const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathFinal.setAttribute('d', `M ${x1} ${y1} H ${x2}`);
-            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.65)');
-            pathFinal.setAttribute('stroke-width', '2.5');
-            pathFinal.setAttribute('filter', 'url(#glow-gold-full)');
+            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.45)');
+            pathFinal.setAttribute('stroke-width', '2');
             pathFinal.setAttribute('fill', 'none');
             svg.appendChild(pathFinal);
           }
