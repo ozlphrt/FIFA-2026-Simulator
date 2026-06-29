@@ -182,35 +182,35 @@
     <!-- Tournament Bracket Tab View -->
     <div id="bracket-view-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px; overflow: hidden;">
       <div id="split-bracket-board-scaler" style="width: 100%; overflow: hidden; transform-origin: top left;">
-        <div id="split-bracket-board" style="width: 1800px; height: 1450px; display: flex; gap: 40px; align-items: stretch; justify-content: space-between; position: relative; transform-origin: top left;">
+        <div id="split-bracket-board" style="width: 2600px; height: 1450px; display: flex; gap: 30px; align-items: stretch; justify-content: space-between; position: relative; transform-origin: top left;">
           <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
         
         <!-- LEFT WING: Rounds 32 down to Semi -->
-        <div class="bracket-wing left-wing" style="display: flex; gap: 40px; flex: 1; justify-content: flex-start;">
+        <div class="bracket-wing left-wing" style="display: flex; gap: 30px; flex: 1; justify-content: flex-start;">
           <!-- Left R32 -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R32</div>
             <div class="split-bracket-column-matches" id="split-grid-l-r32"></div>
           </div>
           <!-- Left R16 -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R16</div>
             <div class="split-bracket-column-matches" id="split-grid-l-r16"></div>
           </div>
           <!-- Left QF -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Quarter</div>
             <div class="split-bracket-column-matches" id="split-grid-l-qf"></div>
           </div>
           <!-- Left SF -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Semi</div>
             <div class="split-bracket-column-matches" id="split-grid-l-sf"></div>
           </div>
         </div>
         
         <!-- CENTER: Final & Champion -->
-        <div class="bracket-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 340px; flex-shrink: 0; gap: 50px; z-index: 2;">
+        <div class="bracket-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 280px; flex-shrink: 0; gap: 50px; z-index: 2;">
           <div class="bracket-column" style="height: auto; align-items: center; min-height: unset; width: 100%;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: auto; margin-bottom: 20px; border: none; text-shadow: none;">Final</div>
             <div class="split-bracket-column-matches" id="split-grid-final" style="height: auto; justify-content: center; width: 100%;"></div>
@@ -227,24 +227,24 @@
         </div>
         
         <!-- RIGHT WING: Semi up to Round 32 (Row-reversed) -->
-        <div class="bracket-wing right-wing" style="display: flex; gap: 40px; flex: 1; flex-direction: row-reverse; justify-content: flex-start;">
+        <div class="bracket-wing right-wing" style="display: flex; gap: 30px; flex: 1; flex-direction: row-reverse; justify-content: flex-start;">
           <!-- Right R32 -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R32</div>
             <div class="split-bracket-column-matches" id="split-grid-r-r32"></div>
           </div>
           <!-- Right R16 -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R16</div>
             <div class="split-bracket-column-matches" id="split-grid-r-r16"></div>
           </div>
           <!-- Right QF -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Quarter</div>
             <div class="split-bracket-column-matches" id="split-grid-r-qf"></div>
           </div>
           <!-- Right SF -->
-          <div class="bracket-column" style="min-width: 320px;">
+          <div class="bracket-column" style="width: 260px; min-width: 260px;">
             <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Semi</div>
             <div class="split-bracket-column-matches" id="split-grid-r-sf"></div>
           </div>
@@ -1520,7 +1520,7 @@
         board.style.transform = 'none';
 
         const containerWidth = container.clientWidth - 48; // subtract padding
-        const fitScale = Math.min(containerWidth / 1800, 1.0); // scale down if needed, max scale of 1.0
+        const fitScale = Math.min(containerWidth / 2600, 1.0); // scale down if needed, max scale of 1.0
 
         board.style.transform = `scale(${fitScale})`;
         scaler.style.height = `${1450 * fitScale}px`;
