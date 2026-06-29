@@ -1438,6 +1438,9 @@
           const hasSelectedTeam = m.teamA.id === currentSelectedTeamId || m.teamB.id === currentSelectedTeamId;
           if (hasSelectedTeam) {
             card.classList.add('highlight-user-team');
+            card.style.border = '2px solid var(--accent-gold)';
+          } else {
+            card.style.border = '1px solid rgba(255, 255, 255, 0.22)';
           }
           
           card.style.display = 'flex';
