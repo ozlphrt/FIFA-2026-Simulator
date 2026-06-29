@@ -705,71 +705,67 @@ window.SimulationEngine = {
           'Winner': null
         };
 
-        const findTeam = (id) => SimulationEngine.teams.find(t => t.id === id);
+                const findTeam = (id) => SimulationEngine.teams.find(t => t.id === id);
 
-        // Step 1: Establish R32 most likely matchups (ensuring unique teams are selected)
-        const selectedTeams = new Set();
-        for (let i = 0; i < 16; i++) {
-          const slot = r32Slots[i];
+        // Step 1: Establish R32 most likely matchups (using official matchups)
+        const officialR32Matchups = [
+          { idA: 'RSA', idB: 'CAN' }, // Match 73
+          { idA: 'NED', idB: 'MAR' }, // Match 75
+          { idA: 'GER', idB: 'PRY' }, // Match 74
+          { idA: 'FRA', idB: 'SWE' }, // Match 77
+          { idA: 'BRA', idB: 'JPN' }, // Match 76
+          { idA: 'CIV', idB: 'NOR' }, // Match 78
+          { idA: 'MEX', idB: 'ECU' }, // Match 79
+          { idA: 'ENG', idB: 'COD' }, // Match 80
           
-          let maxAId = null, maxACount = -1;
-          for (const id in slot.A) {
-            if (!selectedTeams.has(id) && slot.A[id] > maxACount) { 
-              maxACount = slot.A[id]; 
-              maxAId = id; 
-            }
-          }
-          
-          let maxBId = null, maxBCount = -1;
-          for (const id in slot.B) {
-            if (!selectedTeams.has(id) && id !== maxAId && slot.B[id] > maxBCount) { 
-              maxBCount = slot.B[id]; 
-              maxBId = id; 
-            }
-          }
+          { idA: 'USA', idB: 'BIH' }, // Match 81
+          { idA: 'BEL', idB: 'SEN' }, // Match 82
+          { idA: 'COL', idB: 'GHA' }, // Match 83
+          { idA: 'ESP', idB: 'AUT' }, // Match 84
+          { idA: 'SUI', idB: 'ALG' }, // Match 85
+          { idA: 'ARG', idB: 'CPV' }, // Match 86
+          { idA: 'POR', idB: 'CRO' }, // Match 87
+          { idA: 'AUS', idB: 'EGY' }  // Match 88
+        ];
 
-          // Fallback if set logic exhausts candidates
-          if (!maxAId) {
-            for (const id in slot.A) { maxAId = id; break; }
-          }
-          if (!maxBId || maxBId === maxAId) {
-            for (const id in slot.B) { if (id !== maxAId) { maxBId = id; break; } }
-          }
+        officialR32Matchups.forEach(m => {
+          const teamA = findTeam(m.idA);
+          const teamB = findTeam(m.idB);
 
-          selectedTeams.add(maxAId);
-          selectedTeams.add(maxBId);
-
-          const teamA = findTeam(maxAId);
-          const teamB = findTeam(maxBId);
-
-          const winA = stats.teamStages[teamA.id]['Winner'];
-          const winB = stats.teamStages[teamB.id]['Winner'];
+          const r16A = stats.teamStages[teamA.id]['Round of 16'];
+          const r16B = stats.teamStages[teamB.id]['Round of 16'];
           let winnerId = teamA.id;
-          if (winA !== winB) {
-            winnerId = winA > winB ? teamA.id : teamB.id;
+          if (r16A !== r16B) {
+            winnerId = r16A > r16B ? teamA.id : teamB.id;
           } else {
-            const probA = stats.teamStages[teamA.id]['Round of 16'];
-            const probB = stats.teamStages[teamB.id]['Round of 16'];
-            if (probA !== probB) {
-              winnerId = probA > probB ? teamA.id : teamB.id;
-            } else {
-              winnerId = teamA.rating >= teamB.rating ? teamA.id : teamB.id;
-            }
+            winnerId = teamA.rating >= teamB.rating ? teamA.id : teamB.id;
           }
 
-          const diff = teamA.rating - teamB.rating;
-          let goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
-          let goalsB = Math.round(1.35 * Math.pow(10, -diff / 1600));
-          if (goalsA === goalsB) {
-            if (winnerId === teamA.id) goalsA++; else goalsB++;
+          let goalsA = 0, goalsB = 0, isRealResult = false;
+
+          // Hardcode real-world result: South Africa vs Canada (Canada won 1-0)
+          if ((teamA.id === 'RSA' && teamB.id === 'CAN') || (teamA.id === 'CAN' && teamB.id === 'RSA')) {
+            isRealResult = true;
+            if (teamA.id === 'CAN') {
+              goalsA = 1; goalsB = 0; winnerId = teamA.id;
+            } else {
+              goalsA = 0; goalsB = 1; winnerId = teamB.id;
+            }
+          } else {
+            const diff = teamA.rating - teamB.rating;
+            goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
+            goalsB = Math.round(1.35 * Math.pow(10, -diff / 1600));
+            if (goalsA === goalsB) {
+              if (winnerId === teamA.id) goalsA++; else goalsB++;
+            }
           }
 
           mostLikelyBracket['Round of 32'].push({
             teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
             teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
-            goalsA, goalsB, pens: false, winnerId
+            goalsA, goalsB, pens: false, winnerId, isRealResult
           });
-        }
+        });
 
         // Step 2: Establish progression matches for later rounds based on stats
         const roundsList = [
