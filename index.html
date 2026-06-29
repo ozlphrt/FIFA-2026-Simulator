@@ -41,12 +41,12 @@
 
     <!-- View Switcher Tabs -->
     <div class="view-tabs" style="margin: 0 auto 16px auto;">
-      <button id="tab-groups-dashboard" class="tab-btn active">Groups & Dashboard</button>
-      <button id="tab-bracket" class="tab-btn">Tournament Bracket</button>
+      <button id="tab-groups-dashboard" class="tab-btn">Groups & Dashboard</button>
+      <button id="tab-bracket" class="tab-btn active">Tournament Bracket</button>
     </div>
 
     <!-- Groups & Dashboard View -->
-    <div id="groups-view-container">
+    <div id="groups-view-container" class="hidden">
       <main class="app-layout">
         <!-- Config Section -->
         <section class="config-panel glass">
@@ -180,7 +180,7 @@
     </div>
 
     <!-- Tournament Bracket Tab View -->
-    <div id="bracket-view-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px; overflow: hidden;">
+    <div id="bracket-view-container" style="width: 100%; display: flex; flex-direction: column; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px; overflow: hidden;">
       <div id="split-bracket-board-scaler" style="width: 100%; overflow: hidden; transform-origin: top left;">
         <div id="split-bracket-board" style="width: 2600px; height: 1450px; display: flex; gap: 30px; align-items: stretch; justify-content: space-between; position: relative; transform-origin: top left;">
           <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
