@@ -327,22 +327,73 @@ function runSingleSimulation(teamsList, selectedTeamId) {
     }
   });
 
-  const isUserTeamInBestThirds = userTeamGroupFinish === 3 && qualified3rdIds.has(selectedTeamId);
-  const proceedsToR32 = userTeamGroupFinish <= 2 || isUserTeamInBestThirds;
+  const officialR32Matchups = [
+    { idA: 'RSA', idB: 'CAN' }, // Match 73
+    { idA: 'NED', idB: 'MAR' }, // Match 75
+    { idA: 'GER', idB: 'PRY' }, // Match 74
+    { idA: 'FRA', idB: 'SWE' }, // Match 77
+    { idA: 'BRA', idB: 'JPN' }, // Match 76
+    { idA: 'CIV', idB: 'NOR' }, // Match 78
+    { idA: 'MEX', idB: 'ECU' }, // Match 79
+    { idA: 'ENG', idB: 'COD' }, // Match 80
+    
+    { idA: 'USA', idB: 'BIH' }, // Match 81
+    { idA: 'BEL', idB: 'SEN' }, // Match 82
+    { idA: 'COL', idB: 'GHA' }, // Match 83
+    { idA: 'ESP', idB: 'AUT' }, // Match 84
+    { idA: 'SUI', idB: 'ALG' }, // Match 85
+    { idA: 'ARG', idB: 'CPV' }, // Match 86
+    { idA: 'POR', idB: 'CRO' }, // Match 87
+    { idA: 'AUS', idB: 'EGY' }  // Match 88
+  ];
 
+  const findTeam = (id) => teams.find(t => t.id === id);
+
+  const proceedsToR32 = officialR32Matchups.some(m => m.idA === selectedTeamId || m.idB === selectedTeamId);
   if (proceedsToR32) {
     userTeamStage = 'Round of 32';
   }
 
-  const knockoutPool = [];
-  firsts.forEach(t => knockoutPool.push(t));
-  seconds.forEach(t => knockoutPool.push(t));
-  bestThirds.forEach(t => knockoutPool.push(t));
-  
-  let currentRound = [...knockoutPool];
+  let currentRound = [];
+  officialR32Matchups.forEach(m => {
+    const teamA = findTeam(m.idA);
+    const teamB = findTeam(m.idB);
+    const matchResult = simulateKnockoutMatch(teamA, teamB);
+
+    // Hardcode real-world result: South Africa vs Canada (Canada won 1-0)
+    if (teamA.id === 'RSA' && teamB.id === 'CAN') {
+      matchResult.goalsA = 0;
+      matchResult.goalsB = 1;
+      matchResult.winner = teamB;
+      matchResult.pens = false;
+    } else if (teamA.id === 'CAN' && teamB.id === 'RSA') {
+      matchResult.goalsA = 1;
+      matchResult.goalsB = 0;
+      matchResult.winner = teamA;
+      matchResult.pens = false;
+    }
+
+    bracket['Round of 32'].push({
+      teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
+      teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
+      goalsA: matchResult.goalsA,
+      goalsB: matchResult.goalsB,
+      pens: matchResult.pens,
+      winnerId: matchResult.winner.id
+    });
+
+    if (proceedsToR32 && (teamA.id === selectedTeamId || teamB.id === selectedTeamId)) {
+      if (matchResult.winner.id === selectedTeamId) {
+        userTeamStage = 'Round of 16';
+      }
+    }
+
+    currentRound.push(matchResult.winner);
+  });
+
   const roundNames = ['Round of 32', 'Round of 16', 'Quarterfinals', 'Semifinals', 'Final'];
   
-  for (let r = 0; r < roundNames.length; r++) {
+  for (let r = 1; r < roundNames.length; r++) {
     const roundName = roundNames[r];
     const nextRound = [];
     
