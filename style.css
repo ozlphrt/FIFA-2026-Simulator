@@ -1104,28 +1104,73 @@ input[type="range"]::-webkit-slider-thumb:hover {
   position: relative;
 }
 
-#bracket-grid-r32 {
+#bracket-grid-r32, #split-grid-l-r32, #split-grid-r-r32 {
   margin-top: 0px;
   gap: var(--card-gap);
 }
 
-#bracket-grid-r16 {
+#bracket-grid-r16, #split-grid-l-r16, #split-grid-r-r16 {
   margin-top: calc(var(--card-height) / 2 + var(--card-gap) / 2);
   gap: calc(var(--card-height) + var(--card-gap) * 2);
 }
 
-#bracket-grid-qf {
+#bracket-grid-qf, #split-grid-l-qf, #split-grid-r-qf {
   margin-top: calc(var(--card-height) * 1.5 + var(--card-gap) * 1.5);
   gap: calc(var(--card-height) * 3 + var(--card-gap) * 4);
 }
 
-#bracket-grid-sf {
+#bracket-grid-sf, #split-grid-l-sf, #split-grid-r-sf {
   margin-top: calc(var(--card-height) * 3.5 + var(--card-gap) * 3.5);
   gap: calc(var(--card-height) * 7 + var(--card-gap) * 8);
 }
 
-#bracket-grid-final {
-  margin-top: calc(var(--card-height) * 7.5 + var(--card-gap) * 7.5);
+#bracket-grid-final, #split-grid-final {
+  margin-top: calc(var(--card-height) * 3.5 + var(--card-gap) * 3.5);
+}
+
+.split-bracket-column-matches {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: none;
+  height: calc(8 * var(--card-height) + 7 * var(--card-gap));
+  position: relative;
+}
+
+/* Tabs switcher styles */
+.view-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  width: max-content;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-red-hover) 100%);
+  box-shadow: 0 4px 12px rgba(138, 12, 37, 0.3);
 }
 
 /* Win Probabilities Leaderboard Button & Rows */

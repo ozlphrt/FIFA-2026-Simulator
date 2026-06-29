@@ -39,136 +39,217 @@
       <p class="subtitle">FIFA World Cup<br>Monte Carlo Simulator</p>
     </header>
 
-    <main class="app-layout">
-      <!-- Config Section -->
-      <section class="config-panel glass">
+    <!-- View Switcher Tabs -->
+    <div class="view-tabs" style="margin: 0 auto 16px auto;">
+      <button id="tab-groups-dashboard" class="tab-btn active">Groups & Dashboard</button>
+      <button id="tab-bracket" class="tab-btn">Tournament Bracket</button>
+    </div>
 
-        <div class="seeded-stats">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; flex-wrap: wrap;">
-            <h3 style="margin: 0; border: none; padding-bottom: 0;" id="standings-header">Group Standings</h3>
-            <div style="display: flex; gap: 8px;">
-              <button id="btn-open-tuning" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">Tune Ratings</button>
-              <button id="btn-open-predictor" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%) !important;">Predict Match</button>
-            </div>
-          </div>
-          <div class="table-responsive">
-            <table class="standings-table">
-              <thead>
-                <tr>
-                  <th>Team</th>
-                  <th>Pld</th>
-                  <th>W</th>
-                  <th>D</th>
-                  <th>L</th>
-                  <th>GD</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-              <tbody id="standings-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+    <!-- Groups & Dashboard View -->
+    <div id="groups-view-container">
+      <main class="app-layout">
+        <!-- Config Section -->
+        <section class="config-panel glass">
 
-      <!-- Simulation Status / Results Section -->
-      <section class="results-panel">
-        <!-- Loader / Progress -->
-        <div id="simulation-progress-card" class="glass hidden">
-          <div class="progress-details">
-            <h3>Simulating Tournaments...</h3>
-            <span id="progress-percentage">0%</span>
-          </div>
-          <div class="progress-bar-container">
-            <div id="progress-bar-fill" style="width: 0%"></div>
-          </div>
-          <p class="progress-subtext">Executing matches, tracking points, goal differences, and knockout brackets...</p>
-        </div>
-
-        <!-- Initial State / Start Prompt -->
-        <div id="simulation-prompt-card" class="glass">
-          <div class="prompt-icon">⚽</div>
-          <h2>Ready to Predict</h2>
-          <p>Adjust Turkey's strength, set the group opponent ratings, and start the simulation to visualize their progression probabilities.</p>
-        </div>
-
-        <!-- Simulation Results Dashboard -->
-        <div id="simulation-results-card" class="glass hidden" style="display: flex; flex-direction: column; overflow: hidden; max-width: 100%;">
-          
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--glass-border);">
-            <h3 style="border: none; margin: 0; font-size: 1.15rem; color: var(--accent-gold);">Overall Probability Dashboard</h3>
-          </div>
-
-          <!-- Key Probability Cards -->
-          <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
-            <!-- 2x2 Matrix for Stage Probabilities -->
-            <div class="probability-matrix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Round of 16</span>
-                <span id="stat-r16-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
-              </div>
-              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Quarterfinals</span>
-                <span id="stat-qf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
-              </div>
-              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Semifinals</span>
-                <span id="stat-sf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
-              </div>
-              <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Final</span>
-                <span id="stat-final-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+          <div class="seeded-stats">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; flex-wrap: wrap;">
+              <h3 style="margin: 0; border: none; padding-bottom: 0;" id="standings-header">Group Standings</h3>
+              <div style="display: flex; gap: 8px;">
+                <button id="btn-open-tuning" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px;">Tune Ratings</button>
+                <button id="btn-open-predictor" class="btn-primary" style="margin: 0; padding: 6px 12px; font-size: 0.8rem; min-height: unset; width: auto; display: flex; align-items: center; justify-content: center; gap: 4px; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--primary-red) 100%) !important;">Predict Match</button>
               </div>
             </div>
-
-            <!-- Bottom Highlight Card -->
-            <div class="stat-card glass highlight dashboard-stat-card" style="display: flex; flex-direction: column; align-items: center; padding: 16px; text-align: center; width: 100%;">
-              <span class="stat-title" style="font-size: 0.85rem;">Chance to Win World Cup 🏆</span>
-              <span id="stat-winner-pct" class="stat-value" style="font-size: 1.8rem;">0%</span>
+            <div class="table-responsive">
+              <table class="standings-table">
+                <thead>
+                  <tr>
+                    <th>Team</th>
+                    <th>Pld</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>GD</th>
+                    <th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="standings-table-body">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
             </div>
           </div>
+        </section>
 
-
-
-          <!-- Stage Reached Visualization Chart -->
-          <div class="chart-section">
-            <h3>Tournament Stage Probabilities</h3>
-            <div id="stages-bar-chart" class="bar-chart">
-              <!-- Dynamically rendered bar chart -->
+        <!-- Simulation Status / Results Section -->
+        <section class="results-panel">
+          <!-- Loader / Progress -->
+          <div id="simulation-progress-card" class="glass hidden">
+            <div class="progress-details">
+              <h3>Simulating Tournaments...</h3>
+              <span id="progress-percentage">0%</span>
             </div>
+            <div class="progress-bar-container">
+              <div id="progress-bar-fill" style="width: 0%"></div>
+            </div>
+            <p class="progress-subtext">Executing matches, tracking points, goal differences, and knockout brackets...</p>
           </div>
 
-          <!-- Group Progression Probability -->
-          <div class="chart-section">
-            <h3>Group Progression Probability (R32)</h3>
-            <div id="group-progression-chart" class="bar-chart">
-              <!-- Dynamically rendered -->
-            </div>
+          <!-- Initial State / Start Prompt -->
+          <div id="simulation-prompt-card" class="glass">
+            <div class="prompt-icon">⚽</div>
+            <h2>Ready to Predict</h2>
+            <p>Adjust Turkey's strength, set the group opponent ratings, and start the simulation to visualize their progression probabilities.</p>
           </div>
 
-          <!-- Group Finish breakdown -->
-          <div class="chart-section">
-            <h3>Group Stage Finish Breakdown</h3>
-            <div id="group-finish-chart" class="group-finish-chart">
-              <!-- Standings position percentages -->
-            </div>
-          </div>
-
-          <!-- Action Buttons (Side by Side) -->
-          <div style="display: flex; gap: 12px; margin-top: 14px; margin-bottom: 8px;">
-            <button id="btn-open-bracket" class="btn-primary" style="flex: 1; padding: 6px 12px; font-size: 0.8rem; min-height: unset; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; margin: 0;">
-              <span>Bracket Board</span>
-            </button>
+          <!-- Simulation Results Dashboard -->
+          <div id="simulation-results-card" class="glass hidden" style="display: flex; flex-direction: column; overflow: hidden; max-width: 100%;">
             
-            <button id="btn-open-win-probabilities" class="btn-primary" style="flex: 1; padding: 6px 12px; font-size: 0.8rem; min-height: unset; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; margin: 0;">
-              <span>Win Probabilities</span>
-            </button>
-          </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--glass-border);">
+              <h3 style="border: none; margin: 0; font-size: 1.15rem; color: var(--accent-gold);">Overall Probability Dashboard</h3>
+            </div>
 
+            <!-- Key Probability Cards -->
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+              <!-- 2x2 Matrix for Stage Probabilities -->
+              <div class="probability-matrix" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                  <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Round of 16</span>
+                  <span id="stat-r16-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+                </div>
+                <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                  <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Quarterfinals</span>
+                  <span id="stat-qf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+                </div>
+                <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                  <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Semifinals</span>
+                  <span id="stat-sf-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+                </div>
+                <div class="stat-card glass dashboard-stat-card" style="padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                  <span class="stat-title" style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px;">Final</span>
+                  <span id="stat-final-pct" class="stat-value" style="font-size: 1.4rem; font-weight: 800;">0%</span>
+                </div>
+              </div>
+
+              <!-- Bottom Highlight Card -->
+              <div class="stat-card glass highlight dashboard-stat-card" style="display: flex; flex-direction: column; align-items: center; padding: 16px; text-align: center; width: 100%;">
+                <span class="stat-title" style="font-size: 0.85rem;">Chance to Win World Cup 🏆</span>
+                <span id="stat-winner-pct" class="stat-value" style="font-size: 1.8rem;">0%</span>
+              </div>
+            </div>
+
+
+
+            <!-- Stage Reached Visualization Chart -->
+            <div class="chart-section">
+              <h3>Tournament Stage Probabilities</h3>
+              <div id="stages-bar-chart" class="bar-chart">
+                <!-- Dynamically rendered bar chart -->
+              </div>
+            </div>
+
+            <!-- Group Progression Probability -->
+            <div class="chart-section">
+              <h3>Group Progression Probability (R32)</h3>
+              <div id="group-progression-chart" class="bar-chart">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+
+            <!-- Group Finish breakdown -->
+            <div class="chart-section">
+              <h3>Group Stage Finish Breakdown</h3>
+              <div id="group-finish-chart" class="group-finish-chart">
+                <!-- Standings position percentages -->
+              </div>
+            </div>
+
+            <!-- Action Buttons (Side by Side) -->
+            <div style="display: flex; gap: 12px; margin-top: 14px; margin-bottom: 8px;">
+              <button id="btn-open-bracket" class="btn-primary" style="flex: 1; padding: 6px 12px; font-size: 0.8rem; min-height: unset; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; margin: 0;">
+                <span>Bracket Board</span>
+              </button>
+              
+              <button id="btn-open-win-probabilities" class="btn-primary" style="flex: 1; padding: 6px 12px; font-size: 0.8rem; min-height: unset; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; margin: 0;">
+                <span>Win Probabilities</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Tournament Bracket Tab View -->
+    <div id="bracket-view-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 24px;">
+      <div style="width: 100%; display: flex; gap: 40px; align-items: stretch; justify-content: space-between; position: relative; min-width: 1800px; height: 1450px;">
+        <svg id="split-bracket-connectors" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></svg>
+        
+        <!-- LEFT WING: Rounds 32 down to Semi -->
+        <div class="bracket-wing left-wing" style="display: flex; gap: 40px; flex: 1; justify-content: flex-start;">
+          <!-- Left R32 -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R32</div>
+            <div class="split-bracket-column-matches" id="split-grid-l-r32"></div>
+          </div>
+          <!-- Left R16 -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R16</div>
+            <div class="split-bracket-column-matches" id="split-grid-l-r16"></div>
+          </div>
+          <!-- Left QF -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Quarter</div>
+            <div class="split-bracket-column-matches" id="split-grid-l-qf"></div>
+          </div>
+          <!-- Left SF -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Semi</div>
+            <div class="split-bracket-column-matches" id="split-grid-l-sf"></div>
+          </div>
         </div>
-      </section>
-    </main>
+        
+        <!-- CENTER: Final & Champion -->
+        <div class="bracket-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 340px; flex-shrink: 0; gap: 50px; z-index: 2;">
+          <div class="bracket-column" style="height: auto; align-items: center; min-height: unset; width: 100%;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: auto; margin-bottom: 20px; border: none; text-shadow: none;">Final</div>
+            <div class="split-bracket-column-matches" id="split-grid-final" style="height: auto; justify-content: center; width: 100%;"></div>
+          </div>
+          
+          <div id="split-champion-highlight-card" class="glass highlight" style="text-align: center; width: 100%; padding: 24px; border-color: var(--accent-gold); box-shadow: 0 0 25px rgba(205, 162, 80, 0.25); display: none;">
+            <span style="font-size: 3rem; display: block; margin-bottom: 8px; filter: drop-shadow(0 2px 8px rgba(205, 162, 80, 0.4));">🏆</span>
+            <h3 style="border: none; margin: 4px 0 16px; color: var(--accent-gold); font-size: 1.15rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 800;">World Cup Champion</h3>
+            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 10px;">
+              <img id="split-champion-flag-img" src="" style="width: 44px; height: 28px; border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.15); object-fit: cover;">
+              <strong id="split-champion-name" style="font-size: 1.5rem; color: var(--text-primary); font-weight: 800;">Turkey</strong>
+            </div>
+          </div>
+        </div>
+        
+        <!-- RIGHT WING: Semi up to Round 32 (Row-reversed) -->
+        <div class="bracket-wing right-wing" style="display: flex; gap: 40px; flex: 1; flex-direction: row-reverse; justify-content: flex-start;">
+          <!-- Right R32 -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R32</div>
+            <div class="split-bracket-column-matches" id="split-grid-r-r32"></div>
+          </div>
+          <!-- Right R16 -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">R16</div>
+            <div class="split-bracket-column-matches" id="split-grid-r-r16"></div>
+          </div>
+          <!-- Right QF -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Quarter</div>
+            <div class="split-bracket-column-matches" id="split-grid-r-qf"></div>
+          </div>
+          <!-- Right SF -->
+          <div class="bracket-column" style="min-width: 320px;">
+            <div class="bracket-column-header" style="font-size: 2.2rem; height: 60px;">Semi</div>
+            <div class="split-bracket-column-matches" id="split-grid-r-sf"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Live Betting Market Feed -->
     <div class="market-feed-card glass" style="margin-top: 16px; width: 100%;">
@@ -1399,10 +1480,179 @@
         });
       }
 
+      function populateSplitBracket(bracket) {
+        if (!bracket) return;
+
+        renderBracketMatchGrid('split-grid-l-r32', bracket['Round of 32'].slice(0, 8));
+        renderBracketMatchGrid('split-grid-r-r32', bracket['Round of 32'].slice(8, 16));
+
+        renderBracketMatchGrid('split-grid-l-r16', bracket['Round of 16'].slice(0, 4));
+        renderBracketMatchGrid('split-grid-r-r16', bracket['Round of 16'].slice(4, 8));
+
+        renderBracketMatchGrid('split-grid-l-qf', bracket['Quarterfinals'].slice(0, 2));
+        renderBracketMatchGrid('split-grid-r-qf', bracket['Quarterfinals'].slice(2, 4));
+
+        renderBracketMatchGrid('split-grid-l-sf', bracket['Semifinals'].slice(0, 1));
+        renderBracketMatchGrid('split-grid-r-sf', bracket['Semifinals'].slice(1, 2));
+
+        renderBracketMatchGrid('split-grid-final', bracket['Final']);
+
+        const champCard = document.getElementById('split-champion-highlight-card');
+        const champFlag = document.getElementById('split-champion-flag-img');
+        const champName = document.getElementById('split-champion-name');
+        
+        if (champCard && bracket['Winner']) {
+          champFlag.src = `https://flagcdn.com/w80/${bracket['Winner'].flag}.png`;
+          champName.innerText = bracket['Winner'].name;
+          champCard.style.display = 'block';
+        }
+      }
+
+      function drawSplitBracketConnectors() {
+        const svg = document.getElementById('split-bracket-connectors');
+        const board = document.getElementById('split-bracket-board');
+        if (!svg || !board) return;
+
+        svg.innerHTML = '';
+        const boardRect = board.getBoundingClientRect();
+
+        // 1. LEFT WING Connectors
+        const leftStages = [
+          { gridId: 'split-grid-l-r32', nextGridId: 'split-grid-l-r16' },
+          { gridId: 'split-grid-l-r16', nextGridId: 'split-grid-l-qf' },
+          { gridId: 'split-grid-l-qf', nextGridId: 'split-grid-l-sf' },
+          { gridId: 'split-grid-l-sf', nextGridId: 'split-grid-final' }
+        ];
+
+        leftStages.forEach(stage => {
+          const currentGrid = document.getElementById(stage.gridId);
+          const nextGrid = document.getElementById(stage.nextGridId);
+          if (!currentGrid || !nextGrid) return;
+
+          const currentCards = Array.from(currentGrid.querySelectorAll('.match-card'));
+          const nextCards = Array.from(nextGrid.querySelectorAll('.match-card'));
+          if (currentCards.length === 0 || nextCards.length === 0) return;
+
+          nextCards.forEach((nextCard, nextIdx) => {
+            const cardA = currentCards[nextIdx * 2];
+            const cardB = currentCards[nextIdx * 2 + 1];
+
+            if (!cardA || !cardB) return;
+
+            const rectA = cardA.getBoundingClientRect();
+            const rectB = cardB.getBoundingClientRect();
+            const rectNext = nextCard.getBoundingClientRect();
+
+            const x1_A = (rectA.right - boardRect.left);
+            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top);
+
+            const x1_B = (rectB.right - boardRect.left);
+            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top);
+
+            const x2 = (rectNext.left - boardRect.left);
+            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top);
+
+            const x_mid = (x1_A + x2) / 2;
+
+            const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
+            pathA.setAttribute('stroke-width', '3.5');
+            pathA.setAttribute('fill', 'none');
+            svg.appendChild(pathA);
+
+            const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
+            pathB.setAttribute('stroke-width', '3.5');
+            pathB.setAttribute('fill', 'none');
+            svg.appendChild(pathB);
+          });
+        });
+
+        // 2. RIGHT WING Connectors
+        const rightStages = [
+          { gridId: 'split-grid-r-r32', nextGridId: 'split-grid-r-r16' },
+          { gridId: 'split-grid-r-r16', nextGridId: 'split-grid-r-qf' },
+          { gridId: 'split-grid-r-qf', nextGridId: 'split-grid-r-sf' },
+          { gridId: 'split-grid-r-sf', nextGridId: 'split-grid-final' }
+        ];
+
+        rightStages.forEach(stage => {
+          const currentGrid = document.getElementById(stage.gridId);
+          const nextGrid = document.getElementById(stage.nextGridId);
+          if (!currentGrid || !nextGrid) return;
+
+          const currentCards = Array.from(currentGrid.querySelectorAll('.match-card'));
+          const nextCards = Array.from(nextGrid.querySelectorAll('.match-card'));
+          if (currentCards.length === 0 || nextCards.length === 0) return;
+
+          nextCards.forEach((nextCard, nextIdx) => {
+            const cardA = currentCards[nextIdx * 2];
+            const cardB = currentCards[nextIdx * 2 + 1];
+
+            if (!cardA || !cardB) return;
+
+            const rectA = cardA.getBoundingClientRect();
+            const rectB = cardB.getBoundingClientRect();
+            const rectNext = nextCard.getBoundingClientRect();
+
+            const x1_A = (rectA.left - boardRect.left);
+            const y1_A = ((rectA.top + rectA.bottom) / 2 - boardRect.top);
+
+            const x1_B = (rectB.left - boardRect.left);
+            const y1_B = ((rectB.top + rectB.bottom) / 2 - boardRect.top);
+
+            const x2 = (rectNext.right - boardRect.left);
+            const y2 = ((rectNext.top + rectNext.bottom) / 2 - boardRect.top);
+
+            const x_mid = (x1_A + x2) / 2;
+
+            const pathA = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathA.setAttribute('d', `M ${x1_A} ${y1_A} H ${x_mid} V ${y2} H ${x2}`);
+            pathA.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
+            pathA.setAttribute('stroke-width', '3.5');
+            pathA.setAttribute('fill', 'none');
+            svg.appendChild(pathA);
+
+            const pathB = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathB.setAttribute('d', `M ${x1_B} ${y1_B} H ${x_mid} V ${y2} H ${x2}`);
+            pathB.setAttribute('stroke', 'rgba(205, 162, 80, 0.5)');
+            pathB.setAttribute('stroke-width', '3.5');
+            pathB.setAttribute('fill', 'none');
+            svg.appendChild(pathB);
+          });
+        });
+
+        // 3. Connect Final match card to Champion card
+        const finalGrid = document.getElementById('split-grid-final');
+        const champCard = document.getElementById('split-champion-highlight-card');
+        if (finalGrid && champCard && champCard.style.display !== 'none') {
+          const finalCard = finalGrid.querySelector('.match-card');
+          if (finalCard) {
+            const rectFinal = finalCard.getBoundingClientRect();
+            const rectChamp = champCard.getBoundingClientRect();
+
+            const x1 = ((rectFinal.left + rectFinal.right) / 2 - boardRect.left);
+            const y1 = (rectFinal.bottom - boardRect.top);
+
+            const x2 = ((rectChamp.left + rectChamp.right) / 2 - boardRect.left);
+            const y2 = (rectChamp.top - boardRect.top);
+
+            const pathFinal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            pathFinal.setAttribute('d', `M ${x1} ${y1} V ${y2}`);
+            pathFinal.setAttribute('stroke', 'rgba(205, 162, 80, 0.6)');
+            pathFinal.setAttribute('stroke-width', '3.5');
+            pathFinal.setAttribute('fill', 'none');
+            svg.appendChild(pathFinal);
+          }
+        }
+      }
+
       function populateAllBracketSlides(bracket) {
         if (!bracket) return;
         currentSimulationBracket = bracket;
-
+ 
         renderBracketMatchGrid('bracket-grid-r32', bracket['Round of 32']);
         renderBracketMatchGrid('bracket-grid-r16', bracket['Round of 16']);
         renderBracketMatchGrid('bracket-grid-qf', bracket['Quarterfinals']);
@@ -1418,6 +1668,9 @@
           champName.innerText = bracket['Winner'].name;
           champCard.style.display = 'block';
         }
+
+        populateSplitBracket(bracket);
+        setTimeout(drawSplitBracketConnectors, 50);
       }
 
       function drawBracketConnectors() {
@@ -1763,6 +2016,37 @@
             btnOpenWinProbabilities.click();
           }
         });
+      });
+
+      // View toggling event listeners
+      const tabGroupsDashboard = document.getElementById('tab-groups-dashboard');
+      const tabBracket = document.getElementById('tab-bracket');
+      const groupsViewContainer = document.getElementById('groups-view-container');
+      const bracketViewContainer = document.getElementById('bracket-view-container');
+
+      if (tabGroupsDashboard && tabBracket && groupsViewContainer && bracketViewContainer) {
+        tabGroupsDashboard.addEventListener('click', () => {
+          tabGroupsDashboard.classList.add('active');
+          tabBracket.classList.remove('active');
+          groupsViewContainer.classList.remove('hidden');
+          bracketViewContainer.classList.add('hidden');
+        });
+
+        tabBracket.addEventListener('click', () => {
+          tabBracket.classList.add('active');
+          tabGroupsDashboard.classList.remove('active');
+          groupsViewContainer.classList.add('hidden');
+          bracketViewContainer.classList.remove('hidden');
+          
+          // Draw connectors after layout reflow
+          setTimeout(drawSplitBracketConnectors, 50);
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        if (bracketViewContainer && !bracketViewContainer.classList.contains('hidden')) {
+          drawSplitBracketConnectors();
+        }
       });
 
       // Dismiss standings tooltip when tapping outside on mobile
