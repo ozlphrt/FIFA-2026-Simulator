@@ -360,19 +360,23 @@ function runSingleSimulation(teamsList, selectedTeamId) {
     const teamB = findTeam(m.idB);
     const matchResult = simulateKnockoutMatch(teamA, teamB);
 
-    // Hardcode real-world result: South Africa vs Canada (Canada won 1-0)
+    // Hardcode real-world results:
     if (teamA.id === 'RSA' && teamB.id === 'CAN') {
-      matchResult.goalsA = 0;
-      matchResult.goalsB = 1;
-      matchResult.winner = teamB;
-      matchResult.pens = false;
-      matchResult.isRealResult = true;
+      matchResult.goalsA = 0; matchResult.goalsB = 1; matchResult.winner = teamB; matchResult.pens = false; matchResult.isRealResult = true;
     } else if (teamA.id === 'CAN' && teamB.id === 'RSA') {
-      matchResult.goalsA = 1;
-      matchResult.goalsB = 0;
-      matchResult.winner = teamA;
-      matchResult.pens = false;
-      matchResult.isRealResult = true;
+      matchResult.goalsA = 1; matchResult.goalsB = 0; matchResult.winner = teamA; matchResult.pens = false; matchResult.isRealResult = true;
+    } else if (teamA.id === 'BRA' && teamB.id === 'JPN') {
+      matchResult.goalsA = 2; matchResult.goalsB = 1; matchResult.winner = teamA; matchResult.pens = false; matchResult.isRealResult = true;
+    } else if (teamA.id === 'JPN' && teamB.id === 'BRA') {
+      matchResult.goalsA = 1; matchResult.goalsB = 2; matchResult.winner = teamB; matchResult.pens = false; matchResult.isRealResult = true;
+    } else if (teamA.id === 'PAR' && teamB.id === 'GER') {
+      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamA; matchResult.pens = true; matchResult.isRealResult = true;
+    } else if (teamA.id === 'GER' && teamB.id === 'PAR') {
+      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamB; matchResult.pens = true; matchResult.isRealResult = true;
+    } else if (teamA.id === 'MAR' && teamB.id === 'NED') {
+      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamA; matchResult.pens = true; matchResult.isRealResult = true;
+    } else if (teamA.id === 'NED' && teamB.id === 'MAR') {
+      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamB; matchResult.pens = true; matchResult.isRealResult = true;
     }
 
     bracket['Round of 32'].push({
@@ -743,14 +747,19 @@ window.SimulationEngine = {
 
           let goalsA = 0, goalsB = 0, isRealResult = false;
 
-          // Hardcode real-world result: South Africa vs Canada (Canada won 1-0)
+          // Hardcode real-world results
           if ((teamA.id === 'RSA' && teamB.id === 'CAN') || (teamA.id === 'CAN' && teamB.id === 'RSA')) {
             isRealResult = true;
-            if (teamA.id === 'CAN') {
-              goalsA = 1; goalsB = 0; winnerId = teamA.id;
-            } else {
-              goalsA = 0; goalsB = 1; winnerId = teamB.id;
-            }
+            if (teamA.id === 'CAN') { goalsA = 1; goalsB = 0; winnerId = teamA.id; } else { goalsA = 0; goalsB = 1; winnerId = teamB.id; }
+          } else if ((teamA.id === 'BRA' && teamB.id === 'JPN') || (teamA.id === 'JPN' && teamB.id === 'BRA')) {
+            isRealResult = true;
+            if (teamA.id === 'BRA') { goalsA = 2; goalsB = 1; winnerId = teamA.id; } else { goalsA = 1; goalsB = 2; winnerId = teamB.id; }
+          } else if ((teamA.id === 'PAR' && teamB.id === 'GER') || (teamA.id === 'GER' && teamB.id === 'PAR')) {
+            isRealResult = true;
+            goalsA = 1; goalsB = 1; winnerId = 'PAR'; // Paraguay won on pens
+          } else if ((teamA.id === 'MAR' && teamB.id === 'NED') || (teamA.id === 'NED' && teamB.id === 'MAR')) {
+            isRealResult = true;
+            goalsA = 2; goalsB = 2; winnerId = 'MAR'; // Morocco won on pens
           } else {
             const diff = teamA.rating - teamB.rating;
             goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
@@ -763,7 +772,7 @@ window.SimulationEngine = {
           mostLikelyBracket['Round of 32'].push({
             teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
             teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
-            goalsA, goalsB, pens: false, winnerId, isRealResult
+            goalsA, goalsB, pens: (goalsA === goalsB), winnerId, isRealResult
           });
         });
 
