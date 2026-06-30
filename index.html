@@ -1444,6 +1444,10 @@
 
           let scoreTextA = m.goalsA;
           let scoreTextB = m.goalsB;
+          if (m.pens && m.pensA !== undefined && m.pensB !== undefined) {
+            scoreTextA = `${m.goalsA}<span style="font-size: 1.1rem; font-weight: normal; opacity: 0.65; margin-left: 2px;">(${m.pensA})</span>`;
+            scoreTextB = `${m.goalsB}<span style="font-size: 1.1rem; font-weight: normal; opacity: 0.65; margin-left: 2px;">(${m.pensB})</span>`;
+          }
 
 
 

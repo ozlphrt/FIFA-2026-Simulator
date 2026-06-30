@@ -111,7 +111,15 @@ function simulateKnockoutMatch(teamA, teamB) {
   const probA = 0.5 + (teamA.rating - teamB.rating) / 4000;
   const clampedProbA = Math.max(0.35, Math.min(0.65, probA));
   const winner = Math.random() < clampedProbA ? teamA : teamB;
-  return { winner, goalsA, goalsB, pens: true };
+  let pensA = 0, pensB = 0;
+  if (winner.id === teamA.id) {
+    pensA = 5;
+    pensB = Math.floor(Math.random() * 3) + 2; // 5-4, 5-3, 5-2
+  } else {
+    pensB = 5;
+    pensA = Math.floor(Math.random() * 3) + 2; // 4-5, 3-5, 2-5
+  }
+  return { winner, goalsA, goalsB, pens: true, pensA, pensB };
 }
 
 // Helper to record match stats
@@ -370,13 +378,13 @@ function runSingleSimulation(teamsList, selectedTeamId) {
     } else if (teamA.id === 'JPN' && teamB.id === 'BRA') {
       matchResult.goalsA = 1; matchResult.goalsB = 2; matchResult.winner = teamB; matchResult.pens = false; matchResult.isRealResult = true;
     } else if (teamA.id === 'PRY' && teamB.id === 'GER') {
-      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamA; matchResult.pens = true; matchResult.isRealResult = true;
+      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamA; matchResult.pens = true; matchResult.pensA = 4; matchResult.pensB = 3; matchResult.isRealResult = true;
     } else if (teamA.id === 'GER' && teamB.id === 'PRY') {
-      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamB; matchResult.pens = true; matchResult.isRealResult = true;
+      matchResult.goalsA = 1; matchResult.goalsB = 1; matchResult.winner = teamB; matchResult.pens = true; matchResult.pensA = 3; matchResult.pensB = 4; matchResult.isRealResult = true;
     } else if (teamA.id === 'MAR' && teamB.id === 'NED') {
-      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamA; matchResult.pens = true; matchResult.isRealResult = true;
+      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamA; matchResult.pens = true; matchResult.pensA = 3; matchResult.pensB = 2; matchResult.isRealResult = true;
     } else if (teamA.id === 'NED' && teamB.id === 'MAR') {
-      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamB; matchResult.pens = true; matchResult.isRealResult = true;
+      matchResult.goalsA = 2; matchResult.goalsB = 2; matchResult.winner = teamB; matchResult.pens = true; matchResult.pensA = 2; matchResult.pensB = 3; matchResult.isRealResult = true;
     }
 
     bracket['Round of 32'].push({
@@ -385,6 +393,8 @@ function runSingleSimulation(teamsList, selectedTeamId) {
       goalsA: matchResult.goalsA,
       goalsB: matchResult.goalsB,
       pens: matchResult.pens,
+      pensA: matchResult.pensA,
+      pensB: matchResult.pensB,
       winnerId: matchResult.winner.id,
       isRealResult: matchResult.isRealResult || false
     });
@@ -420,6 +430,8 @@ function runSingleSimulation(teamsList, selectedTeamId) {
         goalsA: matchResult.goalsA,
         goalsB: matchResult.goalsB,
         pens: matchResult.pens,
+        pensA: matchResult.pensA,
+        pensB: matchResult.pensB,
         winnerId: matchResult.winner.id
       });
       
@@ -745,7 +757,7 @@ window.SimulationEngine = {
             winnerId = teamA.rating >= teamB.rating ? teamA.id : teamB.id;
           }
 
-          let goalsA = 0, goalsB = 0, isRealResult = false;
+          let goalsA = 0, goalsB = 0, isRealResult = false, pensA = undefined, pensB = undefined;
 
           // Hardcode real-world results
           if ((teamA.id === 'RSA' && teamB.id === 'CAN') || (teamA.id === 'CAN' && teamB.id === 'RSA')) {
@@ -757,9 +769,11 @@ window.SimulationEngine = {
           } else if ((teamA.id === 'PRY' && teamB.id === 'GER') || (teamA.id === 'GER' && teamB.id === 'PRY')) {
             isRealResult = true;
             goalsA = 1; goalsB = 1; winnerId = 'PRY'; // Paraguay won on pens
+            if (teamA.id === 'PRY') { pensA = 4; pensB = 3; } else { pensA = 3; pensB = 4; }
           } else if ((teamA.id === 'MAR' && teamB.id === 'NED') || (teamA.id === 'NED' && teamB.id === 'MAR')) {
             isRealResult = true;
             goalsA = 2; goalsB = 2; winnerId = 'MAR'; // Morocco won on pens
+            if (teamA.id === 'MAR') { pensA = 3; pensB = 2; } else { pensA = 2; pensB = 3; }
           } else {
             const diff = teamA.rating - teamB.rating;
             goalsA = Math.round(1.35 * Math.pow(10, diff / 1600));
@@ -772,7 +786,7 @@ window.SimulationEngine = {
           mostLikelyBracket['Round of 32'].push({
             teamA: { id: teamA.id, name: teamA.name, flag: teamA.flag, rating: teamA.rating },
             teamB: { id: teamB.id, name: teamB.name, flag: teamB.flag, rating: teamB.rating },
-            goalsA, goalsB, pens: (goalsA === goalsB), winnerId, isRealResult
+            goalsA, goalsB, pens: (goalsA === goalsB), pensA, pensB, winnerId, isRealResult
           });
         });
 
